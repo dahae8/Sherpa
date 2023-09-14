@@ -40,13 +40,13 @@ const options = {
     x: {
       max: 100,
       ticks: {
-        callback: (value) => `${value}%`, // x축 레이블에 '%' 추가
+        callback: (value) => `${value}%`,
       },
     },
   },
 };
 
-function CustomChart({ labels, firstDatas, secondDatas }) {
+function makeDoubleChart({ labels, firstDatas, secondDatas }) {
   const data = {
     labels,
     datasets: [
@@ -72,4 +72,4 @@ function CustomChart({ labels, firstDatas, secondDatas }) {
   );
 }
 
-export default CustomChart;
+export default makeDoubleChart;
