@@ -1,7 +1,13 @@
-import "./App.css";
+import React from 'react';
+import './App.css';
+import RouteLink from './routes/Route';
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <div className="App">
+      <RouteLink></RouteLink>
+    </div>
+  );
 }
 
 export default App;
