@@ -29,10 +29,11 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "right",
+      align: "end",
     },
     title: {
       display: true,
+      position: "bottom",
       text: "광주 광역시에 거주하는 30대 남성이 이용하는 커뮤니티 통계",
     },
   },
