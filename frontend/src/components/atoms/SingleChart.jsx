@@ -26,6 +26,8 @@ const colors = [
   "#53AC8E",
   "#383D49",
   "#E2816B",
+  "#2196F3",
+  "#0B0B0B",
 ];
 
 function makeSingleChart({ labels, Datas, text }) {
@@ -45,6 +47,11 @@ function makeSingleChart({ labels, Datas, text }) {
       title: {
         display: true,
         text: text,
+        align: "end",
+        color: "#959191",
+        font: {
+          size: 16,
+        },
       },
     },
     scales: {
