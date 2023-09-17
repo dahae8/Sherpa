@@ -17,7 +17,7 @@ engine = create_engine(connection_str)
 
 
 # 폴더 경로 설정
-folder_path = 'S09P22C107/bigdata/dataAnalysis/trendKeyword/data/'
+folder_path = 'data/trendKeyword/'
 
 # 폴더 내의 모든 파일 목록 가져오기
 file_list = os.listdir(folder_path)

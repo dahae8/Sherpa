@@ -16,8 +16,8 @@ connection_str = f'mysql+pymysql://{db_username}:{db_password}@{db_host}:{db_por
 engine = create_engine(connection_str)
 
 # CSV 파일이 있는 디렉토리 경로
-csv_file_ad_detail = 'S09P22C107/bigdata/dataAnalysis/keyword/data/AiSAC 광고소재명별 광고 정보.csv'
-csv_file_ad_keyword = 'S09P22C107/bigdata/dataAnalysis/keyword/data/AiSAC시스템 AI 인식결과 및 광고소재명별 키워드.csv'
+csv_file_ad_detail = 'data/keyword/AiSAC 광고소재명별 광고 정보.csv'
+csv_file_ad_keyword = 'data/keyword/AiSAC시스템 AI 인식결과 및 광고소재명별 키워드.csv'
 
 csv_files = [csv_file_ad_detail, csv_file_ad_keyword]
 
@@ -82,8 +82,6 @@ for key, value in data.items():
      sql_data['total'].append(value)
     
 df = pd.DataFrame(sql_data)
-# DataFrame 출력
-# print(df)
 
 # DataFrame을 MySQL 테이블로 저장
 table_name = 'adKeyword'  # 저장할 테이블 이름
