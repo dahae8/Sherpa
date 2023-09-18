@@ -4,7 +4,7 @@ import SignUp from '../../organisms/SignUp';
 import SignIn from '../../organisms/SignIn';
 import Overlay from '../../organisms/Overlay';
 
-function Auth() {
+function ChangeAuth() {
   const [rightPanelActive, setRightPanelActive] = useState(false);
 
   const handleClickSignUpButton = () => setRightPanelActive(true);
@@ -24,4 +24,4 @@ function Auth() {
   );
 }
 
-export default Auth;
+export default ChangeAuth;
