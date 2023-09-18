@@ -11,7 +11,7 @@ function ChangeAuth() {
   const handleClickSignInButton = () => setRightPanelActive(false);
 
   return (
-    <div className="App">
+    <div className="Auth">
       <div className={`container ${rightPanelActive ? 'right-panel-active' : ''}`} id="container">
         <SignUp />
         <SignIn />
