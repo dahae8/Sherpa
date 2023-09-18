@@ -10,7 +10,7 @@ const Container = styled.div`
 `;
 const ImgBox = styled.div`
   width: 200px;
-  height: 220px;
+  height: 200px;
 `;
 const TitleBox = styled.div`
   font-size: 24px;
@@ -24,13 +24,13 @@ const UrlItem = styled.a`
   text-decoration: none;
 `;
 
-function makeCard({ title, content, url }) {
+function makeCard({ img, title, url }) {
   return (
     <Container>
       <ImgBox>
-        <img src={title} alt="" />
+        <img src={img} alt="" />
       </ImgBox>
-      <TitleBox>{content}</TitleBox>
+      <TitleBox>{title}</TitleBox>
       <UrlBox>
         <UrlItem href={url}>더 알아보기</UrlItem>
       </UrlBox>
