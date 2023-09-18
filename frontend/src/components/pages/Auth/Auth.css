@@ -4,7 +4,7 @@
 	box-sizing: border-box;
 }
 
-body {
+.Auth {
 	background: #ffffff;
 	display: flex;
 	justify-content: center;
@@ -16,12 +16,12 @@ body {
 
 h1 {
 	font-weight: bold;
-	margin: 30px;
+	margin: 32px;
 }
 
-h2 {
+/* h2 {
 	text-align: center;
-}
+} */
 
 p {
 	font-size: 14px;
@@ -31,9 +31,9 @@ p {
 	margin: 20px 0 30px;
 }
 
-span {
+/* span {
 	font-size: 12px;
-}
+} */
 
 a {
 	color: #2196f3;
@@ -231,11 +231,6 @@ input:hover{
 	transform: translateX(20%);
 }
 
-img {
-  width: 30px;
-  height: 30px;
-  margin-top:30px;
-}
 
 .idInput {
   background-image: url(../../../assets/img/face-id.png);
@@ -260,7 +255,7 @@ img {
 }
 
 .pwInput {
-	background-image: url(../../../assets/img/padlock\ \(1\).png);
+	background-image: url(../../../assets/img/padlock.png);
 	background-position: 5px center;
 	background-size: 25px 25px;
 	background-repeat: no-repeat;
