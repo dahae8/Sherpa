@@ -5,7 +5,6 @@ import BarChartItem from "../atoms/SingleChart";
 import TagItem from "../atoms/ImformationTag";
 
 const Container = styled.div`
-  margin: 0 320px;
   display: flex;
   flex-direction: column;
 `;
