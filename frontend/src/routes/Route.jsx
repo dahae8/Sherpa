@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import MainPage from '../components/pages/MainPage/MainPage';
 import MediaRecommendPage from '../components/pages/MediaRecommendPage/MediaRecommendPage';
+import ChangeAuth from '../components/pages/Auth/ChangeAuth'
 
 function RouteLink(props) {
   return (
@@ -10,6 +11,7 @@ function RouteLink(props) {
         {/* <Route path="/login" element={<LoginPage />} /> */}
         {/* <Route path="/signup" element={<SignupPage />} /> */}
         {/* <Route path="/mypage" element={<MyPage />} /> */}
+        <Route path="/auth" element={<ChangeAuth />} />
         <Route path="/mediaRecommend" element={<MediaRecommendPage />} />
         {/* <Route path="/mediaResult/online" element={<MyPage />} /> */}
         {/* <Route path="/mediaResult/tv" element={<MyPage />} /> */}
