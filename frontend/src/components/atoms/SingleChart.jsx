@@ -30,8 +30,8 @@ const colors = [
   "#0B0B0B",
 ];
 
-function makeSingleChart({ labels, Datas, text }) {
-  const backgroundColors = colors.slice(0, Datas.length);
+function makeSingleChart({ labels, datas, text, width }) {
+  const backgroundColors = colors.slice(0, datas.length);
   const options = {
     indexAxis: "y",
     elements: {
@@ -68,7 +68,7 @@ function makeSingleChart({ labels, Datas, text }) {
     datasets: [
       {
         label: "2021년",
-        data: Datas,
+        data: datas,
         borderColor: backgroundColors,
         backgroundColor: backgroundColors,
       },
@@ -76,7 +76,7 @@ function makeSingleChart({ labels, Datas, text }) {
   };
 
   return (
-    <div style={{ width: "50%" }}>
+    <div style={{ width: `${width}%` }}>
       <Bar options={options} data={data} />
     </div>
   );
