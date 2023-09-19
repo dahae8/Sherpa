@@ -1,15 +1,13 @@
 import styled from "styled-components";
 import Chart from "../atoms/DoubleChart";
 
-const Container = styled.div`
-  margin: 0 320px;
-`;
+const Container = styled.div``;
 const TitleBox = styled.div`
   font-size: 48px;
 `;
 const ChartBox = styled.div`
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 100px;
 `;
 const Description = styled.div``;
 

@@ -113,6 +113,7 @@ DROP TABLE IF EXISTS `productSmall`;
 CREATE TABLE `productSmall` (
 	`id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`small`	VARCHAR(80)	NOT NULL,
+	`code` INT NOT NULL,
 	`productMedium_id`	INT	NOT NULL
 );
 

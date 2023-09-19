@@ -2,9 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import CardItem from "../atoms/ProducerCard";
 
-const PageContainer = styled.div`
-  margin: 0 320px;
-`;
+const PageContainer = styled.div``;
 const CardGridBox = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -28,8 +26,8 @@ function makeCardList({ cardDatas, description }) {
           {cardDatas.map((card, index) => (
             <CardItem
               key={index}
+              img={card.img}
               title={card.title}
-              content={card.content}
               url={card.url}
             />
           ))}
