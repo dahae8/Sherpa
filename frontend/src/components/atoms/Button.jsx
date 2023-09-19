@@ -17,6 +17,7 @@ function makeButton({
   border,
   textColor,
   fontSize,
+  onClick,
   children,
 }) {
   return (
@@ -27,6 +28,7 @@ function makeButton({
       border={border}
       textColor={textColor}
       fontSize={fontSize}
+      onClick={onClick}
     >
       {children}
     </Container>
