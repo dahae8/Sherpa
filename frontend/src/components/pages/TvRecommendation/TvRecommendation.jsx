@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
+import ChannelRecommendation from "../../organisms/ChannelRecommendation";
 
 const Container = styled.div`
   margin: 0 320px;
@@ -21,6 +22,8 @@ export const TvRecommendation = () => {
   const subDatas = [23, 19, 13, 5]; //API
   const prices = [23, 19, 13, 5]; //API
   const recommendedMedia = "TV 영상 광고"; //API
+  const tvChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5]; //API
+  const recommendedTvChennl = "스포츠"; //API
   return (
     <Container>
       <TargetBox>
@@ -40,7 +43,23 @@ export const TvRecommendation = () => {
         ></OfflineMediaRecommendation>
       </Box>
       <Hr></Hr>
-      <Box></Box>
+      <Box>
+        <ChannelRecommendation
+          title={`추천 드리는 TV 채널은 ${recommendedTvChennl} 입니다.`}
+          datas={tvChannelDatas}
+          labels={[
+            "스포츠",
+            "뉴스",
+            "드라마",
+            "예능",
+            "영화",
+            "애니메이션",
+            "토론",
+            "교양",
+          ]}
+          description={`${target}이 시청하는 TV 프로그램 통계`}
+        ></ChannelRecommendation>
+      </Box>
     </Container>
   );
 };
