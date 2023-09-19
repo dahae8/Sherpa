@@ -1,8 +1,8 @@
 package com.ssafy.adrec.member.service;
 
 import com.ssafy.adrec.member.Member;
-import com.ssafy.adrec.member.controller.MemberController;
 import com.ssafy.adrec.member.repository.MemberRepository;
+import com.ssafy.adrec.member.request.MemberLoginPostReq;
 import com.ssafy.adrec.member.request.MemberSignupPostReq;
 import com.ssafy.adrec.product.ProductSmall;
 import com.ssafy.adrec.product.repository.ProductSmallRepository;
@@ -41,5 +41,17 @@ public class MemberServiceImpl implements MemberService {
         Member saved = memberRepository.save(member);
 
         return saved;
+    }
+
+    // 로그인
+    @Override
+    public Member login(MemberLoginPostReq memberLoginPostReq) {
+        Optional<Member> member = memberRepository.findByNameAndPwd(memberLoginPostReq.getName(), memberLoginPostReq.getPwd());
+
+        if (member.isEmpty()) {
+            return null;
+        }
+
+        return member.get();
     }
 }
