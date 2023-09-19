@@ -31,20 +31,16 @@ public class Member {
     @Column
     private String img;
 
-    @Column
-    private String token;
-
     @ManyToOne
     @JoinColumn(name = "productSmall_id", referencedColumnName = "id")
     private ProductSmall productSmall;
 
     @Builder
-    public Member(String name, String email, String pwd, String img, String token, ProductSmall productSmall) {
+    public Member(String name, String email, String pwd, String img, ProductSmall productSmall) {
         this.name = name;
         this.email = email;
         this.pwd = pwd;
         this.img = img;
-        this.token = token;
         this.productSmall = productSmall;
     }
 
