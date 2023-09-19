@@ -68,7 +68,7 @@ export function makeLineChart({ labels, weekdaysDatas, weekendsDatas, text }) {
   };
 
   return (
-    <div style={{ width: "50%" }}>
+    <div style={{ width: "100%" }}>
       <Line options={options} data={data} />
     </div>
   );
