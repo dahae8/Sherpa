@@ -4,6 +4,7 @@ import CommunityRecommendation from "../../organisms/CommunityRecommendation";
 import BlogRecommendation from "../../organisms/ProducerCardList";
 import SnsRecomendation from "../../organisms/SnsRecommendation";
 import ProducerRecommendation from "../../organisms/ProducerCardList";
+import Buttons from "../../organisms/ResultPageButtens";
 
 const Container = styled.div`
   margin: 0 320px;
@@ -12,11 +13,11 @@ const TargetBox = styled.div`
   margin-bottom: 100px;
 `;
 const Box = styled.div`
-  margin: 100px 0px 100px 0px;
+  margin: 150px 0px 150px 0px;
 `;
 const BlogTitle = styled.div`
   font-size: 48px;
-  margin-bottom: 50px;
+  margin-bottom: 100px;
 `;
 
 export const OnlineRecommendation = () => {
@@ -84,6 +85,9 @@ export const OnlineRecommendation = () => {
         <ProducerRecommendation
           cardDatas={producerCardDatas}
         ></ProducerRecommendation>
+      </Box>
+      <Box>
+        <Buttons></Buttons>
       </Box>
     </Container>
   );

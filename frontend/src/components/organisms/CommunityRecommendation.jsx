@@ -7,7 +7,7 @@ const TitleBox = styled.div`
 `;
 const ChartBox = styled.div`
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 100px;
 `;
 const Description = styled.div``;
 
