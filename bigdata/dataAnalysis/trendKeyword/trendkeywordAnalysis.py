@@ -1,7 +1,13 @@
 import os
+import pymysql
 import pandas as pd
-from sqlalchemy import create_engine
 
+connection = pymysql.connect(
+    host='호스트주소',
+    user='사용자이름',
+    password='비밀번호',
+    database='데이터베이스이름'
+)
 
 # MySQL 데이터베이스 연결 설정
 db_username = 'root'
@@ -33,15 +39,15 @@ for xlsx_file in xlsx_files:
     df = pd.read_excel(file_path)
     # print("=====================\n")
     # print(df)
-    
+
     for row_num, row in df.iterrows():
         data_key = row["tmng"]
 
-        if data_key =="- topic":
+        if data_key == "- topic":
             data_key = "topic"
 
         if data_key in data:
-            data[data_key]+= 1
+            data[data_key] += 1
         else:
             data[data_key] = 1
 
@@ -52,8 +58,8 @@ sql_data = {
 }
 
 for key, value in data.items():
-     sql_data['name'].append(key)
-     sql_data['total'].append(value)
+    sql_data['name'].append(key)
+    sql_data['total'].append(value)
 
 df = pd.DataFrame(sql_data)
 # DataFrame 출력

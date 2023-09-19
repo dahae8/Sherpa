@@ -1,6 +1,6 @@
+import pymysql
 import pandas as pd
 from sqlalchemy import create_engine
-
 
 # MySQL 데이터베이스 연결 설정
 db_username = 'root'
@@ -46,16 +46,15 @@ for row_num_ad_detail, row_ad_detail in dataframe_ad_detail.iterrows():
         if row_ad_detail['광고소재명'] == row_ad_keyword['광고소재명']:
             keywords = [word.strip("' ").strip()
                         for word in row_ad_keyword['키워드'].split(',')]
-            
+
             for keyword in keywords:
                 data_key = large_product + ','+middle_product + ','+small_product + ','+keyword
                 if data_key in data:
-                    data[data_key]+= 1
+                    data[data_key] += 1
                 else:
                     data[data_key] = 1
             idx += 1
             break
-
 
 
 # CREATE TABLE `adKeyword` (
@@ -74,13 +73,13 @@ sql_data = {
 }
 
 for key, value in data.items():
-     product_lst = [word.strip("' ").strip() for word in key.split(',')]
-     sql_data['productSmall_id1'].append(product_lst[0])
-     sql_data['productSmall_id2'].append(product_lst[1])
-     sql_data['productSmall_id'].append(product_lst[2])
-     sql_data['name'].append(product_lst[3])
-     sql_data['total'].append(value)
-    
+    product_lst = [word.strip("' ").strip() for word in key.split(',')]
+    sql_data['productSmall_id1'].append(product_lst[0])
+    sql_data['productSmall_id2'].append(product_lst[1])
+    sql_data['productSmall_id'].append(product_lst[2])
+    sql_data['name'].append(product_lst[3])
+    sql_data['total'].append(value)
+
 df = pd.DataFrame(sql_data)
 
 # DataFrame을 MySQL 테이블로 저장

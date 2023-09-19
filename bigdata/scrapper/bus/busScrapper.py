@@ -8,7 +8,6 @@ from selenium.common.exceptions import NoSuchElementException
 import time
 import csv
 
-
 # 크롬 드라이버 경로와 서비스 설정
 driver_path = "data/chromedriver/chromedriver.exe"
 service = Service(driver_path)
@@ -27,7 +26,33 @@ driver.get("https://bus.gwangju.go.kr/busmap/stationSearch#")
 wait = WebDriverWait(driver, 3)  # 최대 3초 대기
 
 data = {}
-click_delay = 0.1
+
+
+def process_bus_data(i):
+
+    bus_id_xpath = '//*[@id="row' + \
+        str(i)+'divStationGrid"]/div[3]'
+    bus_id_element = driver.find_element(
+        By.XPATH, bus_id_xpath)
+    bus_id = bus_id_element.get_attribute("title")
+
+    bus_xpath = '//*[@id="row' + \
+        str(i)+'divStationGrid"]/div[4]'
+    bus_element = driver.find_element(By.XPATH, bus_xpath)
+    bus = bus_element.get_attribute("title")
+
+    bus_key = bus_id+","+bus
+
+    if bus_key in data[gu_element.text][doung_element.text]:
+        if (data[gu_element.text][doung_element.text][bus_key] > 4):
+            return True
+        data[gu_element.text][doung_element.text][bus_key] += 1
+    else:
+        data[gu_element.text][doung_element.text][bus_key] = 0
+    return False
+
+
+click_delay = 0.05
 
 # 클릭하고자 하는 요소 선택 (예: XPath를 사용한 예제)
 xpath = '//*[@id="divTab2"]/a'
@@ -73,50 +98,29 @@ for idx in range(2, 7):
             time.sleep(click_delay)
             try:
                 for i in range(3):
+                    process_bus_data(i)
 
-                    bus_id_xpath = '//*[@id="row' + \
-                        str(i)+'divStationGrid"]/div[3]'
-                    bus_id_element = driver.find_element(
-                        By.XPATH, bus_id_xpath)
-                    bus_id = bus_id_element.get_attribute("title")
+                scroll_up_xpath = '//*[@id="jqxScrollBtnUpverticalScrollBardivStationGrid"]/div'
+                scroll_down_xpath = '//*[@id="jqxScrollBtnDownverticalScrollBardivStationGrid"]/div'
+                scroll_up_element = driver.find_element(
+                    By.XPATH, scroll_up_xpath)
+                scroll_down_element = driver.find_element(
+                    By.XPATH, scroll_down_xpath)
 
-                    bus_xpath = '//*[@id="row' + \
-                        str(i)+'divStationGrid"]/div[4]'
-                    bus_element = driver.find_element(By.XPATH, bus_xpath)
-                    bus = bus_element.get_attribute("title")
+                while True:
+                    scroll_up_element.click()
+                    time.sleep(click_delay)
+                    if process_bus_data(0):
+                        break
 
-                    bus_key = bus_id+","+bus
-                    data[gu_element.text][doung_element.text][bus_key] = 0
-
-                scroll_xpath = '//*[@id="jqxScrollBtnDownverticalScrollBardivStationGrid"]/div'
-                scroll_element = driver.find_element(By.XPATH, scroll_xpath)
                 # 한 칸씩 스크롤
                 for k in range(1000):
                     is_break = False
                     for i in range(2, 4):
-                        bus_id_xpath = '//*[@id="row' + \
-                            str(i)+'divStationGrid"]/div[3]'
-                        bus_id_element = driver.find_element(
-                            By.XPATH, bus_id_xpath)
-                        bus_id = bus_id_element.get_attribute("title")
-
-                        bus_xpath = '//*[@id="row' + \
-                            str(i)+'divStationGrid"]/div[4]'
-                        bus_element = driver.find_element(By.XPATH, bus_xpath)
-                        bus = bus_element.get_attribute("title")
-
-                        bus_key = bus_id+","+bus
-
-                        if bus_key in data[gu_element.text][doung_element.text]:
-                            if (data[gu_element.text][doung_element.text][bus_key] > 4):
-                                is_break = True
-                                break
-                            data[gu_element.text][doung_element.text][bus_key] += 1
-                        else:
-                            data[gu_element.text][doung_element.text][bus_key] = 0
+                        is_break = process_bus_data(i)
                     if is_break:
                         break
-                    scroll_element.click()
+                    scroll_down_element.click()
                     time.sleep(click_delay)
 
             except Exception as e:
@@ -124,8 +128,6 @@ for idx in range(2, 7):
 
     except NoSuchElementException:
         pass
-
-print(data)
 
 csv_data = [
     ["구", "동", "ARS_ID", "정류장"]
@@ -149,9 +151,8 @@ for gu_key, gu_value in data.items():
 
             csv_data.append(list_data)
 
-
 # CSV 파일로 저장
-csv_filename = "버스정류장_주소_데이터.csv"
+csv_filename = "data/bus/버스정류장_주소_데이터.csv"
 
 # newline='' 옵션은 빈 줄을 추가하지 않도록 합니다.
 with open(csv_filename, mode='w', newline='') as csv_file:
@@ -159,7 +160,6 @@ with open(csv_filename, mode='w', newline='') as csv_file:
     for row in csv_data:
         writer.writerow(row)
 
-print(f"{csv_filename} 파일이 저장되었습니다.")
 
 # 웹 드라이버 종료
 driver.quit()
