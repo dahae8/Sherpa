@@ -5,7 +5,6 @@ import BarChartItem from "../atoms/SingleChart";
 import TagItem from "../atoms/ImformationTag";
 
 const Container = styled.div`
-  margin: 0 320px;
   display: flex;
   flex-direction: column;
 `;
@@ -14,14 +13,16 @@ const TagBox = styled.div`
   justify-content: flex-start;
   color: #0b0b0b;
   font-size: 16px;
+  margin-top: 20px;
 `;
 const TitleBox = styled.div`
-  margin: 70px 0px 40px 0px;
+  margin: 120px 0px 40px 0px;
   font-size: 48px;
 `;
 const ContentBox = styled.div`
   display: flex;
   width: 100%;
+  margin-bottom: 50px;
 `;
 const ImgItem = styled.div`
   margin: 70px 50px 0px 0px;
@@ -40,6 +41,7 @@ const Women = styled.div`
 `;
 const ChartItem = styled.div`
   flex: 2;
+  margin-top: 30px;
 `;
 
 function makeReccommendTarget({ datas, target, percent }) {
