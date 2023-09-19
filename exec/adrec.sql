@@ -213,8 +213,8 @@ CREATE TABLE `mediaLikeGender` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`gender`	TINYINT	NOT NULL	DEFAULT 0	COMMENT '0:여성, 1:남성',
 	`total`	INT	NOT NULL,
-	`id2`	INT	NOT NULL,
-	`id3`	INT	NOT NULL
+	`mediaSub_id`	INT	NOT NULL,
+	`mediaType_id`	INT	NOT NULL
 );
 
 DROP TABLE IF EXISTS `mediaLikeAge`;
@@ -223,8 +223,8 @@ CREATE TABLE `mediaLikeAge` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`age`	INT	NOT NULL,
 	`total`	INT	NOT NULL,
-	`id2`	BIGINT	NOT NULL,
-	`id3`	BIGINT	NOT NULL
+	`mediaSub_id`	BIGINT	NOT NULL,
+	`mediaType_id`	BIGINT	NOT NULL
 );
 
 DROP TABLE IF EXISTS `mediaLikeArea`;
@@ -233,8 +233,8 @@ CREATE TABLE `mediaLikeArea` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`area`	VARCHAR(80)	NOT NULL,
 	`total`	INT	NOT NULL,
-	`id2`	BIGINT	NOT NULL,
-	`id3`	BIGINT	NOT NULL
+	`mediaSub_id`	BIGINT	NOT NULL,
+	`mediaType_id`	BIGINT	NOT NULL
 );
 
 DROP TABLE IF EXISTS `productMedia`;
@@ -637,56 +637,56 @@ REFERENCES `contentRec` (
 );
 
 ALTER TABLE `mediaLikeGender` ADD CONSTRAINT `FK_mediaSub_TO_mediaLikeGender_1` FOREIGN KEY (
-	`id2`
+	`mediaSub_id`
 )
 REFERENCES `mediaSub` (
 	`id`
 );
 
 ALTER TABLE `mediaLikeGender` ADD CONSTRAINT `FK_mediaType_TO_mediaLikeGender_1` FOREIGN KEY (
-	`id3`
+	`mediaType_id`
 )
 REFERENCES `mediaType` (
 	`id`
 );
 
 ALTER TABLE `mediaLikeAge` ADD CONSTRAINT `FK_mediaSub_TO_mediaLikeAge_1` FOREIGN KEY (
-	`id2`
+	`mediaSub_id`
 )
 REFERENCES `mediaSub` (
 	`id`
 );
 
 ALTER TABLE `mediaLikeAge` ADD CONSTRAINT `FK_mediaType_TO_mediaLikeAge_1` FOREIGN KEY (
-	`id3`
+	`mediaType_id`
 )
 REFERENCES `mediaType` (
 	`id`
 );
 
 ALTER TABLE `mediaLikeArea` ADD CONSTRAINT `FK_mediaSub_TO_mediaLikeArea_1` FOREIGN KEY (
-	`id2`
+	`mediaSub_id`
 )
 REFERENCES `mediaSub` (
 	`id`
 );
 
 ALTER TABLE `mediaLikeArea` ADD CONSTRAINT `FK_mediaType_TO_mediaLikeArea_1` FOREIGN KEY (
-	`id3`
+	`mediaType_id`
 )
 REFERENCES `mediaType` (
 	`id`
 );
 
 ALTER TABLE `productMedia` ADD CONSTRAINT `FK_mediaSub_TO_productMedia_1` FOREIGN KEY (
-	`id2`
+	`mediaSub_id`
 )
 REFERENCES `mediaSub` (
 	`id`
 );
 
 ALTER TABLE `productMedia` ADD CONSTRAINT `FK_mediaType_TO_productMedia_1` FOREIGN KEY (
-	`id3`
+	`mediaType_id`
 )
 REFERENCES `mediaType` (
 	`id`
