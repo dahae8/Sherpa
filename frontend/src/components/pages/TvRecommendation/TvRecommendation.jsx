@@ -3,6 +3,8 @@ import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
 import ChannelRecommendation from "../../organisms/ChannelRecommendation";
 import TimeRecommendation from "../../organisms/TimeRecommendation";
+import ProducerRecommendation from "../../organisms/ProducerCardList";
+import Buttons from "../../organisms/ResultPageButtens";
 
 const Container = styled.div`
   margin: 0 320px;
@@ -14,6 +16,10 @@ const Box = styled.div`
   margin: 150px 0px 150px 0px;
 `;
 const Hr = styled.hr``;
+const ProducerTitleItem = styled.div`
+  font-size: 48px;
+  margin-bottom: 100px;
+`;
 
 export const TvRecommendation = () => {
   const ageDatas = [80, 60, 45, 42, 32, 29]; //API
@@ -34,6 +40,12 @@ export const TvRecommendation = () => {
     67, 59, 52, 51, 47, 39,
   ]; //API
   const recommendedtime = "18:30 ~ 19:00";
+  const producerCardDatas = [
+    { img: "url", title: "대한민국 명산 도전", url: "url" },
+    { img: "url", title: "램블러", url: "url" },
+    { img: "url", title: "놀자", url: "url" },
+    { img: "url", title: "길잡이", url: "url" },
+  ]; //API
   return (
     <Container>
       <TargetBox>
@@ -78,6 +90,16 @@ export const TvRecommendation = () => {
           description={`${target}이 TV를 시청하는 시간대 데이터`}
           recommendedtime={recommendedtime}
         ></TimeRecommendation>
+      </Box>
+      <Hr></Hr>
+      <Box>
+        <ProducerTitleItem>TV 광고 제작사</ProducerTitleItem>
+        <ProducerRecommendation
+          cardDatas={producerCardDatas}
+        ></ProducerRecommendation>
+      </Box>
+      <Box>
+        <Buttons></Buttons>
       </Box>
     </Container>
   );
