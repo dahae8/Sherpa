@@ -242,8 +242,8 @@ DROP TABLE IF EXISTS `productMedia`;
 CREATE TABLE `productMedia` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`total`	INT	NOT NULL,
-	`id2`	BIGINT	NOT NULL,
-	`id3`	BIGINT	NOT NULL
+	`mediaSub_id`	BIGINT	NOT NULL,
+	`mediaType_id`	BIGINT	NOT NULL
 );
 
 DROP TABLE IF EXISTS `radioGender`;
