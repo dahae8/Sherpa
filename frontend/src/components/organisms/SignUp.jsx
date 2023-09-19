@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectAutoWidth from '../atoms/select';
+import SelectAutoWidth from '../atoms/Select';
 
 function SignUp() {
   return (
