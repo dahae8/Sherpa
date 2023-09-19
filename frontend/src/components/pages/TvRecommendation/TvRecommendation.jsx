@@ -2,6 +2,7 @@ import styled from "styled-components";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
 import ChannelRecommendation from "../../organisms/ChannelRecommendation";
+import TimeRecommendation from "../../organisms/TimeRecommendation";
 
 const Container = styled.div`
   margin: 0 320px;
@@ -24,6 +25,15 @@ export const TvRecommendation = () => {
   const recommendedMedia = "TV 영상 광고"; //API
   const tvChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5]; //API
   const recommendedTvChennl = "스포츠"; //API
+  const weekdaysDatas = [
+    3, 5.9, 7.4, 12.8, 13, 22, 24, 43, 42, 55, 44, 33, 22, 34, 44, 56, 66, 54,
+    66, 64, 66, 64, 33, 22, 19,
+  ]; //API
+  const weekendsDatas = [
+    23, 26, 32, 36, 34, 34, 46, 52, 41, 53, 63, 53, 49, 64, 72, 81, 79, 78, 69,
+    67, 59, 52, 51, 47, 39,
+  ]; //API
+  const recommendedtime = "18:30 ~ 19:00";
   return (
     <Container>
       <TargetBox>
@@ -59,6 +69,15 @@ export const TvRecommendation = () => {
           ]}
           description={`${target}이 시청하는 TV 프로그램 통계`}
         ></ChannelRecommendation>
+      </Box>
+      <Hr></Hr>
+      <Box>
+        <TimeRecommendation
+          weekdaysDatas={weekdaysDatas}
+          weekendsDatas={weekendsDatas}
+          description={`${target}이 TV를 시청하는 시간대 데이터`}
+          recommendedtime={recommendedtime}
+        ></TimeRecommendation>
       </Box>
     </Container>
   );
