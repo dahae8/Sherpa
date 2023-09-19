@@ -1,7 +1,8 @@
-import { Route, Routes } from 'react-router-dom';
-import MainPage from '../components/pages/MainPage/MainPage';
-import MediaRecommendPage from '../components/pages/MediaRecommendPage/MediaRecommendPage';
-import ChangeAuth from '../components/pages/Auth/ChangeAuth'
+import { Route, Routes } from "react-router-dom";
+import MainPage from "../components/pages/MainPage/MainPage";
+import MediaRecommendPage from "../components/pages/MediaRecommendPage/MediaRecommendPage";
+import ChangeAuth from "../components/pages/Auth/ChangeAuth";
+import OnlineRecommendation from "../components/pages/OnlineRecommendation/OnlineRecommendation";
 
 function RouteLink(props) {
   return (
@@ -13,7 +14,7 @@ function RouteLink(props) {
         {/* <Route path="/mypage" element={<MyPage />} /> */}
         <Route path="/auth" element={<ChangeAuth />} />
         <Route path="/mediaRecommend" element={<MediaRecommendPage />} />
-        {/* <Route path="/mediaResult/online" element={<MyPage />} /> */}
+        <Route path="/mediaResult/online" element={<OnlineRecommendation />} />
         {/* <Route path="/mediaResult/tv" element={<MyPage />} /> */}
         {/* <Route path="/mediaResult/radio" element={<MyPage />} /> */}
         {/* <Route path="/mediaResult/newspaper" element={<MyPage />} /> */}

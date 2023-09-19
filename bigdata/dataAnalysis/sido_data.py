@@ -18,9 +18,23 @@ new_data.loc[:, '연령'] = new_data['연령'].replace({'0.기타': '0', '1.10�
 large = new_data['가맹점_시도명'].drop_duplicates()
 small = new_data[['가맹점_시도명', '가맹점_시군구명', '가맹점_읍면동명']].drop_duplicates()
 
-# mysql 연결
-conn = mysql.connector.connect(host="localhost", user="root", password="ssafy", database="adrec")
+# local db 연결
+conn = mysql.connector.connect(host="localhost", user="c107", password="ssafy", database="adrec")
 cursor = conn.cursor()  # 커서 생성
+
+# # server db 연결
+# # MySQL 연결 정보 설정
+# db_config = {
+#     "host": "j9c107.p.ssafy.io",
+#     "user": "c107",
+#     "password": "c107adrec",
+#     "database": "adrec",
+#     "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
+# }
+#
+# # MySQL에 연결
+# conn = mysql.connector.connect(**db_config)
+# cursor = conn.cursor()  # 커서 생성
 
 # 시도명 테이블에 데이터 삽입
 for item in large:
