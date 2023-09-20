@@ -1,30 +1,3 @@
-# import pandas as pd
-# import numpy as np
-# import matplotlib.pyplot as plt
-# import fitz
- 
-# def extract_text_from_specific_pages(pdf_path, start_page, end_page):
-#     doc = fitz.open(pdf_path)
-    
-#     # 페이지 범위가 유효한지 확인
-#     if start_page < 0 or end_page > doc.page_count or start_page > end_page:
-#         print(doc.page_count)
-#         return "Invalid page range."
-
-#     extracted_text = ""
-    
-#     for page_num in range(start_page, end_page):
-#         page = doc[page_num]
-#         extracted_text += page.get_text()
-
-#     return extracted_text
-
-# pdf_path = 'C:/Users/SSAFY/Desktop/특화/adRec_data/ADZ 7+8월.pdf'
-# start_page = 82
-# end_page = 87
-# text = extract_text_from_specific_pages(pdf_path, start_page, end_page)
-# print(text)
-
 from typing import List
 import os
 import re
@@ -34,7 +7,8 @@ def convert_text_to_csv(input_path: str, output_path: str) -> None:
     input_path (str): 텍스트파일 루트
     output_path (str): CSV파일 루트
     """
-    with open(input_path, 'r', encoding='utf-8') as file:
+    file_name = input_path
+    with open(file_name, 'r', encoding='utf-8') as file:
         lines = file.readlines()
 
     csv_lines = []
@@ -51,7 +25,7 @@ def convert_text_to_csv(input_path: str, output_path: str) -> None:
         
         csv_lines.append(csv_line)
     
-    # Save the CSV content to a file
+    # CSV 파일 변환
     with open(output_path, 'w', encoding='cp949') as file:
         file.write("\n".join(csv_lines))
 
@@ -72,10 +46,10 @@ def convert_multiple_files(file_paths: List[str], output_dir: str) -> List[str]:
 
 # List of input file paths
 input_files = [
-    "C:/Users/SSAFY/Desktop/특화/adRec_data/광고주별_매체비_현황.txt",
-    "C:/Users/SSAFY/Desktop/특화/adRec_data/매체별_인터넷_광고_현황.txt",
-    "C:/Users/SSAFY/Desktop/특화/adRec_data/업종별_4대_매체_광고비_현황.txt",
-    "C:/Users/SSAFY/Desktop/특화/adRec_data/업종별_인터넷_광고_현황.txt"
+    "./budget_data/광고주별_매체비_현황.txt",
+    "./budget_data/매체별_인터넷_광고_현황.txt",
+    "./budget_data/업종별_4대_매체_광고비_현황.txt",
+    "./budget_data/업종별_인터넷_광고_현황.txt"
 ]
 
 # Directory to save the output CSV files
