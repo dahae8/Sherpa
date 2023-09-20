@@ -67,7 +67,7 @@ gu_select_xpath = '//*[@id="PAREA_ID"]'
 driver.find_element(By.XPATH, gu_select_xpath).click()
 time.sleep(click_delay)
 
-for idx in range(2, 7):
+for idx in range(2, 12):
     print("=====================")
     gu_xpath = '//*[@id="PAREA_ID"]/option['+str(idx)+']'
     gu_element = driver.find_element(By.XPATH, gu_xpath)

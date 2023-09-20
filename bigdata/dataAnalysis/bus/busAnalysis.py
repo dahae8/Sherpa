@@ -47,7 +47,9 @@ for row_num, row in csv_file_bus_address.iterrows():
     dong = row['동']
     if pd.isna(ars_id):
         continue
+
     data[ars_id] = {
+
         'address_id': address_data[gu][dong],
         'name': row["정류장"]
     }
@@ -59,40 +61,61 @@ file_list = os.listdir(folder_path)
 
 # XLSX 파일만 선택
 xlsx_files = [file for file in file_list if file.endswith('.xlsx')]
-non_list = []
-for xlsx_file in xlsx_files:
-    file_path = os.path.join(folder_path, xlsx_file)
-    all_sheets = pd.read_excel(file_path, sheet_name=None)
-    for sheet_name, df in all_sheets.items():
-        for row_num, row in df.iterrows():
-            ars_id = row["ARS_ID"]
-            num = row["거래건수"]
-            if pd.isna(ars_id):
-                pass
-            if ars_id in data:
-                if "total" in data[ars_id]:
-                    data[ars_id]["total"] += num
-                else:
-                    data[ars_id]["total"] = num
+non_list = {}
+pass_list = [5019, 5020, 3192]
+
+# for xlsx_file in xlsx_files:
+#     file_path = os.path.join(folder_path, xlsx_file)
+#     all_sheets = pd.read_excel(file_path, sheet_name=None)
+#     for sheet_name, df in all_sheets.items():
+#         for row_num, row in df.iterrows():
+#             ars_id = row["ARS_ID"]
+#             num = row["거래건수"]
+#             if pd.isna(ars_id):
+#                 continue
+#             if ars_id in data:
+#                 if "total" in data[ars_id]:
+#                     data[ars_id]["total"] += num
+#                 else:
+#                     data[ars_id]["total"] = num
+#             else:
+#                 if ars_id > 6000:
+#                     pass
+#                 elif ars_id in non_list:
+#                     pass
+#                 else:
+#                     non_list[ars_id] = 0
+#                     print(sheet_name, ars_id)
+
+
+file_path = r"data\bus\광주버스 노선별 정류장별 시간대별 승하차 건수('23년07월01일~07월07일).xlsx"
+all_sheets = pd.read_excel(file_path, sheet_name=None)
+print("=====================\n")
+for sheet_name, df in all_sheets.items():
+    for row_num, row in df.iterrows():
+        ars_id = row["ARS_ID"]
+        num = row["거래건수"]
+        if pd.isna(ars_id):
+            continue
+        if ars_id in data:
+            if "total" in data[ars_id]:
+                data[ars_id]["total"] += num
             else:
-                non_list.append(ars_id)
+                data[ars_id]["total"] = num
+        else:
+            if ars_id > 6000:
+                pass
+            elif ars_id in pass_list:
+                pass
+            elif ars_id in non_list:
+                pass
+            else:
+                non_list[ars_id] = 0
+                print("----------------")
+                print(sheet_name)
+                print(int(ars_id))
+                print(row["정류장명"])
 
-print(data)
-
-# file_path = r"data\bus\광주버스 노선별 정류장별 시간대별 승하차 건수('23년07월01일~07월07일).xlsx"
-# all_sheets = pd.read_excel(file_path, sheet_name=None)
-# print("=====================\n")
-# for sheet_name, df in all_sheets.items():
-#     for row_num, row in df.iterrows():
-#         ars_id = row["ARS_ID"]
-#         num = row["거래건수"]
-#         if pd.isna(ars_id):
-#             pass
-
-#         if ars_id in data:
-#             data[ars_id] += num
-#         else:
-#             data[ars_id] = num
 
 # 커서 닫기
 cursor.close()

@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 # MySQL 데이터베이스 연결 설정
 db_username = 'root'
-db_password = '1234'
+db_password = 'root'
 db_host = 'localhost'
 db_port = '3306'
 db_name = 'test'
@@ -83,7 +83,7 @@ for key, value in data.items():
 df = pd.DataFrame(sql_data)
 
 # DataFrame을 MySQL 테이블로 저장
-table_name = 'adKeyword'  # 저장할 테이블 이름
+table_name = 'ad_keyword'  # 저장할 테이블 이름
 df.to_sql(table_name, engine, if_exists='replace', index=False)
 
 # MySQL 연결 닫기
