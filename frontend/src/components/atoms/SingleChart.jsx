@@ -31,7 +31,7 @@ const colors = [
   "#BED26B",
 ];
 
-function makeSingleChart({ labels, datas, text, width }) {
+function makeSingleChart({ labels, datas, text, width, height }) {
   const backgroundColors = colors.slice(0, datas.length);
   const options = {
     indexAxis: "y",
@@ -77,7 +77,7 @@ function makeSingleChart({ labels, datas, text, width }) {
   };
 
   return (
-    <div style={{ width: width }}>
+    <div style={{ width: width, height: height }}>
       <Bar options={options} data={data} />
     </div>
   );

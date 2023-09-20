@@ -7,7 +7,14 @@ const Title = styled.div`
   margin-bottom: 100px;
 `;
 
-function makeTvChannelRecommendation({ labels, datas, title, description }) {
+function makeTvChannelRecommendation({
+  labels,
+  datas,
+  title,
+  description,
+  width,
+  height,
+}) {
   return (
     <Container>
       <Title>{title}</Title>
@@ -15,6 +22,8 @@ function makeTvChannelRecommendation({ labels, datas, title, description }) {
         labels={labels}
         datas={datas}
         text={description}
+        width={width}
+        height={height}
       ></SingleChart>
     </Container>
   );
