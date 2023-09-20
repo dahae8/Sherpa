@@ -26,8 +26,9 @@ const colors = [
   "#53AC8E",
   "#383D49",
   "#E2816B",
-  "#2196F3",
-  "#0B0B0B",
+  "#627FE4",
+  "#A56BD2",
+  "#BED26B",
 ];
 
 function makeSingleChart({ labels, datas, text, width }) {

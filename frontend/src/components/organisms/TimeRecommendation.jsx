@@ -41,7 +41,7 @@ function makeTimeRecommendation({
   ];
   return (
     <Container>
-      <Title>추천드리는 TV 광고 시간대는 {recommendedtime} 입니다.</Title>
+      <Title>추천하는 광고 시간대는 {recommendedtime} 입니다.</Title>
       <LineChart
         labels={labels}
         weekdaysDatas={weekdaysDatas}
