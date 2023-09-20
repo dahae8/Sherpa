@@ -19,22 +19,21 @@ large = new_data['가맹점_시도명'].drop_duplicates()
 small = new_data[['가맹점_시도명', '가맹점_시군구명', '가맹점_읍면동명']].drop_duplicates()
 
 # local db 연결
-conn = mysql.connector.connect(host="localhost", user="c107", password="ssafy", database="adrec")
-cursor = conn.cursor()  # 커서 생성
-
-# # server db 연결
-# # MySQL 연결 정보 설정
-# db_config = {
-#     "host": "j9c107.p.ssafy.io",
-#     "user": "c107",
-#     "password": "c107adrec",
-#     "database": "adrec",
-#     "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
-# }
-#
-# # MySQL에 연결
-# conn = mysql.connector.connect(**db_config)
+# conn = mysql.connector.connect(host="localhost", user="c107", password="ssafy", database="adrec")
 # cursor = conn.cursor()  # 커서 생성
+
+# server db 연결
+# MySQL 연결 정보 설정
+db_config = {
+    "host": "j9c107.p.ssafy.io",
+    "user": "c107",
+    "password": "c107adrec",
+    "database": "adrec",
+    "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
+}
+
+conn = mysql.connector.connect(**db_config)
+cursor = conn.cursor()  # 커서 생성
 
 # 시도명 테이블에 데이터 삽입
 for item in large:
@@ -52,7 +51,7 @@ for _, item in medium.iterrows():
     # '가맹점_시도명' 열의 NaN 값을 '세종'으로 대체
     if pd.isna(item['가맹점_시군구명']):
         item['가맹점_시군구명'] = '세종'
-    print(item)
+        print(item)
 
     # 대분류명을 기반으로 대분류 인덱스 검색
     select_query = "SELECT id FROM sido WHERE name = %s"
