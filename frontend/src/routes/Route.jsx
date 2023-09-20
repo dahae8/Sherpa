@@ -6,6 +6,7 @@ import OnlineRecommendation from "../components/pages/OnlineRecommendation/Onlin
 import TvRecommendation from "../components/pages/TvRecommendation/TvRecommendation";
 import RadioRecommendation from "../components/pages/RadioRecommendation/RadioRecommendation";
 import NewspaperRecommendation from "../components/pages/NewspaperRecommendation/NewspaperRecommendation";
+import OutdoorRecommendation from "../components/pages/OutdoorRecommendation/OutdoorRecommendation";
 
 function RouteLink(props) {
   return (
@@ -24,7 +25,10 @@ function RouteLink(props) {
           path="/mediaResult/newspaper"
           element={<NewspaperRecommendation />}
         />
-        {/* <Route path="/mediaResult/outdoor" element={<MyPage />} /> */}
+        <Route
+          path="/mediaResult/outdoor"
+          element={<OutdoorRecommendation />}
+        />
         {/* <Route path="/keywordRecommend" element={<MyPage />} /> */}
         {/* <Route path="/contentRecommend" element={<MyPage />} /> */}
       </Routes>
