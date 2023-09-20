@@ -2,6 +2,8 @@ import styled from "styled-components";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
 import ChannelRecommendation from "../../organisms/ChannelRecommendation";
+import ProducerRecommendation from "../../organisms/ProducerCardList";
+import Buttons from "../../organisms/ResultPageButtens";
 
 const Container = styled.div`
   margin: 0 320px;
@@ -30,6 +32,12 @@ export const OutdoorRecommendation = () => {
   const recommendedRegion = "장덕동"; //API
   const bigRegion = "광주 광역시";
   const smallRegion = "광산구";
+  const producerCardDatas = [
+    { img: "url", title: "대한민국 명산 도전", url: "url" },
+    { img: "url", title: "램블러", url: "url" },
+    { img: "url", title: "놀자", url: "url" },
+    { img: "url", title: "길잡이", url: "url" },
+  ]; //API
   return (
     <Container>
       <TargetBox>
@@ -76,6 +84,27 @@ export const OutdoorRecommendation = () => {
         ></ChannelRecommendation>
       </Box>
       <Hr></Hr>
+      <Box>
+        <ProducerTitleItem>현수막 옥외광고</ProducerTitleItem>
+      </Box>
+      <Hr></Hr>
+      <Box>
+        <ProducerTitleItem>
+          버스 정류장 / 지하철 역 옥외 광고 제작사
+        </ProducerTitleItem>
+        <ProducerRecommendation
+          cardDatas={producerCardDatas}
+        ></ProducerRecommendation>
+      </Box>
+      <Box>
+        <ProducerTitleItem>현수막 옥외 광고 제작사</ProducerTitleItem>
+        <ProducerRecommendation
+          cardDatas={producerCardDatas}
+        ></ProducerRecommendation>
+      </Box>
+      <Box>
+        <Buttons></Buttons>
+      </Box>
     </Container>
   );
 };
