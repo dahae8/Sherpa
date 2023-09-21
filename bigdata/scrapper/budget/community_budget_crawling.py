@@ -14,5 +14,5 @@ data['기본 공시단가'] = data['기본 공시단가'].astype(int)
 data = data[data['기본 공시단가'] > 100000]
 
 # 결과 저장
-output_path = "./budget_data/커뮤니티광고단가.csv"
+output_path = "../../dataAnalysis/csv/커뮤니티광고단가.csv"
 data[['기본 공시단가']].to_csv(output_path, index=False, header=["커뮤니티광고단가"])

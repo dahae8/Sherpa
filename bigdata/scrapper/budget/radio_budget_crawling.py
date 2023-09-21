@@ -20,7 +20,7 @@ def clean_price(price_str):
 prices = crawling_radio()
 cleaned_prices = [clean_price(price) for price in prices if re.search(r'\d', price)]
 
-with open('./budget_data/radio광고단가.csv', 'w', newline='', encoding='cp949') as csvfile:
+with open('../../dataAnalysis/csv/radio광고단가.csv', 'w', newline='', encoding='cp949') as csvfile:
   writer = csv.writer(csvfile)
   writer.writerow(['radio광고단가'])
   for price in cleaned_prices:

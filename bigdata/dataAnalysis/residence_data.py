@@ -1,4 +1,20 @@
 import pandas as pd
+import mysql.connector
+
+# DB
+# local db 연결
+conn = mysql.connector.connect(host="localhost", user="root", password="ssafy", database="adrec")
+cursor = conn.cursor()  # 커서 생성
+
+# server db 연결
+# MySQL 연결 정보 설정
+# db_config = {
+#     "host": "j9c107.p.ssafy.io",
+#     "user": "c107",
+#     "password": "c107adrec",
+#     "database": "adrec",
+#     "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
+# }
 
 # CSV 로딩
 data = pd.read_csv("./csv/연령별인구현황_월간.csv", encoding='CP949')
@@ -6,24 +22,57 @@ data = pd.read_csv("./csv/연령별인구현황_월간.csv", encoding='CP949')
 # 행정구역 헤더의 읍, 면, 동 유무에 따른 필터링
 filtered_data = data[data['행정구역'].str.contains('읍|면|동')]
 
+def extract_dong_name(administrative_area):
+    dong_name =  administrative_area.split(' ')[2]
+    dong_name = dong_name.split('(')[0]
+    return dong_name
+
+def extract_age(col):
+    # If the last character is not a digit, return None
+    if not col[-1].isdigit():
+        return None
+    
+    # Split by "_" and take the last part to get the age range
+    age_range = col.split('_')[-1]
+    
+    # Split by "~" and take the first part as the age
+    age = age_range.split('~')[0]
+    
+    return int(age) if age.isdigit() else None
+
+def get_dong_id(dong_name, cursor):
+    query = "SELECT id FROM dong WHERE name = %s"
+    cursor.execute(query, (dong_name,))
+    result = cursor.fetchall()
+    if result:
+        return result[0][0]
+    else:
+        print(f"Missing dong name in dong table: {dong_name}")
+        return None
+
 # 데이터 처리
-def process_data(row, col):
-    # 칼럼 명에 남이 있는 경우 1 없다면 0
-    gender = 1 if '남' in col else 0
+def process_data(row, col, cursor):
+    # Extracting gender and age from column name
+    gender = 0 if '여' in col else 1
+    print(gender)
+    age = col.replace('세', '').replace('여성', '').replace('남성', '').strip()
+    age = extract_age(age)
+    print(age)
     
-    # 총인구수 또는 계를 피해서 ~세가 있는 경우에 한하여 데이터 추가
-    try:
-        age = int(col.split('_')[2].split('~')[0].replace('세', ''))
-    except ValueError:
-        return
-    
-    # 결과값 추가
-    result.append({
+    # Extracting dong name and computing dong_id
+    dong_name = extract_dong_name(row['행정구역'])
+    dong_id = get_dong_id(dong_name, cursor)
+    total = row[col]
+    if type(total) != int :
+        total = total.replace(',', '')
+        total = int(total)
+    # Appending the result
+    return {
         'gender': gender,
         'age': age,
-        'total': row[col],
-        'dong_id': 1  # Placeholder value for dong_id
-    })
+        'total': total,
+        'dong_id': dong_id
+    }
 
 # 결과값 저장
 result = []
@@ -31,10 +80,21 @@ result = []
 for _, row in filtered_data.iterrows():
     for col in filtered_data.columns:
         if '남_' in col or '여_' in col:
-            process_data(row, col)
+            process_data(row, col, cursor)
 
 residence_df = pd.DataFrame(result)
+# 결과를 CSV 파일로 저장
+residence_df.to_csv("./csv/거주지전처리.csv", index=False, encoding='cp949')
+
+# Inserting data into the residence table
+insert_query = "INSERT INTO residence (gender, age, total, dong_id) VALUES (%s, %s, %s, %s)"
+for idx, row in filtered_data.iterrows():
+    for col in row.index[3:]:  # skipping the first 3 columns: 행정구역, 총인구수, 총인구수. 남성, 총인구수. 여성
+        item = process_data(row, col, cursor)
+        if item['dong_id'] :  # Only insert if dong_id is found
+            print(insert_query, (item['gender'], item['age'], item['total'], item['dong_id']))
+            cursor.execute(insert_query, (item['gender'], item['age'], item['total'], item['dong_id']))
+            conn.commit()
 
 # 결과 확인을 위해 csv 저장
-residence_df.to_csv("./csv/거주지전처리.csv", index=False, encoding='CP949')
 print("끝났어요")

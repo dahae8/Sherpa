@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 def parse_and_save_to_csv(table):
     
     # Create a CSV file for writing the data
-    with open("./budget_data/TV광고단가.csv", "w", newline="", encoding="cp949") as csvfile:
+    with open("../../dataAnalysis/csv/TV광고단가.csv", "w", newline="", encoding="cp949") as csvfile:
         writer = csv.writer(csvfile)
         
         # Write the header to the CSV
@@ -42,6 +42,17 @@ def get_YTN():
 
   parse_and_save_to_csv(table)
 
-get_YTN()
+def get_jisangpa():
+    # Load the terrestrial rates
+    with open("./budget_data/지상파 TV광고 단가.csv", "r", encoding="cp949") as src_file:
+        reader = csv.reader(src_file)
+        terrestrial_rates = list(reader)[1:]  # Exclude header
+        
+    # Append the terrestrial rates to the main TV advertising rates CSV
+    with open("./budget_data/TV광고단가.csv", "a", newline="", encoding="cp949") as dest_file:
+        writer = csv.writer(dest_file)
+        writer.writerows(terrestrial_rates)
+    print("지상파 TV 광고 단가가 추가되었습니다.")
 
-# def get
+get_YTN()
+get_jisangpa()
