@@ -68,7 +68,8 @@ CREATE TABLE `member` (
 	`name`	VARCHAR(80)	NOT NULL,
 	`email`	VARCHAR(80)	NOT NULL,
 	`pwd`	VARCHAR(80)	NOT NULL,
-	`img`	VARCHAR(255)	NOT NULL
+	`img`	VARCHAR(255)	NOT NULL,
+	`productSmall_id`	BIGINT	NOT NULL
 );
 
 DROP TABLE IF EXISTS `productLarge`;
@@ -692,3 +693,9 @@ REFERENCES `mediaType` (
 	`id`
 );
 
+ALTER TABLE `member` ADD CONSTRAINT `FK_productSmall_TO_member_1` FOREIGN KEY (
+	`productSmall_id`
+)
+REFERENCES `mediaType` (
+	`id`
+);
