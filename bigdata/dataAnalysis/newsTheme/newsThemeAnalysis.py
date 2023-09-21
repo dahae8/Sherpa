@@ -1,33 +1,33 @@
 import pandas as pd
-from sqlalchemy import create_engine
+import pymysql
 
 
-# MySQL 데이터베이스 연결 설정
-db_username = 'root'
-db_password = '1234'
-db_host = 'localhost'
-db_port = '3306'
-db_name = 'test'
+# 연결 설정
+connection = pymysql.connect(
+    host='j9c107.p.ssafy.io',
+    user='c107',
+    password='c107adrec',
+    database='adrec'
+)
 
-# MySQL 연결 문자열 생성
-connection_str = f'mysql+pymysql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}'
-# MySQL 엔진 생성
-engine = create_engine(connection_str)
-
+# 커서 생성
+cursor = connection.cursor()
 
 # 폴더 경로 설정
 file_path = 'data/newsTheme/신문__분야별.xlsx'
 
 data = {
-    '정치' : {},
-    '사회' : {},
-    '경제' : {},
-    '문화' : {},
-    '스포츠 및 연예' : {},
-    '기타' : {},
+    '정치': {},
+    '사회': {},
+    '경제': {},
+    '문화': {},
+    '스포츠 및 연예': {},
+    '기타': {},
 }
 df = pd.read_excel(file_path)
+total_data = 0
 for row_num, row in df.iterrows():
+    total_data += 1
     key = row['행정구역별(1)']
     data['정치'][key] = row['정치']
     data['사회'][key] = row['사회']
@@ -36,7 +36,7 @@ for row_num, row in df.iterrows():
     data['스포츠 및 연예'][key] = row['스포츠 및 연예']
     data['기타'][key] = row['기타']
 
-sql_data_gender= {
+sql_data_gender = {
     'gender': [],
     'name': [],
     'total': [],
@@ -51,39 +51,66 @@ sql_data_area = {
     'name': [],
     'total': [],
 }
+
+
+idx_gender = 0
+idx_area = 0
+idx_age = 0
+
 for key, value in data.items():
     for k, v in value.items():
+
         if type(k) == str:
-          sql_data_area['name'].append(key)
-          sql_data_area['area'].append(k)
-          sql_data_area['total'].append(v)
-          
+            idx_area += 1
+            sql_data_area['name'].append(key)
+            sql_data_area['area'].append(k)
+            sql_data_area['total'].append(v)
+
         else:
-          if k==0 or k ==1:
-            sql_data_gender['name'].append(key)
-            sql_data_gender['gender'].append(k)
-            sql_data_gender['total'].append(v)
-          else:
-            sql_data_age['name'].append(key)
-            sql_data_age['age'].append(k)
-            sql_data_age['total'].append(v)
-        
-            
-df = pd.DataFrame(sql_data_gender)
-table_name = 'newsThemeGender'  # 저장할 테이블 이름
-df.to_sql(table_name, engine, if_exists='replace', index=True)
-
-df = pd.DataFrame(sql_data_age)
-table_name = 'newsThemeAge'  # 저장할 테이블 이름
-df.to_sql(table_name, engine, if_exists='replace', index=True)
-
-df = pd.DataFrame(sql_data_area)
-table_name = 'newsThemeArea'  # 저장할 테이블 이름
-df.to_sql(table_name, engine, if_exists='replace', index=True)
-
-# MySQL 연결 닫기
-engine.dispose()
+            if k == 0 or k == 1:
+                idx_gender += 1
+                sql_data_gender['name'].append(key)
+                sql_data_gender['gender'].append(k)
+                sql_data_gender['total'].append(v)
+            else:
+                idx_age += 1
+                sql_data_age['name'].append(key)
+                sql_data_age['age'].append(k)
+                sql_data_age['total'].append(v)
 
 
+print('total_data : ', total_data)
+print('idx_gender : ', idx_gender)
+print('idx_age : ', idx_age)
+print('idx_area : ', idx_area)
+
+# INSERT 쿼리 작성
+insert_query_gender = "INSERT INTO newsGender (gender, name, total) VALUES (%s,%s, %s)"
+for i in range(idx_gender):
+    data_to_insert = (
+        sql_data_gender['gender'][i], sql_data_gender['name'][i], sql_data_gender['total'][i])
+    cursor.execute(insert_query_gender, data_to_insert)
+
+# INSERT 쿼리 작성
+insert_query_age = "INSERT INTO newsAge (age, name, total) VALUES (%s,%s, %s)"
+for i in range(idx_age):
+    data_to_insert = (
+        sql_data_age['age'][i], sql_data_age['name'][i], sql_data_age['total'][i])
+    cursor.execute(insert_query_age, data_to_insert)
+
+# INSERT 쿼리 작성
+insert_query_area = "INSERT INTO newsArea (area, name, total) VALUES (%s, %s, %s)"
+for i in range(idx_area):
+    data_to_insert = (
+        sql_data_area['area'][i], sql_data_area['name'][i], sql_data_area['total'][i])
+    cursor.execute(insert_query_area, data_to_insert)
 
 
+# 변경사항을 커밋
+connection.commit()
+
+# 커서 닫기
+cursor.close()
+
+# 연결 닫기
+connection.close()
