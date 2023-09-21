@@ -23,8 +23,8 @@ data = pd.read_csv("./csv/연령별인구현황_월간.csv", encoding='CP949')
 filtered_data = data[data['행정구역'].str.contains('읍|면|동')]
 
 def extract_dong_name(administrative_area):
-    dong_name =  administrative_area.split(' ')[2]
-    dong_name = dong_name.split('(')[0]
+    dong_name = administrative_area.split('(')[0]
+    dong_name =  dong_name.split(' ')[-1]
     return dong_name
 
 def extract_age(col):
@@ -47,17 +47,17 @@ def get_dong_id(dong_name, cursor):
     if result:
         return result[0][0]
     else:
-        print(f"Missing dong name in dong table: {dong_name}")
+        # print(f"Missing dong name in dong table: {dong_name}")
         return None
 
 # 데이터 처리
 def process_data(row, col, cursor):
     # Extracting gender and age from column name
     gender = 0 if '여' in col else 1
-    print(gender)
+    # print(gender)
     age = col.replace('세', '').replace('여성', '').replace('남성', '').strip()
     age = extract_age(age)
-    print(age)
+    # print(age)
     
     # Extracting dong name and computing dong_id
     dong_name = extract_dong_name(row['행정구역'])
@@ -77,12 +77,6 @@ def process_data(row, col, cursor):
 
 # 결과값 저장
 result = []
-
-for _, row in filtered_data.iterrows():
-    for col in filtered_data.columns:
-        if '남_' in col or '여_' in col:
-            process_data(row, col, cursor)
-
 residence_df = pd.DataFrame(result)
 # 결과를 CSV 파일로 저장
 residence_df.to_csv("./csv/거주지전처리.csv", index=False, encoding='cp949')
@@ -92,7 +86,8 @@ insert_query = "INSERT INTO residence (gender, age, total, dong_id) VALUES (%s, 
 for idx, row in filtered_data.iterrows():
     for col in row.index[3:]:  # skipping the first 3 columns: 행정구역, 총인구수, 총인구수. 남성, 총인구수. 여성
         item = process_data(row, col, cursor)
-        if item['dong_id'] :  # Only insert if dong_id is found
+        # break
+        if item['dong_id'] and item['age'] is not None:  # Only insert if dong_id is found
             print(insert_query, (item['gender'], item['age'], item['total'], item['dong_id']))
             cursor.execute(insert_query, (item['gender'], item['age'], item['total'], item['dong_id']))
             conn.commit()

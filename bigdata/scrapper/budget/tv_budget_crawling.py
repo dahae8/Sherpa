@@ -44,7 +44,7 @@ def get_YTN():
 
 def get_jisangpa():
     # Load the terrestrial rates
-    with open("./budget_data/지상파 TV광고 단가.csv", "r", encoding="cp949") as src_file:
+    with open("./budget_data/지상파_TV광고_단가.csv", "r", encoding="cp949") as src_file:
         reader = csv.reader(src_file)
         terrestrial_rates = list(reader)[1:]  # Exclude header
         
