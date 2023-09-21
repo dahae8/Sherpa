@@ -23,13 +23,13 @@ h1 {
 	text-align: center;
 } */
 
-p {
+/* p {
 	font-size: 14px;
 	font-weight: 100;
 	line-height: 20px;
 	letter-spacing: 0.5px;
 	margin: 20px 0 30px;
-}
+} */
 
 /* span {
 	font-size: 12px;
@@ -55,7 +55,7 @@ a {
 }
 
 
-button {
+.form-button {
 	border-radius: 4px;
 	border: 1px solid #3c486b;
 	background-color: #3c486b;
@@ -98,7 +98,7 @@ form {
 	text-align: center;
 }
 
-input {
+/* input {
 	background-color: #ffffff;
 	border: 1px solid #bdbdbd;
 	padding: 12px 15px;
@@ -110,7 +110,7 @@ input {
 
 input:hover{
 	border: 1px solid #3c486b;
-}
+} */
 
 .container {
 	background-color: #fff;
@@ -244,7 +244,7 @@ input:hover{
   outline: none;
   background-color: transparent;
   border: 1px solid #606060;
-  margin: 28px 0;
+  margin: 20px 0px 0px;
   border-radius: 4px;
   opacity: 0.5;
 }
@@ -253,6 +253,28 @@ input:hover{
   border: 1px solid #3c486b;
   opacity: 1;
 }
+
+.idInput2 {
+	background-image: url(../../../assets/img/face-id.png);
+	background-position: 5px center;
+	background-size: 25px 25px;
+	background-repeat: no-repeat;
+	padding-left: 40px;
+	width: 550px;
+	height: 56px;
+	box-sizing: border-box;
+	outline: none;
+	background-color: transparent;
+	border: 1px solid #606060;
+	margin: 20px 15px 0px 0px;
+	border-radius: 4px;
+	opacity: 0.5;
+  }
+  
+  .idInput2:hover {
+	border: 1px solid #3c486b;
+	opacity: 1;
+  }
 
 .pwInput {
 	background-image: url(../../../assets/img/padlock.png);
@@ -266,7 +288,7 @@ input:hover{
 	outline: none;
 	background-color: transparent;
 	border: 1px solid #606060;
-	margin: 28px 0;
+	margin: 10px 0px 0px;
 	border-radius: 4px;
 	opacity: 0.5;
   }
@@ -282,13 +304,13 @@ input:hover{
 	background-size: 25px 25px;
 	background-repeat: no-repeat;
 	padding-left: 40px;
-	width: 657px;
+	width: 550px;
 	height: 56px;
 	box-sizing: border-box;
 	outline: none;
 	background-color: transparent;
 	border: 1px solid #606060;
-	margin: 28px 0;
+	margin: 10px 15px 0px 0px;
 	border-radius: 4px;
 	opacity: 0.5;
   }
