@@ -28,7 +28,7 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <Provider store={store}>
           <App />
         </Provider>
