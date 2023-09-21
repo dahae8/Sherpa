@@ -1,3 +1,4 @@
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
@@ -5,6 +6,7 @@ import ChannelRecommendation from "../../organisms/ChannelRecommendation";
 import ProducerRecommendation from "../../organisms/ProducerCardList";
 import Buttons from "../../organisms/ResultPageButtens";
 
+const { kakao } = window;
 const Container = styled.div`
   margin: 0 320px;
 `;
@@ -38,6 +40,34 @@ export const OutdoorRecommendation = () => {
     { img: "url", title: "놀자", url: "url" },
     { img: "url", title: "길잡이", url: "url" },
   ]; //API
+  const addresses = ["무진대로211번길 28", "월계로 109", "하남산단6번로 107"]; //API
+
+  useEffect(() => {
+    const container = document.getElementById("myMap");
+    const options = {
+      center: new kakao.maps.LatLng(35.1595454, 126.8526012),
+      level: 3,
+    };
+    const map = new kakao.maps.Map(container, options);
+
+    const geocoder = new kakao.maps.services.Geocoder();
+
+    addresses.forEach((address) => {
+      geocoder.addressSearch(address, function (result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+          const marker = new kakao.maps.Marker({
+            map: map,
+            position: coords,
+          });
+
+          map.setCenter(coords);
+        }
+      });
+    });
+  }, []);
+
   return (
     <Container>
       <TargetBox>
@@ -86,6 +116,13 @@ export const OutdoorRecommendation = () => {
       <Hr></Hr>
       <Box>
         <ProducerTitleItem>현수막 옥외광고</ProducerTitleItem>
+        <div
+          id="myMap"
+          style={{
+            width: "100%",
+            height: "600px",
+          }}
+        ></div>
       </Box>
       <Hr></Hr>
       <Box>
