@@ -1,5 +1,5 @@
 import React from "react";
-import Select from '../atoms/Select'
+import Select from '../atoms/SelectOption'
 import MakeButton from "../atoms/Button";
 import styled from "styled-components";
 
