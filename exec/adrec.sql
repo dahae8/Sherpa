@@ -214,8 +214,8 @@ CREATE TABLE `mediaLikeGender` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`gender`	TINYINT	NOT NULL	DEFAULT 0	COMMENT '0:여성, 1:남성',
 	`total`	INT	NOT NULL,
-	`mediaSub_id`	INT	NOT NULL,
-	`mediaType_id`	INT	NOT NULL
+	`mediaSub_id`	BIGINT	NULL,
+	`mediaType_id`	BIGINT	NOT NULL
 );
 
 DROP TABLE IF EXISTS `mediaLikeAge`;
@@ -224,7 +224,7 @@ CREATE TABLE `mediaLikeAge` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`age`	INT	NOT NULL,
 	`total`	INT	NOT NULL,
-	`mediaSub_id`	BIGINT	NOT NULL,
+	`mediaSub_id`	BIGINT	NULL,
 	`mediaType_id`	BIGINT	NOT NULL
 );
 
@@ -234,7 +234,7 @@ CREATE TABLE `mediaLikeArea` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`area`	VARCHAR(80)	NOT NULL,
 	`total`	INT	NOT NULL,
-	`mediaSub_id`	BIGINT	NOT NULL,
+	`mediaSub_id`	BIGINT	NULL,
 	`mediaType_id`	BIGINT	NOT NULL
 );
 
