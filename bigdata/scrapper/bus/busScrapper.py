@@ -114,7 +114,7 @@ for idx in range(2, 12):
                         break
 
                 # 한 칸씩 스크롤
-                for k in range(1000):
+                while True:
                     is_break = False
                     for i in range(2, 4):
                         is_break = process_bus_data(i)

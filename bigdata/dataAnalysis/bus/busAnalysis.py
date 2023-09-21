@@ -2,8 +2,6 @@ import os
 import pandas as pd
 import pymysql
 
-from sqlalchemy import create_engine
-
 
 address_data = {}
 
@@ -47,9 +45,7 @@ for row_num, row in csv_file_bus_address.iterrows():
     dong = row['동']
     if pd.isna(ars_id):
         continue
-
     data[ars_id] = {
-
         'address_id': address_data[gu][dong],
         'name': row["정류장"]
     }
@@ -63,59 +59,99 @@ file_list = os.listdir(folder_path)
 xlsx_files = [file for file in file_list if file.endswith('.xlsx')]
 non_list = {}
 pass_list = [5019, 5020, 3192]
+ind = 0
+total_data = 0
+for xlsx_file in xlsx_files:
+    file_path = os.path.join(folder_path, xlsx_file)
+    all_sheets = pd.read_excel(file_path, sheet_name=None)
+    print(file_path)
+    for sheet_name, df in all_sheets.items():
 
-# for xlsx_file in xlsx_files:
-#     file_path = os.path.join(folder_path, xlsx_file)
-#     all_sheets = pd.read_excel(file_path, sheet_name=None)
-#     for sheet_name, df in all_sheets.items():
-#         for row_num, row in df.iterrows():
-#             ars_id = row["ARS_ID"]
-#             num = row["거래건수"]
-#             if pd.isna(ars_id):
-#                 continue
-#             if ars_id in data:
-#                 if "total" in data[ars_id]:
-#                     data[ars_id]["total"] += num
-#                 else:
-#                     data[ars_id]["total"] = num
+        for row_num, row in df.iterrows():
+            total_data += 1
+            ars_id = row["ARS_ID"]
+            num = row["거래건수"]
+            if pd.isna(ars_id):
+                continue
+            if ars_id in data:
+                if "total" in data[ars_id]:
+                    data[ars_id]["total"] += num
+                else:
+                    data[ars_id]["total"] = num
+            else:
+                if ars_id > 6000:
+                    pass
+                elif ars_id in pass_list:
+                    pass
+                elif ars_id in non_list:
+                    pass
+                else:
+                    non_list[ars_id] = 0
+                    print(ind, "----------------")
+                    print(sheet_name)
+                    print(int(ars_id))
+                    print(row["정류장명"])
+                    ind += 1
+
+# file_path = r"data\bus\광주버스 노선별 정류장별 시간대별 승하차 건수('23년07월01일~07월07일).xlsx"
+# all_sheets = pd.read_excel(file_path, sheet_name=None)
+# print("=====================\n")
+# for sheet_name, df in all_sheets.items():
+#     for row_num, row in df.iterrows():
+#         ars_id = row["ARS_ID"]
+#         num = row["거래건수"]
+#         if pd.isna(ars_id):
+#             continue
+#         if ars_id in data:
+#             if "total" in data[ars_id]:
+#                 data[ars_id]["total"] += num
 #             else:
-#                 if ars_id > 6000:
-#                     pass
-#                 elif ars_id in non_list:
-#                     pass
-#                 else:
-#                     non_list[ars_id] = 0
-#                     print(sheet_name, ars_id)
+#                 data[ars_id]["total"] = num
+#         else:
+#             if ars_id > 6000:
+#                 pass
+#             elif ars_id in pass_list:
+#                 pass
+#             elif ars_id in non_list:
+#                 pass
+#             else:
+#                 non_list[ars_id] = 0
+#                 print(ind, "----------------")
+#                 print(sheet_name)
+#                 print(int(ars_id))
+#                 print(row["정류장명"])
+#                 ind += 1
+
+sql_data = {
+    'dong_id': [],
+    'name': [],
+    'total': [],
+}
+idx = 0
+for key, value in data.items():
+    idx += 1
+    sql_data['dong_id'].append(value['address_id'])
+    sql_data['name'].append(value['name'])
+    if "total" in value:
+        sql_data['total'].append(value['total'])
+    else:
+        sql_data['total'].append(0)
+
+print('total_data : ', total_data)
+print('idx : ', idx)
+
+# # INSERT 쿼리 작성
+# insert_query = "INSERT INTO bus (dong_id, name, total) VALUES (%s, %s, %s)"
+
+# # INSERT 쿼리 실행 (데이터는 튜플로 전달)
+# for i in range(idx):
+#     data_to_insert = (sql_data['dong_id'][i],
+#                       sql_data['name'][i], sql_data['total'][i])
+#     cursor.execute(insert_query, data_to_insert)
 
 
-file_path = r"data\bus\광주버스 노선별 정류장별 시간대별 승하차 건수('23년07월01일~07월07일).xlsx"
-all_sheets = pd.read_excel(file_path, sheet_name=None)
-print("=====================\n")
-for sheet_name, df in all_sheets.items():
-    for row_num, row in df.iterrows():
-        ars_id = row["ARS_ID"]
-        num = row["거래건수"]
-        if pd.isna(ars_id):
-            continue
-        if ars_id in data:
-            if "total" in data[ars_id]:
-                data[ars_id]["total"] += num
-            else:
-                data[ars_id]["total"] = num
-        else:
-            if ars_id > 6000:
-                pass
-            elif ars_id in pass_list:
-                pass
-            elif ars_id in non_list:
-                pass
-            else:
-                non_list[ars_id] = 0
-                print("----------------")
-                print(sheet_name)
-                print(int(ars_id))
-                print(row["정류장명"])
-
+# 변경사항을 커밋
+connection.commit()
 
 # 커서 닫기
 cursor.close()
