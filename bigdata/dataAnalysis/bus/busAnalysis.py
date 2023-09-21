@@ -3,8 +3,6 @@ import pandas as pd
 import pymysql
 
 
-address_data = {}
-
 # 연결 설정
 connection = pymysql.connect(
     host='j9c107.p.ssafy.io',
@@ -22,6 +20,8 @@ query = """SELECT dong.id,dong.name, sigungu.name
             JOIN sigungu ON dong.sigungu_id = sigungu.id
             WHERE dong.sigungu_id in (112,113,114,115,116);"""
 cursor.execute(query)
+
+address_data = {}
 
 # 결과 가져오기
 address = cursor.fetchall()
@@ -93,6 +93,7 @@ for xlsx_file in xlsx_files:
                     print(row["정류장명"])
                     ind += 1
 
+
 sql_data = {
     'dong_id': [],
     'name': [],
@@ -110,15 +111,6 @@ for key, value in data.items():
 
 print('total_data : ', total_data)
 print('idx : ', idx)
-
-# INSERT 쿼리 작성
-insert_query = "INSERT INTO bus (dong_id, name, total) VALUES (%s, %s, %s)"
-
-# INSERT 쿼리 실행 (데이터는 튜플로 전달)
-for i in range(idx):
-    data_to_insert = (sql_data['dong_id'][i],
-                      sql_data['name'][i], sql_data['total'][i])
-    cursor.execute(insert_query, data_to_insert)
 
 
 # 변경사항을 커밋

@@ -1,19 +1,18 @@
 import pymysql
 import pandas as pd
-from sqlalchemy import create_engine
 
-# MySQL 데이터베이스 연결 설정
-db_username = 'root'
-db_password = 'root'
-db_host = 'localhost'
-db_port = '3306'
-db_name = 'test'
 
-# MySQL 연결 문자열 생성
-connection_str = f'mysql+pymysql://{db_username}:{db_password}@{db_host}:{db_port}/{db_name}'
+# 연결 설정
+connection = pymysql.connect(
+    host='j9c107.p.ssafy.io',
+    user='c107',
+    password='c107adrec',
+    database='adrec'
+)
 
-# MySQL 엔진 생성
-engine = create_engine(connection_str)
+# 커서 생성
+cursor = connection.cursor()
+
 
 # CSV 파일이 있는 디렉토리 경로
 csv_file_ad_detail = 'data/keyword/AiSAC 광고소재명별 광고 정보.csv'
@@ -80,11 +79,12 @@ for key, value in data.items():
     sql_data['name'].append(product_lst[3])
     sql_data['total'].append(value)
 
-df = pd.DataFrame(sql_data)
 
-# DataFrame을 MySQL 테이블로 저장
-table_name = 'ad_keyword'  # 저장할 테이블 이름
-df.to_sql(table_name, engine, if_exists='replace', index=False)
+# 변경사항을 커밋
+connection.commit()
 
-# MySQL 연결 닫기
-engine.dispose()
+# 커서 닫기
+cursor.close()
+
+# 연결 닫기
+connection.close()
