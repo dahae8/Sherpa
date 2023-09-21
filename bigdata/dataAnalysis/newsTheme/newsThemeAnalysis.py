@@ -85,21 +85,21 @@ print('idx_age : ', idx_age)
 print('idx_area : ', idx_area)
 
 # INSERT 쿼리 작성
-insert_query_gender = "INSERT INTO newsGender (gender, name, total) VALUES (%s,%s, %s)"
+insert_query_gender = "INSERT INTO newsThemeGender (gender, theme, total) VALUES (%s,%s, %s)"
 for i in range(idx_gender):
     data_to_insert = (
         sql_data_gender['gender'][i], sql_data_gender['name'][i], sql_data_gender['total'][i])
     cursor.execute(insert_query_gender, data_to_insert)
 
 # INSERT 쿼리 작성
-insert_query_age = "INSERT INTO newsAge (age, name, total) VALUES (%s,%s, %s)"
+insert_query_age = "INSERT INTO newsThemeAge (age, theme, total) VALUES (%s,%s, %s)"
 for i in range(idx_age):
     data_to_insert = (
         sql_data_age['age'][i], sql_data_age['name'][i], sql_data_age['total'][i])
     cursor.execute(insert_query_age, data_to_insert)
 
 # INSERT 쿼리 작성
-insert_query_area = "INSERT INTO newsArea (area, name, total) VALUES (%s, %s, %s)"
+insert_query_area = "INSERT INTO newsThemeArea (area, theme, total) VALUES (%s, %s, %s)"
 for i in range(idx_area):
     data_to_insert = (
         sql_data_area['area'][i], sql_data_area['name'][i], sql_data_area['total'][i])
