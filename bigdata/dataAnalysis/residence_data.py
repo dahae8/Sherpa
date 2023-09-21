@@ -66,6 +66,7 @@ def process_data(row, col, cursor):
     if type(total) != int :
         total = total.replace(',', '')
         total = int(total)
+        
     # Appending the result
     return {
         'gender': gender,
