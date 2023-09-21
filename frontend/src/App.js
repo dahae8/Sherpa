@@ -1,11 +1,13 @@
-import React from 'react';
-import './App.css';
-import RouteLink from './routes/Route';
+import React from "react";
+import "./App.css";
+import RouteLink from "./routes/Route";
+import NavBar from "./components/organisms/NavBar";
 
 function App() {
   return (
     <div className="App">
-        <RouteLink></RouteLink>
+      <NavBar></NavBar>
+      <RouteLink></RouteLink>
     </div>
   );
 }

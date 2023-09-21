@@ -5,6 +5,9 @@ import ChangeAuth from "../components/pages/Auth/ChangeAuth";
 import OnlineRecommendation from "../components/pages/OnlineRecommendation/OnlineRecommendation";
 import MyPage from '../components/pages/MyPage/MyPage'
 import TvRecommendation from "../components/pages/TvRecommendation/TvRecommendation";
+import RadioRecommendation from "../components/pages/RadioRecommendation/RadioRecommendation";
+import NewspaperRecommendation from "../components/pages/NewspaperRecommendation/NewspaperRecommendation";
+import OutdoorRecommendation from "../components/pages/OutdoorRecommendation/OutdoorRecommendation";
 
 function RouteLink(props) {
   return (
@@ -18,9 +21,15 @@ function RouteLink(props) {
         <Route path="/mediaRecommend" element={<MediaRecommendPage />} />
         <Route path="/mediaResult/online" element={<OnlineRecommendation />} />
         <Route path="/mediaResult/tv" element={<TvRecommendation />} />
-        {/* <Route path="/mediaResult/radio" element={<MyPage />} /> */}
-        {/* <Route path="/mediaResult/newspaper" element={<MyPage />} /> */}
-        {/* <Route path="/mediaResult/outdoor" element={<MyPage />} /> */}
+        <Route path="/mediaResult/radio" element={<RadioRecommendation />} />
+        <Route
+          path="/mediaResult/newspaper"
+          element={<NewspaperRecommendation />}
+        />
+        <Route
+          path="/mediaResult/outdoor"
+          element={<OutdoorRecommendation />}
+        />
         {/* <Route path="/keywordRecommend" element={<MyPage />} /> */}
         {/* <Route path="/contentRecommend" element={<MyPage />} /> */}
       </Routes>
