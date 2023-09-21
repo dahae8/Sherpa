@@ -93,35 +93,6 @@ for xlsx_file in xlsx_files:
                     print(row["정류장명"])
                     ind += 1
 
-# file_path = r"data\bus\광주버스 노선별 정류장별 시간대별 승하차 건수('23년07월01일~07월07일).xlsx"
-# all_sheets = pd.read_excel(file_path, sheet_name=None)
-# print("=====================\n")
-# for sheet_name, df in all_sheets.items():
-#     for row_num, row in df.iterrows():
-#         ars_id = row["ARS_ID"]
-#         num = row["거래건수"]
-#         if pd.isna(ars_id):
-#             continue
-#         if ars_id in data:
-#             if "total" in data[ars_id]:
-#                 data[ars_id]["total"] += num
-#             else:
-#                 data[ars_id]["total"] = num
-#         else:
-#             if ars_id > 6000:
-#                 pass
-#             elif ars_id in pass_list:
-#                 pass
-#             elif ars_id in non_list:
-#                 pass
-#             else:
-#                 non_list[ars_id] = 0
-#                 print(ind, "----------------")
-#                 print(sheet_name)
-#                 print(int(ars_id))
-#                 print(row["정류장명"])
-#                 ind += 1
-
 sql_data = {
     'dong_id': [],
     'name': [],
@@ -140,14 +111,14 @@ for key, value in data.items():
 print('total_data : ', total_data)
 print('idx : ', idx)
 
-# # INSERT 쿼리 작성
-# insert_query = "INSERT INTO bus (dong_id, name, total) VALUES (%s, %s, %s)"
+# INSERT 쿼리 작성
+insert_query = "INSERT INTO bus (dong_id, name, total) VALUES (%s, %s, %s)"
 
-# # INSERT 쿼리 실행 (데이터는 튜플로 전달)
-# for i in range(idx):
-#     data_to_insert = (sql_data['dong_id'][i],
-#                       sql_data['name'][i], sql_data['total'][i])
-#     cursor.execute(insert_query, data_to_insert)
+# INSERT 쿼리 실행 (데이터는 튜플로 전달)
+for i in range(idx):
+    data_to_insert = (sql_data['dong_id'][i],
+                      sql_data['name'][i], sql_data['total'][i])
+    cursor.execute(insert_query, data_to_insert)
 
 
 # 변경사항을 커밋
