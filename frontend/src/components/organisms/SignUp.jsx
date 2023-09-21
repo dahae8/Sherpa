@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SelectAutoWidth from '../atoms/Select';
+import SelectAutoWidth from '../atoms/SelectOption';
 import styled from 'styled-components';
 import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
