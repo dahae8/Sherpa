@@ -8,6 +8,7 @@ const Container = styled.button`
   border: ${(props) => (props.border ? props.border : "none")};
   color: ${(props) => props.textColor || "white"};
   font-size: ${(props) => props.fontSize || "16px"};
+  border-radius: 4px;
 `;
 
 function makeButton({
