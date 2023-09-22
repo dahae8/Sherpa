@@ -12,14 +12,16 @@ function SignIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const user = { name, pwValue };
+    if (name&&pwValue){
     console.log(1)
     dispatch(userLogin(user))
       .then(() => {
       })
       .catch((error) => {});
+    }
   };
 
   return (
