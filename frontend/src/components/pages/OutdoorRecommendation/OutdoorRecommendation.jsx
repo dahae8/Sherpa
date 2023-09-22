@@ -23,9 +23,11 @@ const ProducerTitleItem = styled.div`
 `;
 
 export const OutdoorRecommendation = () => {
-  const ageDatas = [80, 60, 45, 42, 32, 29]; //API
-  const target = "30대 남성"; //API
-  const percent = [75, 25]; //API
+  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API
+  const male = 75; // 광고 타겟층 분석 API
+  const female = 25; // 광고 타겟층 분석 API
+  const gender = 1; // 광고 타겟층 분석 API
+  const age = 30; // 광고 타겟층 분석 API
   const mainDatas = [23, 19, 13, 5]; //API
   const subDatas = [23, 19, 13, 5]; //API
   const prices = [23, 19, 13, 5]; //API
@@ -41,6 +43,14 @@ export const OutdoorRecommendation = () => {
     { img: "url", title: "길잡이", url: "url" },
   ]; //API
   const addresses = ["무진대로211번길 28", "월계로 109", "하남산단6번로 107"]; //API
+
+  let target = "성별";
+
+  if (gender === 1) {
+    target = "남성";
+  } else {
+    target = "여성";
+  }
 
   useEffect(() => {
     const container = document.getElementById("myMap");
@@ -72,9 +82,11 @@ export const OutdoorRecommendation = () => {
     <Container>
       <TargetBox>
         <RecommendTarget
-          datas={ageDatas}
+          datas={ages}
           target={target}
-          percent={percent}
+          age={age}
+          male={male}
+          female={female}
         ></RecommendTarget>
       </TargetBox>
       <Hr />
