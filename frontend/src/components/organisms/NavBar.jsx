@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import logo from "../../assets/img/logo.png";
 
 const Container = styled.div`
@@ -9,43 +9,62 @@ const Container = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #d9d9d9;
 `;
+
 const LeftBox = styled.div`
   height: 70px;
 `;
+
 const MiddleBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
 `;
+
 const RightBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-right: 30px;
 `;
-const MediaItem = styled.button`
+
+const ButtonStyle = css`
   width: 250px;
+  height: 90px;
   background-color: white;
   border: 0px;
   font-size: 24px;
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  font-weight: bold;
 `;
-const KeywordItem = styled.button`
-  width: 250px;
-  background-color: white;
-  border: 0px;
-  font-size: 24px;
+
+const MediaItem = styled(Link)`
+  ${ButtonStyle}
+  ${(props) =>
+    props.to === useLocation().pathname && `border-bottom: 5px solid #3C486B;`}
 `;
-const ContentItem = styled.button`
-  width: 250px;
-  background-color: white;
-  border: 0px;
-  font-size: 24px;
+
+const KeywordItem = styled(Link)`
+  ${ButtonStyle}
+  ${(props) =>
+    props.to === useLocation().pathname && `border-bottom: 5px solid #3C486B;`}
 `;
+
+const ContentItem = styled(Link)`
+  ${ButtonStyle}
+  ${(props) =>
+    props.to === useLocation().pathname && `border-bottom: 5px solid #3C486B;`}
+`;
+
 const RightItem = styled.button`
   width: 110px;
   background-color: white;
   border: 0px;
   font-size: 16px;
+`;
+const ButtonFrame = styled.div`
+  width: 250px;
 `;
 
 function MakeNavBar() {
@@ -63,15 +82,15 @@ function MakeNavBar() {
         </LeftBox>
       </Link>
       <MiddleBox>
-        <Link to="/mediaRecommend">
-          <MediaItem>매체 추천</MediaItem>
-        </Link>
-        <Link to="/keywordRecommend">
-          <KeywordItem>키워드 추천</KeywordItem>
-        </Link>
-        <Link to="/contentRecommend">
-          <ContentItem>컨텐츠 추천</ContentItem>
-        </Link>
+        <ButtonFrame>
+          <MediaItem to="/mediaRecommend">매체 추천</MediaItem>
+        </ButtonFrame>
+        <ButtonFrame>
+          <KeywordItem to="/keywordRecommend">키워드 추천</KeywordItem>
+        </ButtonFrame>
+        <ButtonFrame>
+          <ContentItem to="/contentRecommend">컨텐츠 추천</ContentItem>
+        </ButtonFrame>
       </MiddleBox>
       <RightBox>
         {isLoggedIn ? (
@@ -95,4 +114,5 @@ function MakeNavBar() {
     </Container>
   );
 }
+
 export default MakeNavBar;
