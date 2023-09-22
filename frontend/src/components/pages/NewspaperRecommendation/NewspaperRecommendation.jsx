@@ -30,13 +30,72 @@ export const NewsPaperRecommendation = () => {
   const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
   const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
   const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const mainDatas = [23, 19, 13, 5]; //API
-  const subDatas = [23, 19, 13, 5]; //API
-  const prices = [23, 19, 13, 5]; //API
-  const recommendedMedia = "신문 광고"; //API
-  const recommendedNewspaper = "동아일보"; //API
-  const newspaperDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3, 2]; //API
-  const recommendedNewspaperArea = "경제"; //API
+  const mainDatas = [23, 19, 13, 5]; //API state로 변경 예정
+  const subDatas = [23, 19, 13, 5]; //API state로 변경 예정
+  const prices = [23, 19, 13, 5]; //API state로 변경 예정
+  const recommendedMedia = "신문 광고"; //API state로 변경 예정
+  const recommendedNewspaper = "동아일보"; // 신문사 추천 API
+  //const recommendedNewspaper = data[0].type
+  const newspaperLabels = [
+    "조선일보",
+    "중앙일보",
+    "동아일보",
+    "매일경제",
+    "한겨레",
+    "한국경제",
+    "경향신문",
+    "한국일보",
+    "농민신문",
+    "국민일보",
+  ]; // 신문사 추천 API
+  // const newspaperLabels = [];
+
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i]) {
+  //     newspaperLabels.push(data[i].type);
+  //   } else {
+  //     newspaperLabels.push(0);
+  //   }
+  // }
+  const newspaperDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3, 2]; // 신문사 추천 API
+  // const newspaperDatas = [];
+
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i]) {
+  //     newspaperDatas.push(data[i].ratio);
+  //   } else {
+  //     newspaperDatas.push(0);
+  //   }
+  // }
+  const recommendedNewspaperArea = "경제"; // 신문 분야 추천 API
+  //  const recommendedNewspaperArea = data[o].type
+  const newspaperAreaLabels = [
+    "정치",
+    "사회",
+    "경제",
+    "문화",
+    "스포츠 및 연애",
+    "기타",
+  ]; // 신문 분야 추천 API
+  // const newspaperAreaLabels = [];
+
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i]) {
+  //     newspaperAreaLabels.push(data[i].type);
+  //   } else {
+  //     newspaperAreaLabels.push(0);
+  //   }
+  // }
+  const newspaperAreaDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3, 2]; // 신문 분야 추천 API
+  // const newspaperAreaDatas = [];
+
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i]) {
+  //     newspaperAreaDatas.push(data[i].ratio);
+  //   } else {
+  //     newspaperAreaDatas.push(0);
+  //   }
+  // }
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
@@ -80,26 +139,15 @@ export const NewsPaperRecommendation = () => {
         <ChannelRecommendation
           title={`추천 드리는 신문사는 ${recommendedNewspaper} 입니다.`}
           datas={newspaperDatas}
-          labels={[
-            "조선일보",
-            "중앙일보",
-            "동아일보",
-            "매일경제",
-            "한겨레",
-            "한국경제",
-            "경향신문",
-            "한국일보",
-            "농민신문",
-            "국민일보",
-          ]}
+          labels={newspaperLabels}
           description={`${target}이 이용하는 신문사 통계`}
         ></ChannelRecommendation>
       </Box>
       <Box>
         <ChannelRecommendation
           title={`추천 드리는 신문 분야는 ${recommendedNewspaperArea} 입니다.`}
-          datas={newspaperDatas}
-          labels={["정치", "사회", "경제", "문화", "스포츠 및 연애", "기타"]}
+          datas={newspaperAreaDatas}
+          labels={newspaperAreaLabels}
           description={`${target}이 이용하는 신문 분야 통계`}
         ></ChannelRecommendation>
       </Box>
