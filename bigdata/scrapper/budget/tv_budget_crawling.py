@@ -4,11 +4,11 @@ from bs4 import BeautifulSoup
 
 def parse_and_save_to_csv(table):
     
-    # Create a CSV file for writing the data
+    # CSV 파일 작성
     with open("../../dataAnalysis/csv/TV광고단가.csv", "w", newline="", encoding="cp949") as csvfile:
         writer = csv.writer(csvfile)
         
-        # Write the header to the CSV
+        # CSV 헤더명
         writer.writerow(["TV광고단가"])
         
         rows = table.find_all("tr")[1:]  # Exclude header row
@@ -18,7 +18,7 @@ def parse_and_save_to_csv(table):
             # Filtering out the cells with only numbers and ","
             data = [cell.replace(",", "") for cell in data if cell.replace(",", "").isdigit()]
             
-            # Write the data to the CSV
+            # CSV 작성
             for cell in data:
                 writer.writerow([cell])
     print("작성완료 되었습니다.")
@@ -48,8 +48,8 @@ def get_jisangpa():
         reader = csv.reader(src_file)
         terrestrial_rates = list(reader)[1:]  # Exclude header
         
-    # Append the terrestrial rates to the main TV advertising rates CSV
-    with open("./budget_data/TV광고단가.csv", "a", newline="", encoding="cp949") as dest_file:
+    # CSV에 지상파 광고 단가 추가
+    with open("../../dataAnalysis/csv/TV광고단가.csv", "a", newline="", encoding="cp949") as dest_file:
         writer = csv.writer(dest_file)
         writer.writerows(terrestrial_rates)
     print("지상파 TV 광고 단가가 추가되었습니다.")
