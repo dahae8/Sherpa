@@ -9,7 +9,9 @@ const Container = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #d9d9d9;
 `;
-const LeftBox = styled.div``;
+const LeftBox = styled.div`
+  height: 70px;
+`;
 const MiddleBox = styled.div`
   display: flex;
   flex-direction: row;
@@ -55,9 +57,11 @@ function MakeNavBar() {
 
   return (
     <Container>
-      <LeftBox>
-        <img src={logo} alt="" />
-      </LeftBox>
+      <Link to="/">
+        <LeftBox>
+          <img src={logo} alt="" width="100%" height="100%" />
+        </LeftBox>
+      </Link>
       <MiddleBox>
         <Link to="/mediaRecommend">
           <MediaItem>매체 추천</MediaItem>
