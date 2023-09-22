@@ -22,30 +22,60 @@ const ProducerTitleItem = styled.div`
 `;
 
 export const TvRecommendation = () => {
-  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API
+  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API state로 변경 예정
   //  ages = [data.age10, data.age20, data.age30, data.age40, data.age50, data.age60]
-  const male = 75; // 광고 타겟층 분석 API
-  const female = 25; // 광고 타겟층 분석 API
-  const gender = 1; // 광고 타겟층 분석 API
-  const age = 30; // 광고 타겟층 분석 API
+  const male = 75; // 광고 타겟층 분석 API state로 변경 예정
+  const female = 25; // 광고 타겟층 분석 API state로 변경 예정
+  const gender = 1; // 광고 타겟층 분석 API state로 변경 예정
+  const age = 30; // 광고 타겟층 분석 API state로 변경 예정
   const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
   const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
   const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const mainDatas = [23, 19, 13, 5]; //API
-  const subDatas = [23, 19, 13, 5]; //API
-  const prices = [23, 19, 13, 5]; //API
-  const recommendedMedia = "TV 영상 광고"; //API
-  const tvChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5]; //API
-  const recommendedTvChennl = "스포츠"; //API
+  const mainDatas = [23, 19, 13, 5]; //API state로 변경 예정
+  const subDatas = [23, 19, 13, 5]; //API state로 변경 예정
+  const prices = [23, 19, 13, 5]; //API state로 변경 예정
+  const recommendedMedia = "TV 영상 광고"; //API state로 변경 예정
+  const tvLabels = [
+    "스포츠",
+    "뉴스",
+    "드라마",
+    "예능",
+    "영화",
+    "애니메이션",
+    "토론",
+    "교양",
+  ]; // TV 채널 추천 API
+  // const tvLabels = [];
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i]) {
+  //     tvLabels.push(data[i].type);
+  //   } else {
+  //     tvLabels.push(0);
+  //   }
+  // }
+  const tvChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5]; // TV 채널 추천 API
+  // const tvChannelDatas = [];
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i]) {
+  //     tvChannelDatas.push(data[i].ratio);
+  //   } else {
+  //     tvChannelDatas.push(0);
+  //   }
+  // }
+  const recommendedTvChennl = "스포츠"; // TV 채널 추천 API
+  // const recommendedTvChennl = data[0].type
   const weekdaysDatas = [
     3, 5.9, 7.4, 12.8, 13, 22, 24, 43, 42, 55, 44, 33, 22, 34, 44, 56, 66, 54,
     66, 64, 66, 64, 33, 22, 19,
-  ]; //API
+  ]; // TV 광고 시간대 분석 API
+  // const weekdaysDatas = data.weekdaysDatas
   const weekendsDatas = [
     23, 26, 32, 36, 34, 34, 46, 52, 41, 53, 63, 53, 49, 64, 72, 81, 79, 78, 69,
     67, 59, 52, 51, 47, 39,
-  ]; //API
-  const recommendedtime = "18:30 ~ 19:00";
+  ]; // TV 광고 시간대 분석 API
+  // const weekendsDatas = data.weekendsDatas
+  const recommendedtime = "18"; // TV 광고 시간대 분석 API
+
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
@@ -89,16 +119,7 @@ export const TvRecommendation = () => {
         <ChannelRecommendation
           title={`추천 드리는 TV 채널은 ${recommendedTvChennl} 입니다.`}
           datas={tvChannelDatas}
-          labels={[
-            "스포츠",
-            "뉴스",
-            "드라마",
-            "예능",
-            "영화",
-            "애니메이션",
-            "토론",
-            "교양",
-          ]}
+          labels={tvLabels}
           description={`${target}이 시청하는 TV 프로그램 통계`}
         ></ChannelRecommendation>
       </Box>
