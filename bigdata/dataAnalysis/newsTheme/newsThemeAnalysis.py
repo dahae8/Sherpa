@@ -29,12 +29,12 @@ total_data = 0
 for row_num, row in df.iterrows():
     total_data += 1
     key = row['행정구역별(1)']
-    data['정치'][key] = row['정치']
-    data['사회'][key] = row['사회']
-    data['경제'][key] = row['경제']
-    data['문화'][key] = row['문화']
-    data['스포츠 및 연예'][key] = row['스포츠 및 연예']
-    data['기타'][key] = row['기타']
+    data['정치'][key] = round(row['정치'])
+    data['사회'][key] = round(row['사회'])
+    data['경제'][key] = round(row['경제'])
+    data['문화'][key] = round(row['문화'])
+    data['스포츠 및 연예'][key] = round(row['스포츠 및 연예'])
+    data['기타'][key] = round(row['기타'])
 
 sql_data_gender = {
     'gender': [],
