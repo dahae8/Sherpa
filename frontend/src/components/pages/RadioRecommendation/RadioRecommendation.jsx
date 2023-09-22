@@ -23,6 +23,7 @@ const ProducerTitleItem = styled.div`
 
 export const RadioRecommendation = () => {
   const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API
+  //  ages = [data.age10, data.age20, data.age30, data.age40, data.age50, data.age60]
   const male = 75; // 광고 타겟층 분석 API
   const female = 25; // 광고 타겟층 분석 API
   const gender = 1; // 광고 타겟층 분석 API
