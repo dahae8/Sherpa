@@ -65,7 +65,7 @@ public class MemberController {
 
         logger.debug("로그인 accessToken 정보 : {}", token.getAccess());
 
-        resultMap.put("access-token", token.getAccess());
+        resultMap.put("accessToken", token.getAccess());
         resultMap.put("success", true);
         resultMap.put("msg", "로그인 성공");
         httpStatus = HttpStatus.OK;
