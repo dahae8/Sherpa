@@ -22,27 +22,60 @@ const ProducerTitleItem = styled.div`
 `;
 
 export const RadioRecommendation = () => {
-  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API
+  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API state로 변경 예정
   //  ages = [data.age10, data.age20, data.age30, data.age40, data.age50, data.age60]
-  const male = 75; // 광고 타겟층 분석 API
-  const female = 25; // 광고 타겟층 분석 API
-  const gender = 1; // 광고 타겟층 분석 API
-  const age = 30; // 광고 타겟층 분석 API
-  const mainDatas = [23, 19, 13, 5]; //API
-  const subDatas = [23, 19, 13, 5]; //API
-  const prices = [23, 19, 13, 5]; //API
-  const recommendedMedia = "라디오 광고"; //API
-  const radioChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3]; //API
-  const recommendedRadioChennl = "음악 프로"; //API
+  const male = 75; // 광고 타겟층 분석 API state로 변경 예정
+  const female = 25; // 광고 타겟층 분석 API state로 변경 예정
+  const gender = 1; // 광고 타겟층 분석 API state로 변경 예정
+  const age = 30; // 광고 타겟층 분석 API state로 변경 예정
+  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
+  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
+  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
+  const mainDatas = [23, 19, 13, 5]; //API state로 변경 예정
+  const subDatas = [23, 19, 13, 5]; //API state로 변경 예정
+  const prices = [23, 19, 13, 5]; //API state로 변경 예정
+  const recommendedMedia = "라디오 광고"; //API state로 변경 예정
+  const radioChannelLabels = [
+    "음악 프로",
+    "시사/보도 프로",
+    "교통 프로",
+    "종교 프로",
+    "종합구성 프로",
+    "토크전문",
+    "생활/정보 프로",
+    "스포츠 중계",
+    "연속극(드라마)",
+  ]; // 라디오 채널 추천 API
+  // const radioChannelLabels = [];
+
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i]) {
+  //     radioChannelLabels.push(data[i].type);
+  //   } else {
+  //     radioChannelLabels.push(0);
+  //   }
+  // }
+  const radioChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3]; // 라디오 채널 추천 API
+  // const radioChannelDatas = [];
+
+  // for (let i = 0; i < data.length; i++) {
+  //   if (data[i]) {
+  //     radioChannelDatas.push(data[i].ratio);
+  //   } else {
+  //     radioChannelDatas.push(0);
+  //   }
+  // }
+  const recommendedRadioChennl = "음악 프로"; // 라디오 채널 추천 API
+  //const recommendedRadioChennl = data[0].type
   const weekdaysDatas = [
     3, 5.9, 7.4, 12.8, 13, 22, 24, 43, 42, 55, 44, 33, 22, 34, 44, 56, 66, 54,
     66, 64, 66, 64, 33, 22, 19,
-  ]; //API
+  ]; // 라디오 광고 시간대 분석 API
   const weekendsDatas = [
     23, 26, 32, 36, 34, 34, 46, 52, 41, 53, 63, 53, 49, 64, 72, 81, 79, 78, 69,
     67, 59, 52, 51, 47, 39,
-  ]; //API
-  const recommendedtime = "18:30 ~ 19:00";
+  ]; // 라디오 광고 시간대 분석 API
+  const recommendedtime = "18"; // 라디오 광고 시간대 분석 API
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
@@ -72,8 +105,11 @@ export const RadioRecommendation = () => {
       <Hr></Hr>
       <Box>
         <OfflineMediaRecommendation
+          mediaLabels={mediaLabels}
+          subMediaLabels={subMediaLabels}
           mainDatas={mainDatas}
           subDatas={subDatas}
+          priceLabels={priceLabels}
           prices={prices}
           recommendedMedia={recommendedMedia}
         ></OfflineMediaRecommendation>
@@ -83,17 +119,7 @@ export const RadioRecommendation = () => {
         <ChannelRecommendation
           title={`추천 드리는 라디오 채널은 ${recommendedRadioChennl} 입니다.`}
           datas={radioChannelDatas}
-          labels={[
-            "음악 프로",
-            "시사/보도 프로",
-            "교통 프로",
-            "종교 프로",
-            "종합구성 프로",
-            "토크전문",
-            "생활/정보 프로",
-            "스포츠 중계",
-            "연속극(드라마)",
-          ]}
+          labels={radioChannelLabels}
           description={`${target}이 시청하는 라디오 채널 통계`}
         ></ChannelRecommendation>
       </Box>

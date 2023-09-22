@@ -32,7 +32,7 @@ export const OnlineRecommendation = () => {
   const communityLabels = ["네이버", "다음", "싸이월드", "텀블러", "구글"]; //커뮤니티 추천 API
   // const communityLabels = [];
 
-  // for (let i = 0; i < 5; i++) {
+  // for (let i = 0; i < communityList.length; i++) {
   //   if (data[0].communityList[i]) {
   //     communityLabels.push(data[0].communityList[i].name);
   //   } else {
@@ -44,7 +44,7 @@ export const OnlineRecommendation = () => {
   const coummunityfirstDatas = [80, 60, 45, 25, 10]; // 커뮤니티 추천 API
   // const coummunityfirstDatas = [];
 
-  // for (let i = 0; i < 5; i++) {
+  // for (let i = 0; i < communityList.length; i++) {
   //   if (data[0].communityList[i]) {
   //     coummunityfirstDatas.push(data[0].communityList[i].percent);
   //   } else {
@@ -54,7 +54,7 @@ export const OnlineRecommendation = () => {
   const coummunitysecondDatas = [70, 75, 50, 20, 5]; // 커뮤니티 추천 API
   // const coummunitysecondDatas = [];
 
-  // for (let i = 0; i < 5; i++) {
+  // for (let i = 0; i < communityList.length; i++) {
   //   if (data[1].communityList[i]) {
   //     coummunitysecondDatas.push(data[1].communityList[i].percent);
   //   } else {
@@ -84,21 +84,21 @@ export const OnlineRecommendation = () => {
   ]; // SNS 추천 API
   // const snsLabels = [];
 
-  // for (let i = 0; i < 5; i++) {
-  //   if (data[0].communityList[i]) {
-  //     snsLabels.push(data[0].communityList[i].name);
+  // for (let i = 0; i < snsList.length; i++) {
+  //   if (data[0].snsList[i]) {
+  //     snsLabels.push(data[0].snsList[i].name);
   //   } else {
   //     snsLabels.push(0);
   //   }
   // }
   const recommendedSns = "인스타그램"; // SNS 추천 API
-  // const recommendedSns = data[0].communityList[0].name
+  // const recommendedSns = data[0].snsList[0].name
   const snsFirstDatas = [80, 60, 45, 25, 10, 20, 30, 20, 30, 12, 5]; // SNS 추천 API
   // const snsFirstDatas = [];
 
-  // for (let i = 0; i < 5; i++) {
-  //   if (data[0].communityList[i]) {
-  //     snsFirstDatas.push(data[0].communityList[i].percent);
+  // for (let i = 0; i < snsList.length; i++) {
+  //   if (data[0].snsList[i]) {
+  //     snsFirstDatas.push(data[0].snsList[i].percent);
   //   } else {
   //     snsFirstDatas.push(0);
   //   }
@@ -106,9 +106,9 @@ export const OnlineRecommendation = () => {
   const snsSecondDatas = [70, 75, 50, 20, 5, 20, 30, 20, 30, 12, 5]; // SNS 추천 API
   // const snsSecondDatas = [];
 
-  // for (let i = 0; i < 5; i++) {
-  //   if (data[1].communityList[i]) {
-  //     snsSecondDatas.push(data[1].communityList[i].percent);
+  // for (let i = 0; i < snsList.length; i++) {
+  //   if (data[1].snsList[i]) {
+  //     snsSecondDatas.push(data[1].snsList[i].percent);
   //   } else {
   //     snsSecondDatas.push(0);
   //   }

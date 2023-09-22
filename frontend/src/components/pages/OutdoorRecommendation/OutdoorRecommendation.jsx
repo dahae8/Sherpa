@@ -29,6 +29,9 @@ export const OutdoorRecommendation = () => {
   const female = 25; // 광고 타겟층 분석 API
   const gender = 1; // 광고 타겟층 분석 API
   const age = 30; // 광고 타겟층 분석 API
+  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
+  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
+  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
   const mainDatas = [23, 19, 13, 5]; //API
   const subDatas = [23, 19, 13, 5]; //API
   const prices = [23, 19, 13, 5]; //API
@@ -68,7 +71,7 @@ export const OutdoorRecommendation = () => {
         if (status === kakao.maps.services.Status.OK) {
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-          const marker = new kakao.maps.Marker({
+          new kakao.maps.Marker({
             map: map,
             position: coords,
           });
@@ -93,6 +96,9 @@ export const OutdoorRecommendation = () => {
       <Hr />
       <Box>
         <OfflineMediaRecommendation
+          mediaLabels={mediaLabels}
+          subMediaLabels={subMediaLabels}
+          priceLabels={priceLabels}
           mainDatas={mainDatas}
           subDatas={subDatas}
           prices={prices}
