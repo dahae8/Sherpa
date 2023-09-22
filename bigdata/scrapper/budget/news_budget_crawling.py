@@ -35,7 +35,6 @@ def extract_and_filter_prices_from_pdfs(pdf_files):
     # 백만원 이하는 제거
     filtered_prices = [price for price in all_prices if price > 1000000]
     
-    # Saving the filtered prices to CSV
     with open("../../dataAnalysis/csv/신문광고단가.csv", "w", newline="", encoding="cp949") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(["신문광고단가"])  # Write the header

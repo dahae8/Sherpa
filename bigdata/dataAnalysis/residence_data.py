@@ -56,22 +56,22 @@ def get_dong_id(dong_name, cursor):
 
 # 데이터 처리
 def process_data(row, col, cursor):
-    # Extracting gender and age from column name
+    # column 이름에서 gender, age 추출
     gender = 0 if '여' in col else 1
     # print(gender)
     age = col.replace('세', '').replace('여성', '').replace('남성', '').strip()
     age = extract_age(age)
     # print(age)
     
-    # Extracting dong name and computing dong_id
+    # dong_id와 total 구하기
     dong_name = extract_dong_name(row['행정구역'])
     dong_id = get_dong_id(dong_name, cursor)
     total = row[col]
+    # total이 정수형이 아닌 경우 ',' 제거 후 int 변환
     if type(total) != int :
         total = total.replace(',', '')
         total = int(total)
         
-    # Appending the result
     return {
         'gender': gender,
         'age': age,
@@ -85,7 +85,7 @@ residence_df = pd.DataFrame(result)
 # 결과를 CSV 파일로 저장
 residence_df.to_csv("./csv/거주지전처리.csv", index=False, encoding='cp949')
 
-# Inserting data into the residence table
+# residence 테이블에 값 넣기 
 insert_query = "INSERT INTO residence (gender, age, total, dong_id) VALUES (%s, %s, %s, %s)"
 for idx, row in filtered_data.iterrows():
     for col in row.index[3:]:  # skipping the first 3 columns: 행정구역, 총인구수, 총인구수. 남성, 총인구수. 여성
