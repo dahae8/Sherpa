@@ -8,13 +8,17 @@ cursor = conn.cursor()  # 커서 생성
 
 # server db 연결
 # MySQL 연결 정보 설정
-# db_config = {
-#     "host": "j9c107.p.ssafy.io",
-#     "user": "c107",
-#     "password": "c107adrec",
-#     "database": "adrec",
-#     "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
-# }
+db_config = {
+    "host": "j9c107.p.ssafy.io",
+    "user": "c107",
+    "password": "c107adrec",
+    "database": "adrec",
+    "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
+}
+
+# MySQL에 연결
+conn = mysql.connector.connect(**db_config)
+cursor = conn.cursor()  # 커서 생성
 
 # csv 파일
 tv_data = pd.read_csv('./csv/TV광고단가.csv', encoding='cp949')

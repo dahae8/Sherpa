@@ -3,18 +3,22 @@ import mysql.connector
 
 # DB
 # local db 연결
-conn = mysql.connector.connect(host="localhost", user="root", password="ssafy", database="adrec")
-cursor = conn.cursor()  # 커서 생성
+# conn = mysql.connector.connect(host="localhost", user="root", password="ssafy", database="adrec")
+# cursor = conn.cursor()  # 커서 생성
 
 # server db 연결
 # MySQL 연결 정보 설정
-# db_config = {
-#     "host": "j9c107.p.ssafy.io",
-#     "user": "c107",
-#     "password": "c107adrec",
-#     "database": "adrec",
-#     "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
-# }
+db_config = {
+    "host": "j9c107.p.ssafy.io",
+    "user": "c107",
+    "password": "c107adrec",
+    "database": "adrec",
+    "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
+}
+
+# MySQL에 연결
+conn = mysql.connector.connect(**db_config)
+cursor = conn.cursor()  # 커서 생성
 
 # CSV 로딩
 data = pd.read_csv("./csv/연령별인구현황_월간.csv", encoding='CP949')
