@@ -9,6 +9,9 @@ public interface MemberService {
     // 회원가입
     Member signup(MemberSignupPostReq memberSignupPostReq);
 
+    // 아이디 중복 확인
+    Member checkName(String name);
+
     // 로그인
     Member login(MemberLoginPostReq memberLoginPostReq);
 

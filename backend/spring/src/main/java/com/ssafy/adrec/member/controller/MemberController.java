@@ -48,6 +48,25 @@ public class MemberController {
         return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
     }
 
+    @GetMapping("/check/id/{name}")
+    public ResponseEntity<?> checkId(@PathVariable("name") String name) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        Member member = memberService.checkName(name);
+        if (member == null) {
+            resultMap.put("success", true);
+            resultMap.put("msg", "사용 가능한 아이디입니다.");
+        } else {
+            resultMap.put("success", false);
+            resultMap.put("msg", "존재하는 아이디입니다.");
+        }
+
+        httpStatus = HttpStatus.OK;
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberLoginPostReq memberLoginPostReq) {
         Map<String, Object> resultMap = new HashMap<>();
