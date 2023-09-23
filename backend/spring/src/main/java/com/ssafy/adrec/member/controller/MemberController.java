@@ -67,6 +67,25 @@ public class MemberController {
         return new ResponseEntity<>(resultMap, httpStatus);
     }
 
+    @GetMapping("/check/email/{email}")
+    public ResponseEntity<?> checkEmail(@PathVariable("email") String email) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        Member member = memberService.checkEmail(email);
+        if (member == null) {
+            resultMap.put("success", true);
+            resultMap.put("msg", "사용 가능한 이메일입니다.");
+        } else {
+            resultMap.put("success", false);
+            resultMap.put("msg", "존재하는 이메일입니다.");
+        }
+
+        httpStatus = HttpStatus.OK;
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody MemberLoginPostReq memberLoginPostReq) {
         Map<String, Object> resultMap = new HashMap<>();

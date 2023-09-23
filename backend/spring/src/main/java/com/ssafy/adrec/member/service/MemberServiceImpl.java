@@ -48,7 +48,19 @@ public class MemberServiceImpl implements MemberService {
     public Member checkName(String name) {
         Optional<Member> member = memberRepository.findByName(name);
 
-        if(member.isEmpty()) {
+        if (member.isEmpty()) {
+            return null;
+        }
+
+        return member.get();
+    }
+
+    // 이메일 중복 확인
+    @Override
+    public Member checkEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+
+        if (member.isEmpty()) {
             return null;
         }
 
