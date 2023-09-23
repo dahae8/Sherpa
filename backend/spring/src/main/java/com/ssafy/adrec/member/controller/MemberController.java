@@ -60,15 +60,16 @@ public class MemberController {
             resultMap.put("msg", "아이디 혹은 비밀번호를 확인해주세요.");
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        else {
+            Token token = jwtService.create(memberLoginPostReq.getName());
 
-        Token token = jwtService.create(memberLoginPostReq.getName());
+            logger.debug("로그인 accessToken 정보 : {}", token.getAccess());
 
-        logger.debug("로그인 accessToken 정보 : {}", token.getAccess());
-
-        resultMap.put("accessToken", token.getAccess());
-        resultMap.put("success", true);
-        resultMap.put("msg", "로그인 성공");
-        httpStatus = HttpStatus.OK;
+            resultMap.put("accessToken", token.getAccess());
+            resultMap.put("success", true);
+            resultMap.put("msg", "로그인 성공");
+            httpStatus = HttpStatus.OK;
+        }
 
         return new ResponseEntity<>(resultMap, httpStatus);
     }
