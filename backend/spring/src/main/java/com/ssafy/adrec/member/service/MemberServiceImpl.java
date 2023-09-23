@@ -43,6 +43,30 @@ public class MemberServiceImpl implements MemberService {
         return saved;
     }
 
+    // 아이디 중복 확인
+    @Override
+    public Member checkName(String name) {
+        Optional<Member> member = memberRepository.findByName(name);
+
+        if (member.isEmpty()) {
+            return null;
+        }
+
+        return member.get();
+    }
+
+    // 이메일 중복 확인
+    @Override
+    public Member checkEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+
+        if (member.isEmpty()) {
+            return null;
+        }
+
+        return member.get();
+    }
+
     // 로그인
     @Override
     public Member login(MemberLoginPostReq memberLoginPostReq) {
