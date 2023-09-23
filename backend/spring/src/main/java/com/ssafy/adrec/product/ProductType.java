@@ -1,2 +1,5 @@
-package com.ssafy.adrec.product;public class ProductType {
+package com.ssafy.adrec.product;
+
+public enum ProductType {
+    LARGE, MEDIUM, SMALL
 }
