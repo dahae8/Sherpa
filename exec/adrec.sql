@@ -244,7 +244,8 @@ CREATE TABLE `productMedia` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`total`	INT	NOT NULL,
 	`mediaSub_id`	BIGINT	NOT NULL,
-	`mediaType_id`	BIGINT	NOT NULL
+	`mediaType_id`	BIGINT	NOT NULL,
+	`productSmall_id`	BIGINT	NOT NULL,
 );
 
 DROP TABLE IF EXISTS `radioGender`;
@@ -690,6 +691,13 @@ ALTER TABLE `productMedia` ADD CONSTRAINT `FK_mediaType_TO_productMedia_1` FOREI
 	`mediaType_id`
 )
 REFERENCES `mediaType` (
+	`id`
+);
+
+ALTER TABLE `productMedia` ADD CONSTRAINT `FK_productSmall_TO_productMedia_1` FOREIGN KEY (
+	`productSmall_id`
+)
+REFERENCES `productSmall` (
 	`id`
 );
 
