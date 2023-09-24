@@ -3,7 +3,7 @@ import pandas as pd
 import mysql.connector
 
 # csv에서 파일 가져오는 코드
-data = pd.read_csv('./csv/가맹점_업종분류표.csv', encoding='cp949', low_memory=False)
+data = pd.read_csv('../csv/가맹점_업종분류표.csv', encoding='cp949', low_memory=False)
 # print(data)  # [255 rows x 4 columns]
 
 large = data['대분류'].drop_duplicates()
