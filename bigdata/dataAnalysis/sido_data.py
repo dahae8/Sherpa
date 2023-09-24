@@ -119,6 +119,3 @@ conn.commit()
 # 커서와 연결 종료
 cursor.close()
 conn.close()
-
-
-# ------- target 테이블
