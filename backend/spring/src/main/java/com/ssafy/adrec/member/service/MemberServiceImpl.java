@@ -25,17 +25,20 @@ public class MemberServiceImpl implements MemberService {
     // 회원가입
     @Override
     public Member signup(MemberSignupPostReq memberSignupPostReq) {
-        Optional<ProductSmall> productSmall = productSmallRepository.findById(memberSignupPostReq.getProductSmall_id());
+        ProductSmall memberProductSmall = null;
 
-        if (productSmall.isEmpty()) {
-            return null;
+        if (memberSignupPostReq.getProductSmall_id() != null) {
+            Optional<ProductSmall> productSmall = productSmallRepository.findById(memberSignupPostReq.getProductSmall_id());
+            if (productSmall.isPresent()) {
+                memberProductSmall = productSmall.get();
+            }
         }
 
         Member member = Member.builder()
                 .name(memberSignupPostReq.getName())
                 .email(memberSignupPostReq.getEmail())
                 .pwd(memberSignupPostReq.getPwd())
-                .productSmall(productSmall.get())
+                .productSmall(memberProductSmall)
                 .build();
 
         Member saved = memberRepository.save(member);
