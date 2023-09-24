@@ -2,6 +2,10 @@ import { Link, useLocation } from "react-router-dom";
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import logo from "../../assets/img/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../slices/userSlice";
+import { setToken, setIsLogin } from "../../slices/userSlice";
+import { PURGE } from 'redux-persist';
 
 const Container = styled.div`
   height: 100px;
@@ -68,10 +72,16 @@ const ButtonFrame = styled.div`
 `;
 
 function MakeNavBar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isLogin = useSelector((state) => state.user.isLogin);
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+  const handleLogout = (e) => {
+    e.stopPropagation();
+    sessionStorage.removeItem('accessToken');
+    dispatch(logoutUser());
+    dispatch({ type: PURGE, key: 'root', result: () => null });
+    dispatch(setToken(null));
+    dispatch(setIsLogin(false));
   };
 
   return (
@@ -93,7 +103,7 @@ function MakeNavBar() {
         </ButtonFrame>
       </MiddleBox>
       <RightBox>
-        {isLoggedIn ? (
+        {isLogin ? (
           <RightBox>
             <RightItem onClick={handleLogout}>로그아웃</RightItem>
             <Link to="/mypage">

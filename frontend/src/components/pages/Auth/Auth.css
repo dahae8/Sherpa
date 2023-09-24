@@ -319,3 +319,47 @@ input:hover{
 	border: 1px solid #3c486b;
 	opacity: 1;
   }
+
+  .e2Input {
+	background-image: url(../../../assets/img/email.png);
+	background-position: 5px center;
+	background-size: 25px 25px;
+	background-repeat: no-repeat;
+	padding-left: 40px;
+	width: 200px;
+	height: 56px;
+	box-sizing: border-box;
+	outline: none;
+	background-color: transparent;
+	border: 1px solid #606060;
+	margin: 10px 15px 0px 0px;
+	border-radius: 4px;
+	opacity: 0.5;
+  }
+  
+  .e2Input:hover {
+	border: 1px solid #3c486b;
+	opacity: 1;
+  }
+
+  .pw2Input {
+	background-image: url(../../../assets/img/padlock.png);
+	background-position: 5px center;
+	background-size: 25px 25px;
+	background-repeat: no-repeat;
+	padding-left: 40px;
+	width: 310px;
+	height: 56px;
+	box-sizing: border-box;
+	outline: none;
+	background-color: transparent;
+	border: 1px solid #606060;
+	margin: 10px 0px 0px;
+	border-radius: 4px;
+	opacity: 0.5;
+  }
+  
+  .pw2Input:hover {
+	border: 1px solid #3c486b;
+	opacity: 1;
+  }
