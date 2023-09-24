@@ -26,8 +26,8 @@ tv = tv[tv['제작년도'] >= 1990]
 # print(tv)  # [13620 rows x 7 columns]
 
 # 대분류/중분류/소분류 우리꺼 맞춰서 수정 *** 중요 ***
-tv_options = tv.drop_duplicates(subset=['대분류', '중분류', '소분류'])
-tv_options = tv_options.sort_values(by=['대분류', '중분류', '소분류'])
+# tv_options = tv.drop_duplicates(subset=['대분류', '중분류', '소분류'])
+# tv_options = tv_options.sort_values(by=['대분류', '중분류', '소분류'])
 # print(tv_options)  # [464 rows x 7 columns]
 # for _, item in tv_options.iterrows():
     # print(item['대분류'], ",", item['중분류'], ",", item['소분류'], sep="")
@@ -303,5 +303,52 @@ for idx, item in tv.iterrows():
 
 
 # 광고 사용률 - 그룹화
+tv = tv[['제작년도', '대분류', '중분류', '소분류', '제품', 'code']]
+# print(tv)  # [13620 rows x 8 columns]
+
+# 3. 데이터 합치기: 'total' 값 추출
+# 대분류, 중분류, 소분류, code 가 모두 같은 항목들을 그룹화하고 각 그룹의 크기를 계산하여 'total' 열에 저장
+tv['total'] = tv.groupby(['대분류', '중분류', '소분류', 'code'])['제품'].transform('count')
+merged_tv_data = tv[['code', 'total']].drop_duplicates()
+print(merged_tv_data)  # [359 rows x 2 columns]
+# productMedia
+# id fk fk fk total
+# id / 매체유형 / 매체유형 소분류 / 업종명 소분류 / total
+#  / 영상 / 0 / code / total
+
+# server db 연결
+db_config = {
+    "host": "j9c107.p.ssafy.io",
+    "user": "c107",
+    "password": "c107adrec",
+    "database": "adrec",
+    "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
+}
+
+conn = mysql.connector.connect(**db_config)
+cursor = conn.cursor()  # 커서 생성
+
+for _, item in merged_tv_data.iterrows():
+    print(_)
+    total = int(item['total'])  # numpy.int64를 정수로 변환
+    code = int(item['code'])  # numpy.int64를 정수로 변환
+
+    check_query = "SELECT id FROM productSmall WHERE code = %s"
+    cursor.execute(check_query, (code,))
+    result = cursor.fetchone()
+
+    if result:
+        productSmall_id = result[0]
+
+        insert_query = "INSERT INTO productMedia (total, productSmall_id, mediaType_id) VALUES (%s, %s, %s)"
+        cursor.execute(insert_query, (total, productSmall_id, 3))
+        conn.commit()
+
+conn.commit()
+
+# 커서와 연결 종료
+cursor.close()
+conn.close()
+
 
 
