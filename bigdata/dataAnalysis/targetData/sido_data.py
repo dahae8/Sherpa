@@ -120,5 +120,5 @@ conn.commit()
 cursor.close()
 conn.close()
 
+# 
 
-# ------- target 테이블

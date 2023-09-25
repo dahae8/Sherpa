@@ -8,7 +8,7 @@ csv_files = ['card-data_201909.csv', 'card-data_201910.csv', 'card-data_201911.c
 merged_data = pd.DataFrame()  # 빈 데이터프레임을 생성하여 데이터를 계속 추가할 것입니다.
 
 for csv_file in csv_files:
-    file_path = os.path.join('./csv', csv_file)
+    file_path = os.path.join('../csv', csv_file)
     data = pd.read_csv(file_path, encoding='cp949', low_memory=False)
 
     # 1. 데이터 전처리 코드

@@ -3,11 +3,11 @@ import pandas as pd
 import mysql.connector
 
 # csv에서 파일 가져오는 코드
-data_gender = pd.read_csv('./csv/매체호감-성별.csv', encoding='cp949', low_memory=False)
+data_gender = pd.read_csv('../csv/매체호감-성별.CSV', encoding='cp949', low_memory=False)
 # print(data_gender)  # [16 rows x 5 columns]
-data_age = pd.read_csv('./csv/매체호감-연령.csv', encoding='cp949', low_memory=False)
+data_age = pd.read_csv('../csv/매체호감-연령.CSV', encoding='cp949', low_memory=False)
 # print(data_age)  # [40 rows x 5 columns]
-data_area = pd.read_csv('./csv/매체호감-지역.csv', encoding='cp949', low_memory=False)
+data_area = pd.read_csv('../csv/매체호감-지역.CSV', encoding='cp949', low_memory=False)
 print(data_area)  # [56 rows x 5 columns]
 
 # local db 연결
