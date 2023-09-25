@@ -21,7 +21,7 @@ const persistConfig = {
   key: "result",
   storage: storageSession,
   whitelist: [
-    "email",
+    "ages",
     "male",
     "female",
     "gender",
