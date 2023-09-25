@@ -29,11 +29,11 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "right",
+      align: "end",
     },
     title: {
       display: true,
-      text: "광주 광역시에 거주하는 30대 남성이 이용하는 커뮤니티 통계",
+      position: "bottom",
     },
   },
   scales: {
@@ -66,7 +66,7 @@ function makeDoubleChart({ labels, firstDatas, secondDatas }) {
   };
 
   return (
-    <div style={{ width: "50%" }}>
+    <div style={{ width: "100%" }}>
       <Bar options={options} data={data} />
     </div>
   );

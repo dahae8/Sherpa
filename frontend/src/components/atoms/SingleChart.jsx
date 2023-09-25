@@ -26,10 +26,13 @@ const colors = [
   "#53AC8E",
   "#383D49",
   "#E2816B",
+  "#627FE4",
+  "#A56BD2",
+  "#BED26B",
 ];
 
-function makeSingleChart({ labels, Datas, text }) {
-  const backgroundColors = colors.slice(0, Datas.length);
+function makeSingleChart({ labels, datas, text, width, height }) {
+  const backgroundColors = colors.slice(0, datas.length);
   const options = {
     indexAxis: "y",
     elements: {
@@ -45,6 +48,11 @@ function makeSingleChart({ labels, Datas, text }) {
       title: {
         display: true,
         text: text,
+        align: "end",
+        color: "#959191",
+        font: {
+          size: 16,
+        },
       },
     },
     scales: {
@@ -61,7 +69,7 @@ function makeSingleChart({ labels, Datas, text }) {
     datasets: [
       {
         label: "2021년",
-        data: Datas,
+        data: datas,
         borderColor: backgroundColors,
         backgroundColor: backgroundColors,
       },
@@ -69,7 +77,7 @@ function makeSingleChart({ labels, Datas, text }) {
   };
 
   return (
-    <div style={{ width: "50%" }}>
+    <div style={{ width: width, height: height }}>
       <Bar options={options} data={data} />
     </div>
   );
