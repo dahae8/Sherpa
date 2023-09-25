@@ -98,7 +98,8 @@ function SignUp() {
   // }, [idConfirm]);
 
 
-  async function checkMail() {
+  const checkMail = async (e) => {
+    e.preventDefault();
     const url =
       "http://j9c107.p.ssafy.io:8080/api/member/check/email/"+ email;
     try {
