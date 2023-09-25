@@ -23,19 +23,30 @@ const ProducerTitleItem = styled.div`
 `;
 
 export const OutdoorRecommendation = () => {
-  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API state로 변경 예정
-  //  ages = [data.age10, data.age20, data.age30, data.age40, data.age50, data.age60]
-  const male = 75; // 광고 타겟층 분석 API state로 변경 예정
-  const female = 25; // 광고 타겟층 분석 API state로 변경 예정
-  const gender = 1; // 광고 타겟층 분석 API state로 변경 예정
-  const age = 30; // 광고 타겟층 분석 API state로 변경 예정
-  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const mainDatas = [23, 19, 13, 5]; //API state로 변경 예정
-  const subDatas = [23, 19, 13, 5]; //API state로 변경 예정
-  const prices = [23, 19, 13, 5]; //API state로 변경 예정
-  const recommendedMedia = "옥외 광고"; //API state로 변경 예정
+  const ages = [80, 60, 45, 42, 32, 29]; // state
+  // const ages = useSelector((state) => state.result.ages);
+  const male = 75; // state
+  // const male = useSelector((state) => state.result.male);
+  const female = 25; // state
+  // const female = useSelector((state) => state.result.female);
+  const gender = 1; // state
+  // const gender = useSelector((state) => state.result.gender);
+  const age = 30; // state
+  // const age = useSelector((state) => state.result.age);
+  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const mediaLabels = useSelector((state) => state.result.mediaLabels);
+  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const subMediaLabels = useSelector((state) => state.result.subMediaLabels);
+  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const priceLabels = useSelector((state) => state.result.priceLabels);
+  const mainDatas = [23, 19, 13, 5]; // state
+  // const mainDatas = useSelector((state) => state.result.mainDatas);
+  const subDatas = [23, 19, 13, 5]; // state
+  // const subDatas = useSelector((state) => state.result.subDatas);
+  const prices = [23, 19, 13, 5]; // state
+  // const prices = useSelector((state) => state.result.prices);
+  const recommendedMedia = "옥외 광고"; // state
+  // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
   const recommendedRegion = "장덕동"; //API 광고 장소 분석
   // const recommendedRegion = data[0].type
   const regionLabels = ["장덕동", "첨단 1동", "수완동", "하남동", "송정 1동"]; //API 광고 장소 분석
@@ -93,13 +104,15 @@ export const OutdoorRecommendation = () => {
   //   }
   // }
   const bigRegion = "광주 광역시"; //state
+  // const bigRegion = useSelector((state) => state.result.selectedBigRegion);
   const smallRegion = "광산구"; //state
+  // const smallRegion = useSelector((state) => state.result.selectedSmallRegion);
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
     { img: "url", title: "놀자", url: "url" },
     { img: "url", title: "길잡이", url: "url" },
-  ]; //API
+  ]; // 광고 제작사 리스트 받아오기 API
   const addresses = ["무진대로211번길 28", "월계로 109", "하남산단6번로 107"]; // 현수막 장소 분석 API
   // const addresses = [];
   // for (let i = 0; i < data.length; i++) {
@@ -109,7 +122,6 @@ export const OutdoorRecommendation = () => {
   //     addresses.push(0);
   //   }
   // }
-
   let target = "성별";
 
   if (gender === 1) {
@@ -167,7 +179,7 @@ export const OutdoorRecommendation = () => {
           recommendedMedia={recommendedMedia}
         ></OfflineMediaRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ChannelRecommendation
           title={`추천 드리는 지역은 ${recommendedRegion} 입니다.`}
@@ -176,7 +188,7 @@ export const OutdoorRecommendation = () => {
           description={`${bigRegion} ${smallRegion}에 거주하는 ${target} 통계`}
         ></ChannelRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ChannelRecommendation
           title="버스 정류장 옥외 광고"
@@ -185,7 +197,7 @@ export const OutdoorRecommendation = () => {
           description={`${recommendedRegion}에 있는 버스 정류장 승하차량 통계`}
         ></ChannelRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ChannelRecommendation
           title="지하철 옥외 광고"
@@ -194,7 +206,7 @@ export const OutdoorRecommendation = () => {
           description={`${bigRegion}에 있는 지하철 역 승하차량 통계`}
         ></ChannelRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ProducerTitleItem>현수막 옥외광고</ProducerTitleItem>
         <div
@@ -205,7 +217,7 @@ export const OutdoorRecommendation = () => {
           }}
         ></div>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ProducerTitleItem>
           버스 정류장 / 지하철 역 옥외 광고 제작사
