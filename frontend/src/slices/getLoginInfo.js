@@ -20,6 +20,7 @@ export const userLogin = (user) => async (dispatch) => {
       .post(APPLICATION_SERVER_URL + '/api/member/login', user)
       .then((response) => {
         console.log("로그인여부:",response)
+        alert('로그인 성공');
         return response;
       })
       .catch(() => {
