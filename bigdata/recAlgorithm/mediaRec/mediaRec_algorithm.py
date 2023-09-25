@@ -25,6 +25,9 @@ conn = mysql.connector.connect(**db_config)
 query = "SELECT * FROM productMedia"
 productMedia = pd.read_sql(query, conn)
 
+query = "SELECT productSmall.id, large, `medium`, small, code FROM productSmall, productMedium, productLarge WHERE productSmall.productMedium_id = productMedium.id AND productMedium.productLarge_id = productLarge.id"
+productLargeMediumSmall = pd.read_sql(query, conn)
+
 # 연결 종료
 conn.close()
 
@@ -38,7 +41,11 @@ for index, item in productMedia.iterrows():
 productMedia_total = productMedia.pivot_table(
     index=["mediaType_id", "mediaSub_id"],
     columns=["productSmall_id"],
-    values=["total"]).fillna(0)
+    values=["like_per"]).fillna(0)
 print(productMedia_total)  # [6 rows x 64 columns]
+
+# csv에서 파일 가져오는 코드
+print(productLargeMediumSmall)
+
 
 
