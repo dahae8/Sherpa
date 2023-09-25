@@ -245,7 +245,8 @@ CREATE TABLE `productMedia` (
 	`total`	INT	NOT NULL,
 	`mediaSub_id`	BIGINT	NOT NULL,
 	`mediaType_id`	BIGINT	NOT NULL,
-	`productSmall_id`	BIGINT	NOT NULL
+	`productSmall_id`	BIGINT	NOT NULL,
+	`like_per`	INT	NOT NULL,
 );
 
 DROP TABLE IF EXISTS `radioGender`;
