@@ -19,19 +19,22 @@ const BlogTitle = styled.div`
   font-size: 48px;
   margin-bottom: 100px;
 `;
+const Hr = styled.hr``;
 
 export const OnlineRecommendation = () => {
   // state productSmallId,
-
-  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API
-  //  ages = [data.age10, data.age20, data.age30, data.age40, data.age50, data.age60]
-  const male = 75; // 광고 타겟층 분석 API
-  const female = 25; // 광고 타겟층 분석 API
-  const gender = 1; // 광고 타겟층 분석 API
-  const age = 30; // 광고 타겟층 분석 API
+  const ages = [80, 60, 45, 42, 32, 29]; // state
+  // const ages = useSelector((state) => state.result.ages);
+  const male = 75; // state
+  // const ages = useSelector((state) => state.result.male);
+  const female = 25; // state
+  // const ages = useSelector((state) => state.result.female);
+  const gender = 1; // state
+  // const ages = useSelector((state) => state.result.gender);
+  const age = 30; // state
+  // const ages = useSelector((state) => state.result.age);
   const communityLabels = ["네이버", "다음", "싸이월드", "텀블러", "구글"]; //커뮤니티 추천 API
   // const communityLabels = [];
-
   // for (let i = 0; i < communityList.length; i++) {
   //   if (data[0].communityList[i]) {
   //     communityLabels.push(data[0].communityList[i].name);
@@ -43,7 +46,6 @@ export const OnlineRecommendation = () => {
   // const recommendedCommunity = data[0].communityList[0].name
   const coummunityfirstDatas = [80, 60, 45, 25, 10]; // 커뮤니티 추천 API
   // const coummunityfirstDatas = [];
-
   // for (let i = 0; i < communityList.length; i++) {
   //   if (data[0].communityList[i]) {
   //     coummunityfirstDatas.push(data[0].communityList[i].percent);
@@ -53,7 +55,6 @@ export const OnlineRecommendation = () => {
   // }
   const coummunitysecondDatas = [70, 75, 50, 20, 5]; // 커뮤니티 추천 API
   // const coummunitysecondDatas = [];
-
   // for (let i = 0; i < communityList.length; i++) {
   //   if (data[1].communityList[i]) {
   //     coummunitysecondDatas.push(data[1].communityList[i].percent);
@@ -68,6 +69,7 @@ export const OnlineRecommendation = () => {
     { img: "url", title: "길잡이", url: "url" },
   ]; // 커뮤니티 주제별 추천 API
   const selectedItem = "등산화"; // state
+  // const selectedItem = useSelector((state) => state.user.productSmall);
   const description = `${selectedItem}에 알맞는 블로그 목록`;
   const snsLabels = [
     "인스타 그램",
@@ -83,7 +85,6 @@ export const OnlineRecommendation = () => {
     "기타",
   ]; // SNS 추천 API
   // const snsLabels = [];
-
   // for (let i = 0; i < snsList.length; i++) {
   //   if (data[0].snsList[i]) {
   //     snsLabels.push(data[0].snsList[i].name);
@@ -95,7 +96,6 @@ export const OnlineRecommendation = () => {
   // const recommendedSns = data[0].snsList[0].name
   const snsFirstDatas = [80, 60, 45, 25, 10, 20, 30, 20, 30, 12, 5]; // SNS 추천 API
   // const snsFirstDatas = [];
-
   // for (let i = 0; i < snsList.length; i++) {
   //   if (data[0].snsList[i]) {
   //     snsFirstDatas.push(data[0].snsList[i].percent);
@@ -105,7 +105,6 @@ export const OnlineRecommendation = () => {
   // }
   const snsSecondDatas = [70, 75, 50, 20, 5, 20, 30, 20, 30, 12, 5]; // SNS 추천 API
   // const snsSecondDatas = [];
-
   // for (let i = 0; i < snsList.length; i++) {
   //   if (data[1].snsList[i]) {
   //     snsSecondDatas.push(data[1].snsList[i].percent);
@@ -118,8 +117,7 @@ export const OnlineRecommendation = () => {
     { img: "url", title: "램블러", url: "url" },
     { img: "url", title: "놀자", url: "url" },
     { img: "url", title: "길잡이", url: "url" },
-  ]; //API
-
+  ]; // 광고 제작사 리스트 받아오기 API
   let target = "성별";
 
   if (gender === 1) {
@@ -127,6 +125,7 @@ export const OnlineRecommendation = () => {
   } else {
     target = "여성";
   }
+
   return (
     <Container>
       <TargetBox>
@@ -138,7 +137,7 @@ export const OnlineRecommendation = () => {
           female={female}
         ></RecommendTarget>
       </TargetBox>
-      <hr />
+      <Hr />
       <Box>
         <CommunityRecommendation
           item={recommendedCommunity}
@@ -148,7 +147,7 @@ export const OnlineRecommendation = () => {
           labels={communityLabels}
         ></CommunityRecommendation>
       </Box>
-      <hr />
+      <Hr />
       <Box>
         <BlogTitle>추천하는 {recommendedCommunity} 블로그 입니다.</BlogTitle>
         <BlogRecommendation
@@ -156,7 +155,7 @@ export const OnlineRecommendation = () => {
           description={description}
         ></BlogRecommendation>
       </Box>
-      <hr />
+      <Hr />
       <Box>
         <SnsRecomendation
           labels={snsLabels}
@@ -166,7 +165,7 @@ export const OnlineRecommendation = () => {
           target={target}
         ></SnsRecomendation>
       </Box>
-      <hr />
+      <Hr />
       <Box>
         <BlogTitle>온라인 광고 제작사</BlogTitle>
         <ProducerRecommendation
