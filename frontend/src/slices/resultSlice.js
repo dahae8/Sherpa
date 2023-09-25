@@ -15,6 +15,10 @@ const initialState = {
   subDatas: [],
   prices: [],
   recommendedMedia: null,
+  selectedPrice: null,
+  selectedOnOffline: null,
+  selectedBigRegion: null,
+  selectedSmallRegion: null,
 };
 
 const persistConfig = {
@@ -33,6 +37,10 @@ const persistConfig = {
     "subDatas",
     "prices",
     "recommendedMedia",
+    "selectedPrice",
+    "selectedOnOffline",
+    "selectedBigRegion",
+    "selectedSmallRegion",
   ],
 };
 
@@ -76,6 +84,18 @@ const resultSlice = createSlice({
     setRecommendedMedia(state, action) {
       state.recommendedMedia = action.payload;
     },
+    setSelectedPrice(state, action) {
+      state.selectedPrice = action.payload;
+    },
+    setSelectedOnOffline(state, action) {
+      state.selectedOnOffline = action.payload;
+    },
+    setSelectedBigRegion(state, action) {
+      state.selectedBigRegion = action.payload;
+    },
+    setSelectedSmallRegion(state, action) {
+      state.selectedSmallRegion = action.payload;
+    },
   },
 });
 
@@ -92,6 +112,10 @@ export const {
   setSubDatas,
   setPrices,
   setRecommendedMedia,
+  setSelectedPrice,
+  setSelectedOnOffline,
+  setSelectedBigRegion,
+  setSelectedSmallRegion,
 } = resultSlice.actions;
 
 const persistedReducer = persistReducer(persistConfig, resultSlice.reducer);
