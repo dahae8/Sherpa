@@ -29,9 +29,9 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [productSmall, SetProductSmall] = useState('');
 
-  const [idHelper, setIdHelper] = useState("아이디를 입력하세요");
+  const [idHelper, setIdHelper] = useState("");
   const [pw2Helper, setPw2Helper] = useState("");
-  const [eHelper, setEHelper] = useState("이메일을 입력하세요");
+  const [eHelper, setEHelper] = useState("");
 
   const [idConfirm, setidConfirm] = useState(null);
   const [pwConfirm, setpwConfirm] = useState(null);
@@ -48,8 +48,10 @@ function SignUp() {
   }, [pwValue, pw2Value]);
 
  
-    const addUser = async () => {
-      if (pwConfirm&&pwValue&&name&&email) {
+    const addUser = async (e) => {
+      e.preventDefault();
+
+      if (pwConfirm&&pwValue&&name&&email&&idConfirm&&eConfirm) {
         const url = "http://j9c107.p.ssafy.io:8080/api/member";
         const data = {
           name: name,
@@ -69,8 +71,54 @@ function SignUp() {
     };
   }
 
+  async function checkName() {
+    const url =
+      "http://j9c107.p.ssafy.io:8080/api/member/check/id/"+ name;
+    try {
+      const response = await axios.get(url);
+      // console.log("확인 결과 : ", response.data.success);
+      // setidConfirm(response.data.success);
+      // setIdHelper("사용가능한 닉네임 입니다");
+      // console.log(idConfirm);
+      // return "성공";
+      if (response.data.success) {
+        setIdHelper('사용가능한 아이디입니다.');
+        return setidConfirm(true);
+      }
+      setIdHelper('중복된 아이디입니다.');
+      return setidConfirm(false);
+    } catch (error) {
+      console.error("에러메시지 :", error);
+      return "실패";
+    }
+  }
+  // useEffect(() => {
+  //   if (!idConfirm && name !== "")
+  //     setIdHelper("중복된 닉네임입니다");
+  // }, [idConfirm]);
 
 
+  async function checkMail() {
+    const url =
+      "http://j9c107.p.ssafy.io:8080/api/member/check/email/"+ email;
+    try {
+      const response = await axios.get(url);
+      // console.log("확인 결과 : ", response.data.success);
+      // setidConfirm(response.data.success);
+      // setIdHelper("사용가능한 닉네임 입니다");
+      // console.log(idConfirm);
+      // return "성공";
+      if (response.data.success) {
+        setEHelper('사용가능한 이메일입니다.');
+        return seteConfirm(true);
+      }
+      setEHelper('중복된 이메일입니다.');
+      return seteConfirm(false);
+    } catch (error) {
+      console.error("에러메시지 :", error);
+      return "실패";
+    }
+  }
 
   return (
     <div className="form-container sign-up-container">
@@ -86,6 +134,7 @@ function SignUp() {
               border="1px solid #3C486B"
               textColor="#3C486B"
               fontSize="16px"
+              onClick={checkName}
             >
               중복 확인
             </Button>
@@ -109,6 +158,7 @@ function SignUp() {
               border="1px solid #3C486B"
               textColor="#3C486B"
               fontSize="16px"
+              onClick={checkMail}
             >
               중복 확인
             </Button>
