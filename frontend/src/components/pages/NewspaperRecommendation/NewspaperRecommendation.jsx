@@ -23,17 +23,28 @@ const ProducerTitleItem = styled.div`
 export const NewsPaperRecommendation = () => {
   const ages = [80, 60, 45, 42, 32, 29]; // state
   // const ages = useSelector((state) => state.result.ages);
-  const male = 75; // 광고 타겟층 분석 API
-  const female = 25; // 광고 타겟층 분석 API
-  const gender = 1; // 광고 타겟층 분석 API
-  const age = 30; // 광고 타겟층 분석 API
-  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const mainDatas = [23, 19, 13, 5]; //API state로 변경 예정
-  const subDatas = [23, 19, 13, 5]; //API state로 변경 예정
-  const prices = [23, 19, 13, 5]; //API state로 변경 예정
-  const recommendedMedia = "신문 광고"; //API state로 변경 예정
+  const male = 75; // state
+  // const male = useSelector((state) => state.result.male);
+  const female = 25; // state
+  // const female = useSelector((state) => state.result.female);
+  const gender = 1; // state
+  // const gender = useSelector((state) => state.result.gender);
+  const age = 30; // state
+  // const age = useSelector((state) => state.result.age);
+  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const mediaLabels = useSelector((state) => state.result.mediaLabels);
+  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const subMediaLabels = useSelector((state) => state.result.subMediaLabels);
+  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const priceLabels = useSelector((state) => state.result.priceLabels);
+  const mainDatas = [23, 19, 13, 5]; // state
+  // const mainDatas = useSelector((state) => state.result.mainDatas);
+  const subDatas = [23, 19, 13, 5]; // state
+  // const subDatas = useSelector((state) => state.result.subDatas);
+  const prices = [23, 19, 13, 5]; // state
+  // const prices = useSelector((state) => state.result.prices);
+  const recommendedMedia = "신문 광고"; // state
+  // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
   const recommendedNewspaper = "동아일보"; // 신문사 추천 API
   //const recommendedNewspaper = data[0].type
   const newspaperLabels = [
@@ -49,7 +60,6 @@ export const NewsPaperRecommendation = () => {
     "국민일보",
   ]; // 신문사 추천 API
   // const newspaperLabels = [];
-
   // for (let i = 0; i < data.length; i++) {
   //   if (data[i]) {
   //     newspaperLabels.push(data[i].type);
@@ -59,7 +69,6 @@ export const NewsPaperRecommendation = () => {
   // }
   const newspaperDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3, 2]; // 신문사 추천 API
   // const newspaperDatas = [];
-
   // for (let i = 0; i < data.length; i++) {
   //   if (data[i]) {
   //     newspaperDatas.push(data[i].ratio);
@@ -78,7 +87,6 @@ export const NewsPaperRecommendation = () => {
     "기타",
   ]; // 신문 분야 추천 API
   // const newspaperAreaLabels = [];
-
   // for (let i = 0; i < data.length; i++) {
   //   if (data[i]) {
   //     newspaperAreaLabels.push(data[i].type);
@@ -88,7 +96,6 @@ export const NewsPaperRecommendation = () => {
   // }
   const newspaperAreaDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3, 2]; // 신문 분야 추천 API
   // const newspaperAreaDatas = [];
-
   // for (let i = 0; i < data.length; i++) {
   //   if (data[i]) {
   //     newspaperAreaDatas.push(data[i].ratio);
@@ -101,8 +108,7 @@ export const NewsPaperRecommendation = () => {
     { img: "url", title: "램블러", url: "url" },
     { img: "url", title: "놀자", url: "url" },
     { img: "url", title: "길잡이", url: "url" },
-  ]; //API
-
+  ]; // 광고 제작사 리스트 받아오기 API
   let target = "성별";
 
   if (gender === 1) {
@@ -134,7 +140,7 @@ export const NewsPaperRecommendation = () => {
           recommendedMedia={recommendedMedia}
         ></OfflineMediaRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ChannelRecommendation
           title={`추천 드리는 신문사는 ${recommendedNewspaper} 입니다.`}
@@ -151,7 +157,7 @@ export const NewsPaperRecommendation = () => {
           description={`${target}이 이용하는 신문 분야 통계`}
         ></ChannelRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ProducerTitleItem>신문 광고 제작사</ProducerTitleItem>
         <ProducerRecommendation
