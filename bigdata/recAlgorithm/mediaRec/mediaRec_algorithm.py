@@ -7,56 +7,9 @@ import seaborn as sns
 import pandas as pd
 import numpy as np
 import warnings
-warnings.filterwarnings("ignore")
-
 import mysql.connector
 
-data_gender = pd.read_csv('../../dataAnalysis/csv/mediaLikeGender.csv', encoding='cp949', low_memory=False)
-# print(data_gender)  # [16 rows x 5 columns]
-data_age = pd.read_csv('../../dataAnalysis/csv/mediaLikeAge.csv', encoding='cp949', low_memory=False)
-# print(data_age)  # [40 rows x 5 columns]
-data_area = pd.read_csv('../../dataAnalysis/csv/mediaLikeArea.csv', encoding='cp949', low_memory=False)
-# print(data_area)  # [56 rows x 5 columns]print(data_gender)
-
-
-for index, item in data_gender.iterrows():
-    # 'mediaSub_id' 열의 NaN 값을 '0'으로 대체
-    if pd.isna(item['mediaSub_id']):
-        data_gender.at[index, 'mediaSub_id'] = 0
-
-for index, item in data_age.iterrows():
-    # 'mediaSub_id' 열의 NaN 값을 '0'으로 대체
-    if pd.isna(item['mediaSub_id']):
-        data_age.at[index, 'mediaSub_id'] = 0
-
-for index, item in data_area.iterrows():
-    # 'mediaSub_id' 열의 NaN 값을 '0'으로 대체
-    if pd.isna(item['mediaSub_id']):
-        data_area.at[index, 'mediaSub_id'] = 0
-# print(data_area)
-
-# pivot 테이블
-# value에는 rating 값을 cloumn에
-gender_mediaType_total = data_gender.pivot_table(
-    index=["mediaType_id", "mediaSub_id"],
-    columns=["gender"],
-    values=["total"]).fillna(0)
-# print(gender_mediaType_total)
-
-age_mediaType_total = data_age.pivot_table(
-    index=["mediaType_id", "mediaSub_id"],
-    columns=["age"],
-    values=["total"]).fillna(0)
-# print(age_mediaType_total)
-
-area_mediaType_total = data_area.pivot_table(
-    index=["mediaType_id", "mediaSub_id"],
-    columns=["area"],
-    values=["total"]).fillna(0)
-# print(area_mediaType_total)
-
-result = pd.concat([gender_mediaType_total, age_mediaType_total, area_mediaType_total], axis=1)
-print(result)  # [8 rows x 14 columns]
+warnings.filterwarnings("ignore")
 
 db_config = {
     "host": "j9c107.p.ssafy.io",
@@ -88,4 +41,4 @@ productMedia_total = productMedia.pivot_table(
     values=["total"]).fillna(0)
 print(productMedia_total)  # [6 rows x 64 columns]
 
-# -----
+
