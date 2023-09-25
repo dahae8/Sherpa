@@ -21,36 +21,121 @@ const BlogTitle = styled.div`
 `;
 
 export const OnlineRecommendation = () => {
-  const ageDatas = [80, 60, 45, 42, 32, 29]; //API
-  const target = "30대 남성"; //API
-  const percent = [75, 25]; //API
-  const recommendedCommunity = "네이버"; //API
-  const coummunityfirstDatas = [80, 60, 45, 25, 10]; //API
-  const coummunitysecondDatas = [70, 75, 50, 20, 5]; //API
+  // state productSmallId,
+
+  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API
+  //  ages = [data.age10, data.age20, data.age30, data.age40, data.age50, data.age60]
+  const male = 75; // 광고 타겟층 분석 API
+  const female = 25; // 광고 타겟층 분석 API
+  const gender = 1; // 광고 타겟층 분석 API
+  const age = 30; // 광고 타겟층 분석 API
+  const communityLabels = ["네이버", "다음", "싸이월드", "텀블러", "구글"]; //커뮤니티 추천 API
+  // const communityLabels = [];
+
+  // for (let i = 0; i < communityList.length; i++) {
+  //   if (data[0].communityList[i]) {
+  //     communityLabels.push(data[0].communityList[i].name);
+  //   } else {
+  //     communityLabels.push(0);
+  //   }
+  // }
+  const recommendedCommunity = "네이버"; // 커뮤니티 추천 API
+  // const recommendedCommunity = data[0].communityList[0].name
+  const coummunityfirstDatas = [80, 60, 45, 25, 10]; // 커뮤니티 추천 API
+  // const coummunityfirstDatas = [];
+
+  // for (let i = 0; i < communityList.length; i++) {
+  //   if (data[0].communityList[i]) {
+  //     coummunityfirstDatas.push(data[0].communityList[i].percent);
+  //   } else {
+  //     coummunityfirstDatas.push(0);
+  //   }
+  // }
+  const coummunitysecondDatas = [70, 75, 50, 20, 5]; // 커뮤니티 추천 API
+  // const coummunitysecondDatas = [];
+
+  // for (let i = 0; i < communityList.length; i++) {
+  //   if (data[1].communityList[i]) {
+  //     coummunitysecondDatas.push(data[1].communityList[i].percent);
+  //   } else {
+  //     coummunitysecondDatas.push(0);
+  //   }
+  // }
   const blogCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
     { img: "url", title: "놀자", url: "url" },
     { img: "url", title: "길잡이", url: "url" },
-  ]; //API
+  ]; // 커뮤니티 주제별 추천 API
   const selectedItem = "등산화"; // state
   const description = `${selectedItem}에 알맞는 블로그 목록`;
-  const recommendedSns = "인스타그램"; //API
-  const snsFirstDatas = [80, 60, 45, 25, 10, 20, 30, 20, 30, 12, 5]; //API
-  const snsSecondDatas = [70, 75, 50, 20, 5, 20, 30, 20, 30, 12, 5]; //API
+  const snsLabels = [
+    "인스타 그램",
+    "페이스북",
+    "트위터",
+    "싸이월드",
+    "카카오스토리",
+    "네이버밴드",
+    "비트윈",
+    "핀터레스트",
+    "웨이보",
+    "틱톡",
+    "기타",
+  ]; // SNS 추천 API
+  // const snsLabels = [];
+
+  // for (let i = 0; i < snsList.length; i++) {
+  //   if (data[0].snsList[i]) {
+  //     snsLabels.push(data[0].snsList[i].name);
+  //   } else {
+  //     snsLabels.push(0);
+  //   }
+  // }
+  const recommendedSns = "인스타그램"; // SNS 추천 API
+  // const recommendedSns = data[0].snsList[0].name
+  const snsFirstDatas = [80, 60, 45, 25, 10, 20, 30, 20, 30, 12, 5]; // SNS 추천 API
+  // const snsFirstDatas = [];
+
+  // for (let i = 0; i < snsList.length; i++) {
+  //   if (data[0].snsList[i]) {
+  //     snsFirstDatas.push(data[0].snsList[i].percent);
+  //   } else {
+  //     snsFirstDatas.push(0);
+  //   }
+  // }
+  const snsSecondDatas = [70, 75, 50, 20, 5, 20, 30, 20, 30, 12, 5]; // SNS 추천 API
+  // const snsSecondDatas = [];
+
+  // for (let i = 0; i < snsList.length; i++) {
+  //   if (data[1].snsList[i]) {
+  //     snsSecondDatas.push(data[1].snsList[i].percent);
+  //   } else {
+  //     snsSecondDatas.push(0);
+  //   }
+  // }
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
     { img: "url", title: "놀자", url: "url" },
     { img: "url", title: "길잡이", url: "url" },
   ]; //API
+
+  let target = "성별";
+
+  if (gender === 1) {
+    target = "남성";
+  } else {
+    target = "여성";
+  }
   return (
     <Container>
       <TargetBox>
         <RecommendTarget
-          datas={ageDatas}
+          datas={ages}
           target={target}
-          percent={percent}
+          age={age}
+          male={male}
+          female={female}
         ></RecommendTarget>
       </TargetBox>
       <hr />
@@ -60,6 +145,7 @@ export const OnlineRecommendation = () => {
           firstDatas={coummunityfirstDatas}
           secondDatas={coummunitysecondDatas}
           target={target}
+          labels={communityLabels}
         ></CommunityRecommendation>
       </Box>
       <hr />
@@ -73,6 +159,7 @@ export const OnlineRecommendation = () => {
       <hr />
       <Box>
         <SnsRecomendation
+          labels={snsLabels}
           item={recommendedSns}
           firstDatas={snsFirstDatas}
           secondDatas={snsSecondDatas}

@@ -11,20 +11,13 @@ const ChartBox = styled.div`
 `;
 const Description = styled.div``;
 
-function makeSnsRecommendation({ item, firstDatas, secondDatas, target }) {
-  const labels = [
-    "인스타 그램",
-    "페이스북",
-    "트위터",
-    "싸이월드",
-    "카카오스토리",
-    "네이버밴드",
-    "비트윈",
-    "핀터레스트",
-    "웨이보",
-    "틱톡",
-    "기타",
-  ];
+function makeSnsRecommendation({
+  item,
+  firstDatas,
+  secondDatas,
+  target,
+  labels,
+}) {
   return (
     <Container>
       <TitleBox>추천하는 SNS는 {item}입니다.</TitleBox>

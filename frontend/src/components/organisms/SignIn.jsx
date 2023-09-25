@@ -6,7 +6,7 @@ import { userLogin } from '../../slices/getLoginInfo';
 
 function SignIn() {
   const [name, setName] = useState('');
-  const [pwValue, setPwValue] = useState('');
+  const [pwd, setPwd] = useState('');
   const isLogin = useSelector((state) => state.user.isLogin);
   const token = useSelector((state) => state.user.token);
   const dispatch = useDispatch();
@@ -14,11 +14,12 @@ function SignIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = { name, pwValue };
-    if (name&&pwValue){
+    const user = { name, pwd };
+    if (name&&pwd){
     console.log(1)
     dispatch(userLogin(user))
       .then(() => {
+        navigate('/');
       })
       .catch((error) => {});
     }
@@ -32,7 +33,7 @@ function SignIn() {
         <input className="idInput" type="id" placeholder="아이디" value={name} onChange={(e) => { setName(e.target.value);}} required/>
         <br />
         <br />
-        <input className="pwInput" type="password" placeholder="비밀번호" value={pwValue} onChange={(e) => { setPwValue(e.target.value);}} required/>
+        <input className="pwInput" type="password" placeholder="비밀번호" value={pwd} onChange={(e) => { setPwd(e.target.value);}} required/>
 
         <br />
         <div class="pwd">

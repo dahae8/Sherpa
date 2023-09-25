@@ -48,8 +48,10 @@ function makeOfflineMediaRecommendation({
   subDatas,
   prices,
   recommendedMedia,
+  mediaLabels,
+  subMediaLabels,
+  priceLabels,
 }) {
-  const labels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"];
   const fontSize = "32px";
   return (
     <Container>
@@ -60,7 +62,7 @@ function makeOfflineMediaRecommendation({
         </DescriptionItem>
         <ChartItem>
           <DoughnutChart
-            labels={labels}
+            labels={mediaLabels}
             datas={mainDatas}
             width="60%"
             fontSize={fontSize}
@@ -72,7 +74,7 @@ function makeOfflineMediaRecommendation({
           <LeftChartTitle>품목 별 광고 기반</LeftChartTitle>
           <Border>
             <DoughnutChart
-              labels={labels}
+              labels={subMediaLabels}
               datas={subDatas}
               width="80%"
               fontSize={fontSize}
@@ -83,7 +85,7 @@ function makeOfflineMediaRecommendation({
           <RightChartTitle>광고 예산 기반</RightChartTitle>
           <Border>
             <BarChart
-              labels={labels}
+              labels={priceLabels}
               datas={prices}
               text="해당 가격은 최소 광고 비용 기준 입니다."
               width="80%"
