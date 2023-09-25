@@ -111,10 +111,69 @@ for index, row in result.iterrows():
     scores[mediaTypeSub] = score
     idx += 1
 
+print(scores)
+# print(scores[(6, 3.0)])
+# {(1, 0.0): 12065.0, (2, 0.0): 12422.0, (3, 0.0): 27199.5, (4, 0.0): 2696.0, (5, 0.0): 24585.0, (6, 1.0): 9524.0, (6, 2.0): 9524.0, (6, 3.0): 12103.0}
+# {(1, 0.0): 10.956378810100029, (2, 0.0): 11.280575016913598, (3, 0.0): 24.70020931995986, (4, 0.0): 2.448271634648129, (5, 0.0): 22.325948864178137, (6, 1.0): 8.648864632191684, (6, 2.0): 8.648864632191684, (6, 3.0): 10.99088708981688}
+total = sum(scores.values())
+percentage_scores = {key: int((value / total) * 100) for key, value in scores.items()}
+print(percentage_scores)
+
 # 가장 높은 점수(호감도)를 가진 매체 유형 추천
 recommended_mediaType = max(scores, key=scores.get)
-print(scores)
 print("가장 추천하는 매체 유형:", recommended_mediaType)
 
 
+db_config = {
+    "host": "j9c107.p.ssafy.io",
+    "user": "c107",
+    "password": "c107adrec",
+    "database": "adrec",
+    "auth_plugin": "mysql_native_password"  # MySQL 8.0 이상일 경우에 필요한 옵션
+}
+
+# MySQL에 연결
+conn = mysql.connector.connect(**db_config)
+cursor = conn.cursor()  # 커서 생성
+
+# SQL 쿼리 실행 및 결과를 데이터프레임으로 변환
+query = "SELECT * FROM productMedia"
+productMedia = pd.read_sql(query, conn)
+print(productMedia)  # [270 rows x 6 columns]
+
+for index, item in productMedia.iterrows():
+    # print(index)
+    check_query = "SELECT MediaType_id, MediaSub_id FROM productMedia WHERE id = %s"
+    cursor.execute(check_query, (index,))
+    result = cursor.fetchone()
+
+    if result:
+        MediaType_id = result[0]
+        MediaSub_id = result[1]
+        print(MediaType_id, MediaSub_id)
+        # print(scores[(6, 3.0)])
+        if MediaSub_id is None:
+            like_value = percentage_scores[(MediaType_id, 0.0)]
+        else:
+            like_value = percentage_scores[(MediaType_id, MediaSub_id)]
+        print(like_value)
+
+        # insert_query = "INSERT INTO productMedia (like_per) VALUES (%s)"
+        # cursor.execute(insert_query, (like_value,))
+        # conn.commit()
+
+        insert_query = "UPDATE productMedia SET like_per = %s WHERE id = %s"
+        cursor.execute(insert_query, (like_value, index))
+        conn.commit()
+
+# 연결 종료
+conn.close()
+
+# 전체 안돌아가서 Update문으로 따로 추가해줌
+# UPDATE adrec.productMedia SET like_per = 24 WHERE MediaType_id = 3;
+# UPDATE adrec.productMedia SET like_per = 2 WHERE MediaType_id = 4;
+# UPDATE adrec.productMedia SET like_per = 22 WHERE MediaType_id = 5;
+# UPDATE adrec.productMedia SET like_per = 8 WHERE MediaType_id = 6 and MediaSub_id = 1;
+# UPDATE adrec.productMedia SET like_per = 8 WHERE MediaType_id = 6 and MediaSub_id = 2;
+# UPDATE adrec.productMedia SET like_per = 10 WHERE MediaType_id = 6 and MediaSub_id = 3;
 
