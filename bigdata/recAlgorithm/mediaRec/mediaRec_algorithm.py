@@ -11,11 +11,11 @@ warnings.filterwarnings("ignore")
 
 import mysql.connector
 
-data_gender = pd.read_csv('../dataAnalysis/csv/mediaLikeGender.csv', encoding='cp949', low_memory=False)
+data_gender = pd.read_csv('../../dataAnalysis/csv/mediaLikeGender.csv', encoding='cp949', low_memory=False)
 # print(data_gender)  # [16 rows x 5 columns]
-data_age = pd.read_csv('../dataAnalysis/csv/mediaLikeAge.csv', encoding='cp949', low_memory=False)
+data_age = pd.read_csv('../../dataAnalysis/csv/mediaLikeAge.csv', encoding='cp949', low_memory=False)
 # print(data_age)  # [40 rows x 5 columns]
-data_area = pd.read_csv('../dataAnalysis/csv/mediaLikeArea.csv', encoding='cp949', low_memory=False)
+data_area = pd.read_csv('../../dataAnalysis/csv/mediaLikeArea.csv', encoding='cp949', low_memory=False)
 # print(data_area)  # [56 rows x 5 columns]print(data_gender)
 
 
