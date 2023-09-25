@@ -16,8 +16,8 @@ function makeCommunityRecommendation({
   item,
   firstDatas,
   secondDatas,
+  labels,
 }) {
-  const labels = ["네이버", "다음", "싸이월드", "텀블러", "구글"];
   const text = `광주 광역시에 거주하는 ${target}이 이용하는 커뮤니티 통계`;
   return (
     <Container>
