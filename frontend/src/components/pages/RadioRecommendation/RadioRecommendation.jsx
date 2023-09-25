@@ -22,19 +22,30 @@ const ProducerTitleItem = styled.div`
 `;
 
 export const RadioRecommendation = () => {
-  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API state로 변경 예정
-  //  ages = [data.age10, data.age20, data.age30, data.age40, data.age50, data.age60]
-  const male = 75; // 광고 타겟층 분석 API state로 변경 예정
-  const female = 25; // 광고 타겟층 분석 API state로 변경 예정
-  const gender = 1; // 광고 타겟층 분석 API state로 변경 예정
-  const age = 30; // 광고 타겟층 분석 API state로 변경 예정
-  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const mainDatas = [23, 19, 13, 5]; //API state로 변경 예정
-  const subDatas = [23, 19, 13, 5]; //API state로 변경 예정
-  const prices = [23, 19, 13, 5]; //API state로 변경 예정
-  const recommendedMedia = "라디오 광고"; //API state로 변경 예정
+  const ages = [80, 60, 45, 42, 32, 29]; // state
+  // const ages = useSelector((state) => state.result.ages);
+  const male = 75; // state
+  // const male = useSelector((state) => state.result.male);
+  const female = 25; // state
+  // const female = useSelector((state) => state.result.female);
+  const gender = 1; // state
+  // const gender = useSelector((state) => state.result.gender);
+  const age = 30; // state
+  // const age = useSelector((state) => state.result.age);
+  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const mediaLabels = useSelector((state) => state.result.mediaLabels);
+  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const subMediaLabels = useSelector((state) => state.result.subMediaLabels);
+  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const priceLabels = useSelector((state) => state.result.priceLabels);
+  const mainDatas = [23, 19, 13, 5]; // state
+  // const mainDatas = useSelector((state) => state.result.mainDatas);
+  const subDatas = [23, 19, 13, 5]; // state
+  // const subDatas = useSelector((state) => state.result.subDatas);
+  const prices = [23, 19, 13, 5]; // state
+  // const prices = useSelector((state) => state.result.prices);
+  const recommendedMedia = "라디오 광고"; // state
+  // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
   const radioChannelLabels = [
     "음악 프로",
     "시사/보도 프로",
@@ -47,7 +58,6 @@ export const RadioRecommendation = () => {
     "연속극(드라마)",
   ]; // 라디오 채널 추천 API
   // const radioChannelLabels = [];
-
   // for (let i = 0; i < data.length; i++) {
   //   if (data[i]) {
   //     radioChannelLabels.push(data[i].type);
@@ -57,7 +67,6 @@ export const RadioRecommendation = () => {
   // }
   const radioChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3]; // 라디오 채널 추천 API
   // const radioChannelDatas = [];
-
   // for (let i = 0; i < data.length; i++) {
   //   if (data[i]) {
   //     radioChannelDatas.push(data[i].ratio);
@@ -81,8 +90,7 @@ export const RadioRecommendation = () => {
     { img: "url", title: "램블러", url: "url" },
     { img: "url", title: "놀자", url: "url" },
     { img: "url", title: "길잡이", url: "url" },
-  ]; //API
-
+  ]; // 광고 제작사 리스트 받아오기 API
   let target = "성별";
 
   if (gender === 1) {
@@ -102,7 +110,7 @@ export const RadioRecommendation = () => {
           female={female}
         ></RecommendTarget>
       </TargetBox>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <OfflineMediaRecommendation
           mediaLabels={mediaLabels}
@@ -114,7 +122,7 @@ export const RadioRecommendation = () => {
           recommendedMedia={recommendedMedia}
         ></OfflineMediaRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ChannelRecommendation
           title={`추천 드리는 라디오 채널은 ${recommendedRadioChennl} 입니다.`}
@@ -131,7 +139,7 @@ export const RadioRecommendation = () => {
           recommendedtime={recommendedtime}
         ></TimeRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ProducerTitleItem>라디오 광고 제작사</ProducerTitleItem>
         <ProducerRecommendation
