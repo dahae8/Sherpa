@@ -21,6 +21,7 @@ const ConfirmContainer = styled.div`
 `
 
 function SignUp() {
+  const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -52,7 +53,7 @@ function SignUp() {
       e.preventDefault();
 
       if (pwConfirm&&pwValue&&name&&email&&idConfirm&&eConfirm) {
-        const url = "http://j9c107.p.ssafy.io:8080/api/member";
+        const url = APPLICATION_SERVER_URL + "/api/member" ;
         const data = {
           name: name,
           email: email,
@@ -72,8 +73,7 @@ function SignUp() {
   }
 
   async function checkName() {
-    const url =
-      "http://j9c107.p.ssafy.io:8080/api/member/check/id/"+ name;
+    const url = APPLICATION_SERVER_URL + "/api/member/check/id/"+ name;
     try {
       const response = await axios.get(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -100,8 +100,7 @@ function SignUp() {
 
   const checkMail = async (e) => {
     e.preventDefault();
-    const url =
-      "http://j9c107.p.ssafy.io:8080/api/member/check/email/"+ email;
+    const url = APPLICATION_SERVER_URL + "/api/member/check/email/"+ email;
     try {
       const response = await axios.get(url);
       // console.log("확인 결과 : ", response.data.success);
