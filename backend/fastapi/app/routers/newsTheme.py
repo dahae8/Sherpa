@@ -105,10 +105,13 @@ async def read_root(target: Target):
         scores[newspaper] = score
         total_score += score
 
-    result={}
+    results = []
     for key, value in scores.items():
-        result[key] = round((value/total_score)*100)
-
-    return result
+        result = {}
+        result["type"] = key
+        result["ratio"] = round((value / total_score) * 100)
+        results.append(result)
+    sorted_results = sorted(results, key=lambda x: x["ratio"], reverse=True)
+    return sorted_results
 
 

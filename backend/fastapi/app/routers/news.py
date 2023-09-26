@@ -54,7 +54,6 @@ async def read_root(target: Target):
 
 
     # 지역 데이터 가져오기
-
     seoul = "서울"
     in_gyeon = "인천/경기"
     dae_se_chung = "대전/세종/충청"
@@ -111,10 +110,13 @@ async def read_root(target: Target):
         scores[newspaper] = score
         total_score += score
 
-    result={}
+    results = []
     for key, value in scores.items():
-        result[key] = round((value/total_score)*100)
-
-    return result
+        result = {}
+        result["type"] = key
+        result["ratio"] = round((value / total_score) * 100)
+        results.append(result)
+    sorted_results = sorted(results, key=lambda x: x["ratio"], reverse=True)
+    return sorted_results
 
 
