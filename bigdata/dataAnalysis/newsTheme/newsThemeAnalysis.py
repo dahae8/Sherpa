@@ -57,6 +57,8 @@ idx_gender = 0
 idx_area = 0
 idx_age = 0
 
+per_int = 10
+
 for key, value in data.items():
     for k, v in value.items():
 
@@ -64,19 +66,19 @@ for key, value in data.items():
             idx_area += 1
             sql_data_area['name'].append(key)
             sql_data_area['area'].append(k)
-            sql_data_area['total'].append(v)
+            sql_data_area['total'].append(v*per_int)
 
         else:
             if k == 0 or k == 1:
                 idx_gender += 1
                 sql_data_gender['name'].append(key)
                 sql_data_gender['gender'].append(k)
-                sql_data_gender['total'].append(v)
+                sql_data_gender['total'].append(v*per_int)
             else:
                 idx_age += 1
                 sql_data_age['name'].append(key)
                 sql_data_age['age'].append(k)
-                sql_data_age['total'].append(v)
+                sql_data_age['total'].append(v*per_int)
 
 
 print('total_data : ', total_data)
