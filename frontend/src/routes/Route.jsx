@@ -4,7 +4,7 @@ import MediaRecommendPage from "../components/pages/MediaRecommendPage/MediaReco
 import OnlineRecommendation from "../components/pages/OnlineRecommendation/OnlineRecommendation.jsx";
 import MyPage from "../components/pages/MyPage/MyPage";
 import TvRecommendation from "../components/pages/TvRecommendation/TvRecommendation";
-import RadioRecommendation from "../components/pages/RadioRecommendation/RadioRecommendation";
+import RadioRecommendation from "../components/pages/RadioRecommendation/RadioRecommendation.jsx";
 import NewspaperRecommendation from "../components/pages/NewspaperRecommendation/NewspaperRecommendation.jsx";
 import OutdoorRecommendation from "../components/pages/OutdoorRecommendation/OutdoorRecommendation.jsx";
 import Login from "../components/pages/Auth/Login";
