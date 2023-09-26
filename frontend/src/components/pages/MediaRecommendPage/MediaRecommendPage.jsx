@@ -54,58 +54,99 @@ const Choosedong = styled.div`
 `;
 
 export const MediaRecommendPage = () => {
+  // 분류 관련 변수
   const [selectDataL, setSelectDataL] = useState(null);
   const [selectDataM, setSelectDataM] = useState(null);
   const [selectDataS, setSelectDataS] = useState(null);
   const [dataL, setDataL] = useState([]);
   const [dataM, setDataM] = useState([]);
   const [dataS, setDataS] = useState([]);
+  // 시/도 시/군/구 변수
+  const [selectDataSido, setSelectDataSido] = useState([]);
+  const [selectDataSigungu, setSelectDataSigungu] = useState([]);
+  const [dataSido, setDataSido] = useState([]);
+  const [dataSigungu, setDataSigungu] = useState([]);
 
+  // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
     // Fetch initial data for type "L"
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
     console.log(APPLICATION_SERVER_URL);
-    axios
-      .get(APPLICATION_SERVER_URL + `/api/product/L/0`)
-      .then((response) => {
+    const getDataL = async () => {
+      try {
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/L/0`);
         if (response.data.success) {
           console.log(response.data);
           setDataL(response.data.data);
         }
-      })
-      .catch((error) => {
-        console.error('Error fetching initial data:', error);
-      });
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
+
+    getDataL();
   }, []);
   useEffect(() => {
-    if (selectDataL) {
-      axios
-        .get(APPLICATION_SERVER_URL + `/api/product/M/${selectDataL}`)
-        .then((response) => {
-          if (response.data.success) {
-            setDataM(response.data.data);
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching M type data:', error);
-        });
-    }
+    const getDataM = async () => {
+      try {
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/M/${selectDataL}`);
+        if (response.data.success) {
+          console.log(response.data);
+          setDataM(response.data.data);
+        }
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
+    getDataM();
   }, [selectDataL]);
   useEffect(() => {
-    if (selectDataM) {
-      axios
-        .get(APPLICATION_SERVER_URL + `/api/product/S/${selectDataM}`)
-        .then((response) => {
-          if (response.data.success) {
-            setDataS(response.data.data);
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching S type data:', error);
-        });
-    }
+    const getDataS = async () => {
+      try {
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectDataM}`);
+        if (response.data.success) {
+          console.log(response.data);
+          setDataS(response.data.data);
+        }
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
+
+    getDataS();
   }, [selectDataM]);
 
+  //  시/도, 시/군/구 effect
+  // useLayoutEffect(() => {
+  //   const getSido = async () => {
+  //     try {
+  //       const response = await axios.get(APPLICATION_SERVER_URL + `/api/address/sido`);
+  //       if (response.data.success) {
+  //         console.log(response.data);
+  //         setDataSido(response.data.data);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching initial data:', error);
+  //     }
+  //   };
+  
+  //   getSido();
+  // }, []);
+  // useEffect(() => {
+  //   const getSigungu = async () => {
+  //     try {
+  //       const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectDataM}`);
+  //       if (response.data.success) {
+  //         console.log(response.data);
+  //         setDataSigungu(response.data.data);
+  //       }
+  //     } catch (error) {
+  //       console.log('Error!!', error);
+  //     }
+  //   };
+
+  //   getSigungu();
+  // }, [selectDataSido]);
   return (
     <Container>
       <h1>매체 추천</h1>
@@ -141,7 +182,7 @@ export const MediaRecommendPage = () => {
         </Choosesido>
         <Choosedong>
           <Paragraph>광고 상세 지역 선택</Paragraph>
-          <Select></Select>
+          <Select dataSido={dataSido} onSelect={setDataSido}></Select>
         </Choosedong>
       </RecommendSelect>
       <Box>
