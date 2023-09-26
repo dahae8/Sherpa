@@ -12,7 +12,7 @@ class Target(BaseModel):
 
 router = APIRouter()
 
-@router.post("/api/news/newspaper", status_code=200)
+@router.post("/api/news/field", status_code=200)
 async def read_root(target: Target):
     # 연결 설정
     connection = pymysql.connect(
@@ -28,7 +28,7 @@ async def read_root(target: Target):
     data={}
 
     # 성별 데이터 가져오기
-    gender_select_query = "SELECT * FROM newsGender;"
+    gender_select_query = "SELECT * FROM newsThemeGender;"
     cursor.execute(gender_select_query)
 
     gender_sql = cursor.fetchall()
@@ -45,7 +45,7 @@ async def read_root(target: Target):
 
 
     # 연령 데이터 가져오기
-    age_select_query = "SELECT * FROM newsAge;"
+    age_select_query = "SELECT * FROM newsThemeAge;"
     cursor.execute(age_select_query)
 
     age_sql = cursor.fetchall()
@@ -55,35 +55,26 @@ async def read_root(target: Target):
 
     # 지역 데이터 가져오기
 
-    seoul = "서울"
-    in_gyeon = "인천/경기"
-    dae_se_chung = "대전/세종/충청"
-    gwang_jeo = "광주/전라"
-    dae_gyeong = "대구/경북"
-    bu_ul_gyeong = "부산/울산/경남"
-    gangwon = "강원"
-    jeju = "제주"
-
     area_data = {}
-    area_data[1] = gangwon
-    area_data[2] = in_gyeon
-    area_data[3] = bu_ul_gyeong
-    area_data[4] =dae_gyeong
-    area_data[5] =gwang_jeo
-    area_data[6] =dae_gyeong
-    area_data[7] =dae_se_chung
-    area_data[8] =bu_ul_gyeong
-    area_data[9] =seoul
-    area_data[10] =dae_se_chung
-    area_data[11] =bu_ul_gyeong
-    area_data[12] =in_gyeon
-    area_data[13] =gwang_jeo
-    area_data[14] =gwang_jeo
-    area_data[15] =jeju
-    area_data[16] =dae_se_chung
-    area_data[17] =dae_se_chung
+    area_data[1] = "강원도"
+    area_data[2] = "경기도"
+    area_data[3] = "경상남도"
+    area_data[4] ="경상북도"
+    area_data[5] ="광주광역시"
+    area_data[6] ="대구광역시"
+    area_data[7] ="대전광역시"
+    area_data[8] ="부산광역시"
+    area_data[9] ="서울특별시"
+    area_data[10] ="세종특별자치시"
+    area_data[11] ="울산광역시"
+    area_data[12] ="인천광역시"
+    area_data[13] ="전라남도"
+    area_data[14] ="전라북도"
+    area_data[15] ="제주특별자치도"
+    area_data[16] ="충청남도"
+    area_data[17] ="충청북도"
 
-    area_select_query = "SELECT * FROM newsArea where area = %s;"
+    area_select_query = "SELECT * FROM newsThemeArea where area = %s;"
     cursor.execute(area_select_query, area_data[target.sidoId])
 
     area_sql = cursor.fetchall()
@@ -91,7 +82,9 @@ async def read_root(target: Target):
         data[row[2]]["area"] = row[3]
 
     # 가중치
-    weight =58936
+    gender_weight = 200
+    age_weight = 800
+    area_weight = 1700
 
     # 각 신문사의 점수 계산
     scores = {}
@@ -103,11 +96,12 @@ async def read_root(target: Target):
         for k,v in target.age.items():
             if k not in value:
                 continue
-            score += weight * v * value[k]
+            score += age_weight * v * value[k]
 
         for k,v in target.gender.items():
-            score += weight * v * value[k]
-        score += weight * value["area"]
+            score += gender_weight * v * value[k]
+
+        score += area_weight * value["area"]
         scores[newspaper] = score
         total_score += score
 
