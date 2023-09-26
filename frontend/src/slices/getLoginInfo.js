@@ -11,7 +11,7 @@ import {
 import axios from 'axios';
 
 
-const APPLICATION_SERVER_URL = "http://j9c107.p.ssafy.io:8080" ;
+const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://localhost:8080';
   
 // 사용자 로그인 처리 함수
 export const userLogin = (user) => async (dispatch) => {
