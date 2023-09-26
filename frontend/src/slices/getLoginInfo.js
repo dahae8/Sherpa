@@ -11,11 +11,12 @@ import {
 import axios from 'axios';
 
 
-const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://localhost:8080';
+
   
 // 사용자 로그인 처리 함수
 export const userLogin = (user) => async (dispatch) => {
   try {
+    const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
     const response = await axios
       .post(APPLICATION_SERVER_URL + '/api/member/login', user)
       .then((response) => {

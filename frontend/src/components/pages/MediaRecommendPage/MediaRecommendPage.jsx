@@ -61,7 +61,7 @@ export const MediaRecommendPage = () => {
   useLayoutEffect(() => {
     // Fetch initial data for type "L"
     axios
-      .get('http://j9c107.p.ssafy.io:8080/api/product/L/0')
+      .get('https://j9c107.p.ssafy.io:8080/api/product/L/0')
       .then((response) => {
         if (response.data.success) {
           console.log(response.data);
@@ -75,7 +75,7 @@ export const MediaRecommendPage = () => {
   useEffect(() => {
     if (selectDataL) {
       axios
-        .get('http://j9c107.p.ssafy.io:8080/api/product/M/' + selectDataL)
+        .get('https://j9c107.p.ssafy.io:8080/api/product/M/' + selectDataL)
         .then((response) => {
           if (response.data.success) {
             setDataM(response.data.data);
@@ -89,7 +89,7 @@ export const MediaRecommendPage = () => {
   useEffect(() => {
     if (selectDataM) {
       axios
-        .get('http://j9c107.p.ssafy.io:8080/api/product/S/' + selectDataM)
+        .get('https://j9c107.p.ssafy.io:8080/api/product/S/' + selectDataM)
         .then((response) => {
           if (response.data.success) {
             setDataS(response.data.data);
