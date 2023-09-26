@@ -3,7 +3,7 @@ import MainPage from "../components/pages/MainPage/MainPage";
 import MediaRecommendPage from "../components/pages/MediaRecommendPage/MediaRecommendPage";
 import OnlineRecommendation from "../components/pages/OnlineRecommendation/OnlineRecommendation.jsx";
 import MyPage from "../components/pages/MyPage/MyPage";
-import TvRecommendation from "../components/pages/TvRecommendation/TvRecommendation";
+import TvRecommendation from "../components/pages/TvRecommendation/TvRecommendation.jsx";
 import RadioRecommendation from "../components/pages/RadioRecommendation/RadioRecommendation.jsx";
 import NewspaperRecommendation from "../components/pages/NewspaperRecommendation/NewspaperRecommendation.jsx";
 import OutdoorRecommendation from "../components/pages/OutdoorRecommendation/OutdoorRecommendation.jsx";
