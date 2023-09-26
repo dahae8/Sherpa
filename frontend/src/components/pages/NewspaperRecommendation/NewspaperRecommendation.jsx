@@ -1,24 +1,15 @@
-import styled from "styled-components";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
 import ChannelRecommendation from "../../organisms/ChannelRecommendation";
 import ProducerRecommendation from "../../organisms/ProducerCardList";
 import Buttons from "../../organisms/ResultPageButtens";
-
-const Container = styled.div`
-  margin: 0 320px;
-`;
-const TargetBox = styled.div`
-  margin-bottom: 100px;
-`;
-const Box = styled.div`
-  margin: 150px 0px 150px 0px;
-`;
-const Hr = styled.hr``;
-const ProducerTitleItem = styled.div`
-  font-size: 48px;
-  margin-bottom: 100px;
-`;
+import {
+  Container,
+  TargetBox,
+  Box,
+  Hr,
+  ProducerTitleItem,
+} from "./NewspaperRecommendation";
 
 export const NewsPaperRecommendation = () => {
   const ages = [80, 60, 45, 42, 32, 29]; // state
