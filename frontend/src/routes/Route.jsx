@@ -6,7 +6,7 @@ import MyPage from "../components/pages/MyPage/MyPage";
 import TvRecommendation from "../components/pages/TvRecommendation/TvRecommendation";
 import RadioRecommendation from "../components/pages/RadioRecommendation/RadioRecommendation";
 import NewspaperRecommendation from "../components/pages/NewspaperRecommendation/NewspaperRecommendation.jsx";
-import OutdoorRecommendation from "../components/pages/OutdoorRecommendation/OutdoorRecommendation";
+import OutdoorRecommendation from "../components/pages/OutdoorRecommendation/OutdoorRecommendation.jsx";
 import Login from "../components/pages/Auth/Login";
 import SignPage from "../components/pages/Auth/SignPage";
 
