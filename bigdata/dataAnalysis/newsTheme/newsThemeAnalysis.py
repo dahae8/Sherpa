@@ -29,12 +29,12 @@ total_data = 0
 for row_num, row in df.iterrows():
     total_data += 1
     key = row['행정구역별(1)']
-    data['정치'][key] = row['정치']
-    data['사회'][key] = row['사회']
-    data['경제'][key] = row['경제']
-    data['문화'][key] = row['문화']
-    data['스포츠 및 연예'][key] = row['스포츠 및 연예']
-    data['기타'][key] = row['기타']
+    data['정치'][key] = round(row['정치'])
+    data['사회'][key] = round(row['사회'])
+    data['경제'][key] = round(row['경제'])
+    data['문화'][key] = round(row['문화'])
+    data['스포츠 및 연예'][key] = round(row['스포츠 및 연예'])
+    data['기타'][key] = round(row['기타'])
 
 sql_data_gender = {
     'gender': [],
@@ -57,6 +57,8 @@ idx_gender = 0
 idx_area = 0
 idx_age = 0
 
+per_int = 10
+
 for key, value in data.items():
     for k, v in value.items():
 
@@ -64,19 +66,19 @@ for key, value in data.items():
             idx_area += 1
             sql_data_area['name'].append(key)
             sql_data_area['area'].append(k)
-            sql_data_area['total'].append(v)
+            sql_data_area['total'].append(v*per_int)
 
         else:
             if k == 0 or k == 1:
                 idx_gender += 1
                 sql_data_gender['name'].append(key)
                 sql_data_gender['gender'].append(k)
-                sql_data_gender['total'].append(v)
+                sql_data_gender['total'].append(v*per_int)
             else:
                 idx_age += 1
                 sql_data_age['name'].append(key)
                 sql_data_age['age'].append(k)
-                sql_data_age['total'].append(v)
+                sql_data_age['total'].append(v*per_int)
 
 
 print('total_data : ', total_data)
