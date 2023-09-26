@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import MainPage from "../components/pages/MainPage/MainPage";
 import MediaRecommendPage from "../components/pages/MediaRecommendPage/MediaRecommendPage";
-import OnlineRecommendation from "../components/pages/OnlineRecommendation/OnlineRecommendation";
+import OnlineRecommendation from "../components/pages/OnlineRecommendation/OnlineRecommendation.jsx";
 import MyPage from "../components/pages/MyPage/MyPage";
 import TvRecommendation from "../components/pages/TvRecommendation/TvRecommendation";
 import RadioRecommendation from "../components/pages/RadioRecommendation/RadioRecommendation";

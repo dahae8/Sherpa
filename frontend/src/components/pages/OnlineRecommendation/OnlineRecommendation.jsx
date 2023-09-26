@@ -5,21 +5,13 @@ import BlogRecommendation from "../../organisms/ProducerCardList";
 import SnsRecomendation from "../../organisms/SnsRecommendation";
 import ProducerRecommendation from "../../organisms/ProducerCardList";
 import Buttons from "../../organisms/ResultPageButtens";
-
-const Container = styled.div`
-  margin: 0 320px;
-`;
-const TargetBox = styled.div`
-  margin-bottom: 100px;
-`;
-const Box = styled.div`
-  margin: 150px 0px 150px 0px;
-`;
-const BlogTitle = styled.div`
-  font-size: 48px;
-  margin-bottom: 100px;
-`;
-const Hr = styled.hr``;
+import {
+  Container,
+  TargetBox,
+  Box,
+  BlogTitle,
+  Hr,
+} from "./OnlineRecommendation";
 
 export const OnlineRecommendation = () => {
   // state productSmallId,
