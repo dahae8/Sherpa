@@ -69,7 +69,6 @@ export const MediaRecommendPage = () => {
 
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
-    // Fetch initial data for type "L"
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
     console.log(APPLICATION_SERVER_URL);
     const getDataL = async () => {
@@ -129,7 +128,7 @@ export const MediaRecommendPage = () => {
   //       console.error('Error fetching initial data:', error);
   //     }
   //   };
-  
+
   //   getSido();
   // }, []);
   // useEffect(() => {
