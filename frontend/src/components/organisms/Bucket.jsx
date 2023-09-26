@@ -4,6 +4,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import MediaCardList from './MediaCardList';
+import KeywordCard from './../atoms/KeywordCard';
+import ContentCard from './../atoms/ContentCardA';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,6 +42,13 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
+  const producerCardDatas = [
+    { img: "url", title: "대한민국 명산 도전", url: "url" },
+    { img: "url", title: "램블러", url: "url" },
+    { img: "url", title: "놀자", url: "url" },
+    { img: "url", title: "길잡이", url: "url" },
+  ]; //API
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -62,24 +72,24 @@ export default function BasicTabs() {
             fontSize: '16px',                
             fontWeight: 'normal',                 
           }}    
-          label="컨텐츠" {...a11yProps(1)} />
+          label="키워드" {...a11yProps(1)} />
           <Tab 
           sx={{    
             px: 1,                              
             fontSize: '16px',                
             fontWeight: 'normal',                 
           }}    
-          label="키워드" {...a11yProps(2)} />
+          label="컨텐츠" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Item One
+        <MediaCardList></MediaCardList>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Item Two
+        <KeywordCard></KeywordCard>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        Item Three
+        <ContentCard></ContentCard>
       </CustomTabPanel>
     </Box>
   );
