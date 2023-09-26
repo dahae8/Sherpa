@@ -21,7 +21,7 @@ const ConfirmContainer = styled.div`
 `
 
 function SignUp() {
-  const APPLICATION_SERVER_URL = process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://localhost:8080';
+  const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
