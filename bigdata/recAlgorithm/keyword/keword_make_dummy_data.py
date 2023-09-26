@@ -1,21 +1,21 @@
 import pymysql
 from datetime import datetime
 
-# 연결 설정
-connection = pymysql.connect(
-    host='j9c107.p.ssafy.io',
-    user='c107',
-    password='c107adrec',
-    database='adrec'
-)
-
 # # 연결 설정
 # connection = pymysql.connect(
-#     host='localhost',
-#     user='root',
-#     password='1234',
-#     database='test'
+#     host='j9c107.p.ssafy.io',
+#     user='c107',
+#     password='c107adrec',
+#     database='adrec'
 # )
+
+# 연결 설정
+connection = pymysql.connect(
+    host='localhost',
+    user='root',
+    password='1234',
+    database='test'
+)
 
 # 커서 생성
 cursor = connection.cursor()
