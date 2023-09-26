@@ -43,13 +43,6 @@ const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-// const RecommendButton = styled.div`
-//   backgroundColor="#3C486B"
-//   width="890px"
-//   height="80px"
-//   textColor="white"
-//   fontSize="24px"
-// `
 const Choosesido = styled.div`
   width: 40%;
 `;
