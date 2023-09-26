@@ -1,10 +1,15 @@
 import React from "react";
+import styled from "styled-components";
+
+const Contanier = styled.div`
+  margin: 0 320px;
+`;
 
 export const MainPage = () => {
   return (
-    <div>
+    <Contanier>
       <h1>메인페이지 입니다.</h1>
-    </div>
+    </Contanier>
   );
 };
 export default MainPage;
