@@ -1,3 +1,5 @@
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
 import ChannelRecommendation from "../../organisms/ChannelRecommendation";
@@ -36,7 +38,30 @@ export const NewsPaperRecommendation = () => {
   // const prices = useSelector((state) => state.result.prices);
   const recommendedMedia = "신문 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
+
   const recommendedNewspaper = "동아일보"; // 신문사 추천 API
+  // const [recommendedNewspaper, setRecommendedNewspaper] = useState("");
+  // const APPLICATION_SERVER_URL = "http://j9c107.p.ssafy.io:8080";
+  // useEffect(() => {
+  //   // API 요청을 수행하는 함수를 정의합니다.
+  //   const fetchRecommendedNewspaper = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         `${APPLICATION_SERVER_URL}/your-api-endpoint`, // 실제 API 엔드포인트로 교체하세요.
+  //         {
+  //           // 필요한 경우 요청 본문 데이터를 추가합니다.
+  //         }
+  //       );
+  //       // 응답이 'data' 필드에 추천 신문 데이터를 포함한다고 가정합니다.
+  //       setRecommendedNewspaper(response.data);
+  //     } catch (error) {
+  //       console.error("추천 신문 가져오기 오류:", error);
+  //     }
+  //   };
+
+  //   // 컴포넌트가 마운트될 때 fetchRecommendedNewspaper 함수를 호출합니다.
+  //   fetchRecommendedNewspaper();
+  // }, []); // 의존성 배열을 비워 한 번만 실행되도록 합니다.
   //const recommendedNewspaper = data[0].type
   const newspaperLabels = [
     "조선일보",
