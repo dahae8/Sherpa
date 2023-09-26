@@ -7,10 +7,8 @@ import com.ssafy.adrec.area.Sigungu;
 import com.ssafy.adrec.area.repository.DongRepository;
 import com.ssafy.adrec.area.repository.SidoRepository;
 import com.ssafy.adrec.area.repository.SigunguRepository;
+import com.ssafy.adrec.area.response.AreaGetRes;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
-import com.ssafy.adrec.product.ProductLarge;
-import com.ssafy.adrec.product.ProductMedium;
-import com.ssafy.adrec.product.ProductSmall;
 import com.ssafy.adrec.product.response.ProductGetRes;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,26 +28,26 @@ public class AreaServiceImpl implements AreaService{
     private final DongRepository dongRepository;
 
     @Override
-    public List<ProductGetRes> getList(AreaType areaType, Long id){
-        List<ProductGetRes> list = new ArrayList<>();
+    public List<AreaGetRes> getList(AreaType areaType, Long id){
+        List<AreaGetRes> list = new ArrayList<>();
 
         switch (areaType) {
             case SIDO:
                 List<Sido> sidoList = sidoRepository.findAll();
                 for (Sido sido : sidoList) {
-                    list.add(new ProductGetRes(sido.getId(), sido.getName()));
+                    list.add(new AreaGetRes(sido.getId(), sido.getName()));
                 }
                 break;
             case SIGUNGU:
                 List<Sigungu> sigunguList = sigunguRepository.findAllBySido_Id(id);
                 for (Sigungu sigungu : sigunguList) {
-                    list.add(new ProductGetRes(sigungu.getId(), sigungu.getName()));
+                    list.add(new AreaGetRes(sigungu.getId(), sigungu.getName()));
                 }
                 break;
             case DONG:
                 List<Dong> dongList = dongRepository.findAllBySigungu_Id(id);
                 for (Dong dong : dongList) {
-                    list.add(new ProductGetRes(dong.getId(), dong.getName()));
+                    list.add(new AreaGetRes(dong.getId(), dong.getName()));
                 }
                 break;
         }
