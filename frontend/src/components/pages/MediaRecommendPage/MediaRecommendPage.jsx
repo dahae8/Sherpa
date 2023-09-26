@@ -7,6 +7,9 @@ import { TextField } from '@mui/material';
 import Button from '../../atoms/Button';
 import Select from '../../atoms/SelectOption';
 
+const APPLICATION_SERVER_URL =
+  process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
+
 const Container = styled.div`
   margin: 0 320px;
   display: flex;
@@ -60,8 +63,10 @@ export const MediaRecommendPage = () => {
 
   useLayoutEffect(() => {
     // Fetch initial data for type "L"
+    console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
+    console.log(APPLICATION_SERVER_URL);
     axios
-      .get('http://j9c107.p.ssafy.io:8080/api/product/L/0')
+      .get(APPLICATION_SERVER_URL + `/api/product/L/0`)
       .then((response) => {
         if (response.data.success) {
           console.log(response.data);
@@ -75,7 +80,7 @@ export const MediaRecommendPage = () => {
   useEffect(() => {
     if (selectDataL) {
       axios
-        .get('http://j9c107.p.ssafy.io:8080/api/product/M/' + selectDataL)
+        .get(APPLICATION_SERVER_URL + `/api/product/M/${selectDataL}`)
         .then((response) => {
           if (response.data.success) {
             setDataM(response.data.data);
@@ -89,7 +94,7 @@ export const MediaRecommendPage = () => {
   useEffect(() => {
     if (selectDataM) {
       axios
-        .get('http://j9c107.p.ssafy.io:8080/api/product/S/' + selectDataM)
+        .get(APPLICATION_SERVER_URL + `/api/product/S/${selectDataM}`)
         .then((response) => {
           if (response.data.success) {
             setDataS(response.data.data);
