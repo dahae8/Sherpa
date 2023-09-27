@@ -14,17 +14,16 @@ import {
 } from "./OnlineRecommendation";
 
 export const OnlineRecommendation = () => {
-  // state productSmallId,
   const ages = [80, 60, 45, 42, 32, 29]; // state
-  // const ages = useSelector((state) => state.result.ages);
+  // const ages = useSelector((state) => state.result.target);
   const male = 75; // state
-  // const ages = useSelector((state) => state.result.male);
+  // const male = useSelector((state) => state.result.target);
   const female = 25; // state
-  // const ages = useSelector((state) => state.result.female);
+  // const female = useSelector((state) => state.result.target);
   const gender = 1; // state
-  // const ages = useSelector((state) => state.result.gender);
+  // const gender = useSelector((state) => state.result.target);
   const age = 30; // state
-  // const ages = useSelector((state) => state.result.age);
+  // const age = useSelector((state) => state.result.target);
   const communityLabels = ["네이버", "다음", "싸이월드", "텀블러", "구글"]; //커뮤니티 추천 API
   // const communityLabels = [];
   // for (let i = 0; i < communityList.length; i++) {

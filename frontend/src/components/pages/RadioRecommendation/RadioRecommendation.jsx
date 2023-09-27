@@ -14,27 +14,23 @@ import {
 
 export const RadioRecommendation = () => {
   const ages = [80, 60, 45, 42, 32, 29]; // state
-  // const ages = useSelector((state) => state.result.ages);
+  // const ages = useSelector((state) => state.result.target);
   const male = 75; // state
-  // const male = useSelector((state) => state.result.male);
+  // const male = useSelector((state) => state.result.target);
   const female = 25; // state
-  // const female = useSelector((state) => state.result.female);
+  // const female = useSelector((state) => state.result.target);
   const gender = 1; // state
-  // const gender = useSelector((state) => state.result.gender);
+  // const gender = useSelector((state) => state.result.target);
   const age = 30; // state
-  // const age = useSelector((state) => state.result.age);
+  // const age = useSelector((state) => state.result.target);
   const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
-  // const mediaLabels = useSelector((state) => state.result.mediaLabels);
-  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
-  // const subMediaLabels = useSelector((state) => state.result.subMediaLabels);
-  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
-  // const priceLabels = useSelector((state) => state.result.priceLabels);
+  // const mediaLabels = useSelector((state) => state.result.media);
+  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // 오프라인 매체 추천 - 품목/매체별 호감도 API 통신
+  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // 오프라인 매체 추천 - 예산 필터링 API 통신
   const mainDatas = [23, 19, 13, 5]; // state
-  // const mainDatas = useSelector((state) => state.result.mainDatas);
-  const subDatas = [23, 19, 13, 5]; // state
-  // const subDatas = useSelector((state) => state.result.subDatas);
-  const prices = [23, 19, 13, 5]; // state
-  // const prices = useSelector((state) => state.result.prices);
+  // const mainDatas = useSelector((state) => state.result.media);
+  const subDatas = [23, 19, 13, 5]; // 오프라인 매체 추천 - 품목/매체별 호감도 API 통신
+  const prices = [23, 19, 13, 5]; // 오프라인 매체 추천 - 예산 필터링 API 통신
   const recommendedMedia = "라디오 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
   const radioChannelLabels = [
