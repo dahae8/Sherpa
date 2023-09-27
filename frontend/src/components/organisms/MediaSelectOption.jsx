@@ -13,15 +13,15 @@ const Container = styled.div`
   margin-top: 10px;
 `;
 
-function MediaSelectOption({ dataL, dataM, dataS, onSelectL, onSelectM, onSelectS }) {
+function MediaSelectOption({ dataL, dataM, dataS, onSelectL, onSelectM, onSelectS, width }) {
   const [selectedataL, setSelectedataL] = useState(null);
   const [selectedataM, setSelectedataM] = useState(null);
   const [selectedataS, setSelectedataS] = useState(null);
   return (
     <Container>
-      <Select data={dataL || []} onSelect={onSelectL} />
-      <Select data={dataM} onSelect={onSelectM} />
-      <Select data={dataS} onSelect={onSelectS} />
+      <Select data={dataL || []} onSelect={onSelectL} width={width}/>
+      <Select data={dataM} onSelect={onSelectM} width={width}/>
+      <Select data={dataS} onSelect={onSelectS} width={width}/>
     </Container>
   );
 }

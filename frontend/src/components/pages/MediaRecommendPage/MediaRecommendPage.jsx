@@ -192,4 +192,5 @@ export const MediaRecommendPage = () => {
     </Container>
   );
 };
+
 export default MediaRecommendPage;
