@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production"
     ? "https://j9c107.p.ssafy.io"
-    : "http://j9c107.p.ssafy.io:8080";
+    : "http://j9c107.p.ssafy.io:8000";
 
 export const NewsPaperRecommendation = () => {
   const navigate = useNavigate();
@@ -46,98 +46,109 @@ export const NewsPaperRecommendation = () => {
 
   // const recommendedNewspaper = "동아일보"; // 신문사 추천 API
   const [recommendedNewspaper, setRecommendedNewspaper] = useState("");
+  const [newspaperLabels, setNewspaperLabels] = useState([]);
+  const [newspaperDatas, setNewspaperDatas] = useState([]);
+  const [recommendedNewspaperArea, setRecommendedNewspaperArea] = useState("");
+  const [newspaperAreaLabels, setNewspaperAreaLabels] = useState([]);
+  const [newspaperAreaDatas, setNewspaperAreaDatas] = useState([]);
   // const APPLICATION_SERVER_URL = "http://j9c107.p.ssafy.io:8080";
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
     console.log(APPLICATION_SERVER_URL);
-    const request = {
-      gender: {
-        0: 45,
-        1: 55,
-      },
-      age: {
-        10: 19,
-        20: 17,
-        30: 13,
-        40: 20,
-        50: 21,
-        60: 5,
-        70: 5,
-      },
-      sidoId: 1,
-    };
-    const fetchRecommendedNewspaper = async () => {
+    const recommendNewspaper = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/api/news/newspaper`,
-          request
+          `${APPLICATION_SERVER_URL}/fastapi/offline/news/newspaper`,
+          {
+            gender: {
+              0: 45,
+              1: 55,
+            },
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+            sidoId: 1,
+          }
         );
         console.log(response);
-        setRecommendedNewspaper(response.data[0].type);
+        setRecommendedNewspaper(response.data.data.newsList[0].type);
+        const newspaperLabels = [];
+        for (let i = 0; i < response.data.data.newsList.length; i++) {
+          if (response.data.data.newsList[i]) {
+            newspaperLabels.push(response.data.data.newsList[i].type);
+          } else {
+            newspaperLabels.push(0);
+          }
+          setNewspaperLabels(newspaperLabels);
+          const newspaperDatas = [];
+          for (let i = 0; i < response.data.data.newsList.length; i++) {
+            if (response.data.data.newsList[i]) {
+              newspaperDatas.push(response.data.data.newsList[i].ratio);
+            } else {
+              newspaperDatas.push(0);
+            }
+          }
+          setNewspaperDatas(newspaperDatas);
+        }
       } catch (error) {
         console.error("추천 신문 가져오기 오류:", error);
       }
     };
-    fetchRecommendedNewspaper();
-  }, []); // 의존성 배열을 비워 한 번만 실행되도록 합니다.
-  //const recommendedNewspaper = data[0].type
-  const newspaperLabels = [
-    "조선일보",
-    "중앙일보",
-    "동아일보",
-    "매일경제",
-    "한겨레",
-    "한국경제",
-    "경향신문",
-    "한국일보",
-    "농민신문",
-    "국민일보",
-  ]; // 신문사 추천 API
-  // const newspaperLabels = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     newspaperLabels.push(data[i].type);
-  //   } else {
-  //     newspaperLabels.push(0);
-  //   }
-  // }
-  const newspaperDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3, 2]; // 신문사 추천 API
-  // const newspaperDatas = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     newspaperDatas.push(data[i].ratio);
-  //   } else {
-  //     newspaperDatas.push(0);
-  //   }
-  // }
-  const recommendedNewspaperArea = "경제"; // 신문 분야 추천 API
-  //  const recommendedNewspaperArea = data[o].type
-  const newspaperAreaLabels = [
-    "정치",
-    "사회",
-    "경제",
-    "문화",
-    "스포츠 및 연애",
-    "기타",
-  ]; // 신문 분야 추천 API
-  // const newspaperAreaLabels = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     newspaperAreaLabels.push(data[i].type);
-  //   } else {
-  //     newspaperAreaLabels.push(0);
-  //   }
-  // }
-  const newspaperAreaDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3, 2]; // 신문 분야 추천 API
-  // const newspaperAreaDatas = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     newspaperAreaDatas.push(data[i].ratio);
-  //   } else {
-  //     newspaperAreaDatas.push(0);
-  //   }
-  // }
+    const recommendNewspaperField = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/offline/news/field`,
+          {
+            gender: {
+              0: 45,
+              1: 55,
+            },
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+            sidoId: 1,
+          }
+        );
+        console.log(response);
+        setRecommendedNewspaperArea(response.data.data.newsThemeList[0].type);
+        const newspaperAreaLabels = [];
+        for (let i = 0; i < response.data.data.newsThemeList.length; i++) {
+          if (response.data.data.newsThemeList[i]) {
+            newspaperAreaLabels.push(response.data.data.newsThemeList[i].type);
+          } else {
+            newspaperAreaLabels.push(0);
+          }
+        }
+        setNewspaperAreaLabels(newspaperAreaLabels);
+        const newspaperAreaDatas = [];
+        for (let i = 0; i < response.data.data.newsThemeList.length; i++) {
+          if (response.data.data.newsThemeList[i]) {
+            newspaperAreaDatas.push(response.data.data.newsThemeList[i].ratio);
+          } else {
+            newspaperAreaDatas.push(0);
+          }
+        }
+        setNewspaperAreaDatas(newspaperAreaDatas);
+      } catch (error) {
+        console.error("추천 신문 가져오기 오류:", error);
+      }
+    };
+    recommendNewspaper();
+    recommendNewspaperField();
+  }, []);
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
