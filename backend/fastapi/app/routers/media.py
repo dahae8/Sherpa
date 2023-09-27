@@ -12,14 +12,14 @@ import math
 router = APIRouter(prefix="/fastapi/offline")
 
 
-class Item(BaseModel):
+class Product(BaseModel):
     productSmallId: int
     sigunguId: int
     gender: int
     age: int
 
 
-class ResponseItem(BaseModel):
+class ResponseProduct(BaseModel):
     success: bool
     data: dict
     count: int
@@ -28,7 +28,7 @@ class ResponseItem(BaseModel):
 
 # 광고 매체 추천 - 품목
 @router.post("/product")
-def offline(item: Item):
+def offline(item: Product):
     # DB 연결
     db_config = {
         "host": "j9c107.p.ssafy.io",
@@ -213,7 +213,7 @@ def offline(item: Item):
             media_list.append(item)
 
         # 응답 데이터 생성
-        response_data = ResponseItem(
+        response_data = ResponseProduct(
             success=True,
             data={
                 "recommend": recommend,
