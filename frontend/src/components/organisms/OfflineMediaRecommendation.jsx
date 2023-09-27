@@ -64,7 +64,7 @@ function makeOfflineMediaRecommendation({
           <DoughnutChart
             labels={mediaLabels}
             datas={mainDatas}
-            width="60%"
+            width="50%"
             fontSize={fontSize}
           ></DoughnutChart>
         </ChartItem>
