@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn:python3.11.5
+FROM tiangolo/uvicorn-gunicorn:python3.11
 
 # 작업디렉토리 설정
 WORKDIR /code
