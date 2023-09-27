@@ -232,6 +232,9 @@ export const OutdoorRecommendation = () => {
             border="1px solid #3C486B"
             textColor="#3C486B"
             fontSize="24px"
+            onClick={() => {
+              navigate("/mypage");
+            }}
           >
             보관함에 추가
           </Button>
@@ -253,7 +256,6 @@ export const OutdoorRecommendation = () => {
           textColor="white"
           fontSize="24px"
           onClick={() => {
-            console.log(1);
             navigate("/mediaRecommend");
           }}
         >
