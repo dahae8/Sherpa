@@ -1,5 +1,5 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
+import React, { useState, useLayoutEffect } from "react";
+import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
 import ChannelRecommendation from "../../organisms/ChannelRecommendation";
@@ -12,6 +12,11 @@ import {
   Hr,
   ProducerTitleItem,
 } from "./NewspaperRecommendation";
+
+const APPLICATION_SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8080";
 
 export const NewsPaperRecommendation = () => {
   const ages = [80, 60, 45, 42, 32, 29]; // state
@@ -39,29 +44,43 @@ export const NewsPaperRecommendation = () => {
   const recommendedMedia = "신문 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
 
-  const recommendedNewspaper = "동아일보"; // 신문사 추천 API
-  // const [recommendedNewspaper, setRecommendedNewspaper] = useState("");
+  // const recommendedNewspaper = "동아일보"; // 신문사 추천 API
+  const [recommendedNewspaper, setRecommendedNewspaper] = useState("");
   // const APPLICATION_SERVER_URL = "http://j9c107.p.ssafy.io:8080";
-  // useEffect(() => {
-  //   // API 요청을 수행하는 함수를 정의합니다.
-  //   const fetchRecommendedNewspaper = async () => {
-  //     try {
-  //       const response = await axios.post(
-  //         `${APPLICATION_SERVER_URL}/your-api-endpoint`, // 실제 API 엔드포인트로 교체하세요.
-  //         {
-  //           // 필요한 경우 요청 본문 데이터를 추가합니다.
-  //         }
-  //       );
-  //       // 응답이 'data' 필드에 추천 신문 데이터를 포함한다고 가정합니다.
-  //       setRecommendedNewspaper(response.data);
-  //     } catch (error) {
-  //       console.error("추천 신문 가져오기 오류:", error);
-  //     }
-  //   };
 
-  //   // 컴포넌트가 마운트될 때 fetchRecommendedNewspaper 함수를 호출합니다.
-  //   fetchRecommendedNewspaper();
-  // }, []); // 의존성 배열을 비워 한 번만 실행되도록 합니다.
+  useLayoutEffect(() => {
+    console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
+    console.log(APPLICATION_SERVER_URL);
+    const request = {
+      gender: {
+        0: 45,
+        1: 55,
+      },
+      age: {
+        10: 19,
+        20: 17,
+        30: 13,
+        40: 20,
+        50: 21,
+        60: 5,
+        70: 5,
+      },
+      sidoId: 1,
+    };
+    const fetchRecommendedNewspaper = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/api/news/newspaper`,
+          request
+        );
+        console.log(response);
+        setRecommendedNewspaper(response.data[0].type);
+      } catch (error) {
+        console.error("추천 신문 가져오기 오류:", error);
+      }
+    };
+    fetchRecommendedNewspaper();
+  }, []); // 의존성 배열을 비워 한 번만 실행되도록 합니다.
   //const recommendedNewspaper = data[0].type
   const newspaperLabels = [
     "조선일보",
