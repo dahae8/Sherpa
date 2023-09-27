@@ -5,8 +5,9 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import MediaCardList from './MediaCardList';
-import KeywordCard from './../atoms/KeywordCard';
 import ContentCard from './../atoms/ContentCardA';
+import KeywordCardList from './KeywordCardList';
+import ContentCardB from '../atoms/ContentCardB';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -86,10 +87,11 @@ export default function BasicTabs() {
         <MediaCardList></MediaCardList>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <KeywordCard></KeywordCard>
+        <KeywordCardList></KeywordCardList>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <ContentCard></ContentCard>
+        <ContentCardB></ContentCardB>
       </CustomTabPanel>
     </Box>
   );
