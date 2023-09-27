@@ -53,7 +53,7 @@ function makeReccommendTarget({ age, datas, target, male, female }) {
   //   useSelector((state) => state.result.selectedBigRegion),
   //   useSelector((state) => state.result.selectedSmallRegion),
   // ];
-  const item = "운동화"; // state
+  const item = "패스트 푸드점"; // state
   // const item = useSelector((state) => state.user.productSmall);
 
   return (
@@ -75,7 +75,11 @@ function makeReccommendTarget({ age, datas, target, male, female }) {
           </Percent>
         </ImgItem>
         <ChartItem>
-          <BarChartItem labels={labels} datas={datas} />
+          <BarChartItem
+            labels={labels}
+            datas={datas}
+            text={`${item}을(를) 많이 이용하는 연령대 통계`}
+          />
         </ChartItem>
       </ContentBox>
     </Container>
