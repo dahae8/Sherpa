@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import CommunityRecommendation from "../../organisms/CommunityRecommendation";
 import BlogRecommendation from "../../organisms/ProducerCardList";
