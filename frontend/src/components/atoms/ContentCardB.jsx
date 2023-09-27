@@ -4,6 +4,7 @@ import Chip from '@mui/material/Chip';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, Typography } from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
+import Button from './Button';
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -52,26 +53,22 @@ const FormBox = styled.div`
   align-items:center;
   justify-content: center;
   flex-direction: column;
-  text-align: center;
+  text-align: left;
   padding: 10px;
 `
 
 const PhraseBox = styled.div`
-  /* width: 450px;
-  height: 150px; */
   border: 1px solid #DBDBDB;
   border-radius: 4px;
   display: flex;
   align-items:center;
   justify-content: center;
   margin-top: 20px;
+  margin-bottom: 10px;
 
 `
 const Phrase = styled.div`
   padding: 30px;
-`
-const CancelBox = styled.div`
-  padding-right: 15px;
 `
 
 const style = {
@@ -79,7 +76,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: 1000,
   height: 600,
   bgcolor: 'background.paper',
   border: '1px solid #fff',
@@ -89,7 +86,7 @@ const style = {
 };
 
 
-function ContentCard() {
+function ContentCardB() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -103,16 +100,16 @@ function ContentCard() {
       <ClearIcon></ClearIcon>
       </IconContainer>
       <TitleBox>
-        옥외광고
+        TV광고
         <br></br>
-        문구 추천
+        시나리오 추천
       </TitleBox>
       <ChipBox>
-      <Chip label="#라면" />
-      <Chip label="#맛" color="primary" />
+      <Chip label="#선크림" />
+      <Chip label="#햇빛" color="primary" />
       </ChipBox>
       <UrlBox>
-        <UrlItem onClick={handleOpen}>>> 문구 보기</UrlItem>
+        <UrlItem onClick={handleOpen}>>> 시나리오 보기</UrlItem>
       </UrlBox>
 
       <Modal
@@ -122,28 +119,36 @@ function ContentCard() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} overflow="auto">
-          <Chip label="#라면" />
-          <Chip label="#맛" color="primary" />
+          <Chip label="#선크림" />
+          <Chip label="#햇빛" color="primary" />
           <Typography fontSize={40} align="left">
-            문구 추천
+            시나리오 추천
           </Typography>
           <FormBox>
           <PhraseBox>
             <Phrase>
-            <Typography fontSize={32}>“내가 알던 라면이 아니다! 맛의 차원이 다르다!”</Typography>
+            <Typography fontSize={32}>제목: "햇빛 아래 빛나는 여정, 선크림과 함께"</Typography>
+            <br></br>
+            <Typography fontSize={24}>장면 1: 해변 풍경
+            화면에 아름다운 해변 풍경이 나타납니다. 
+            파도 소리와 해변가에서 즐거운 사람들의 웃음소리가 들립니다.
+            해변의 모래는 금빛으로 빛나고 있습니다.
+            해변에서 행복하게 웃고 노는 가족과 친구들이 화면에 나타납니다.</Typography>
+            <br></br>
+            <Typography fontSize={24}>나레이션 (음성 오버):      
+             "해변에서의 빛나는 순간을 즐기세요. 
+              하지만 햇빛으로부터 당신의 피부를 지키세요."</Typography>
             </Phrase>
-            <CancelBox>
-            <CancelIcon color="disabled"></CancelIcon>
-            </CancelBox>
           </PhraseBox>
-          <PhraseBox>
-            <Phrase>
-            <Typography fontSize={32}>“한국인의 정서가 어우러진 가장 맛있는 라면”</Typography>
-            </Phrase>
-            <CancelBox>
-            <CancelIcon color="disabled"></CancelIcon>
-            </CancelBox>
-          </PhraseBox>
+            <Button TextColor="white"
+              width="70px"
+              height="45px"
+              border="1px solid #3C486B"
+              backgroundColor="#3C486B"
+              fontSize="16px"
+            >
+              삭제
+            </Button>
           </FormBox>
         </Box>
       </Modal>
@@ -151,4 +156,4 @@ function ContentCard() {
   );
 }
 
-export default ContentCard;
+export default ContentCardB;
