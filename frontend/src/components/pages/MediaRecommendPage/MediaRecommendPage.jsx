@@ -30,14 +30,14 @@ const RecommendSelect = styled.div`
   justify-content: space-between;
 `;
 const BudgetAdvertisement = styled.div`
-  width: 40%;
+  width: 45%;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
 `;
 const ChooseKindOfRecommend = styled.div`
   display: flex;
-  width: 40%;
+  width:45%;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
@@ -50,7 +50,7 @@ const Choosesido = styled.div`
   width: 40%;
 `;
 const Choosedong = styled.div`
-  width: 40%;
+  width: 45%;
 `;
 
 export const MediaRecommendPage = () => {
@@ -167,21 +167,28 @@ export const MediaRecommendPage = () => {
         <ChooseKindOfRecommend>
           <Paragraph>온/오프라인</Paragraph>
           <Buttons>
-            <Button backgroundColor="#3C486B" width="40%" height="50px" textColor="white" fontSize="24px">
+            <Button backgroundColor="#3C486B" width="200px" height="50px" textColor="white" fontSize="24px">
               온라인
             </Button>
-            <Button backgroundColor="#3C486B" width="40%" height="50px" textColor="white" fontSize="24px">
+            <Button
+              backgroundColor="white"
+              width="200px"
+              height="50px"
+              textColor="#3C486B"
+              fontSize="24px"
+              border="solid 1px"
+            >
               오프라인
             </Button>
           </Buttons>
         </ChooseKindOfRecommend>
         <Choosesido>
           <Paragraph>광고 지역 선택</Paragraph>
-          <Select></Select>
+          <Select width='400px'></Select>
         </Choosesido>
         <Choosedong>
           <Paragraph>광고 상세 지역 선택</Paragraph>
-          <Select dataSido={dataSido} onSelect={setDataSido}></Select>
+          <Select dataSido={dataSido} onSelect={setDataSido} width='400px'></Select>
         </Choosedong>
       </RecommendSelect>
       <Box>

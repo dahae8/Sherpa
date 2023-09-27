@@ -4,6 +4,9 @@ import axios from 'axios';
 import styled from 'styled-components';
 import Select from '../../atoms/SelectOption';
 import MediaSelectOption from '../../organisms/MediaSelectOption';
+import Button from '../../atoms/Button';
+import { TextField } from '@mui/material';
+import { Chip } from '@mui/material';
 
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
@@ -18,6 +21,11 @@ const Container = styled.div`
 const Paragraph = styled.p`
   text-align: start;
 `;
+const Title = styled.p`
+  font-size: 32px;
+  margin: 10px 20px 50px 0px;
+  font-weight: 700;
+`;
 const Box = styled.div`
   margin: 50px 0px 50px 0px;
   display: flex;
@@ -25,12 +33,21 @@ const Box = styled.div`
   flex-wrap: wrap;
   align-content: center;
 `;
-const bunch = styled.div`
-  margin: 100px 0px 0px 0px;
+const Bunch = styled.div`
+  margin: 100px 0px 20px 0px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   align-content: center;
+  justify-content: center;
+`;
+const Bundle = styled.div`
+  margin: 0px 0px 0px 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
 `;
 
 export const MediaRecommendPage = () => {
@@ -119,9 +136,33 @@ export const MediaRecommendPage = () => {
         onSelectS={setSelectDataS}
         width="200px"
       ></MediaSelectOption>
-      <bunch>
-        <h1>키워드를 입력해주세요</h1>
-      </bunch>
+      <Bunch>
+        <Title>키워드를 입력해주세요</Title>
+        <Button
+          backgroundColor="white"
+          width="180px"
+          height="50px"
+          textColor="#3C486B"
+          fontSize="16px"
+          border="solid 1px"
+        >
+          좋아요한 키워드+
+        </Button>
+      </Bunch>
+      <Bundle>
+        <Select width="600px"></Select>
+        <Button backgroundColor="#3C486B" width="150px" height="50px" textColor="white" fontSize="24px">
+          추가
+        </Button>
+      </Bundle>
+      <Bundle>
+        <Chip
+          label="Clickable Deletable"
+          // onClick={handleClick}
+          // onDelete={handleDelete}
+        />
+        
+      </Bundle>
     </Container>
   );
 };
