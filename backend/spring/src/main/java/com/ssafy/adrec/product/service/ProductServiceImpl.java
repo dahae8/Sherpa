@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +55,14 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return list;
+    }
+
+    @Override
+    public ProductSmall getProductSmall (Long id){
+        Optional<ProductSmall> productSmall = productSmallRepository.findById(id);
+        if(productSmall.isEmpty()){
+            return null;
+        }
+        return productSmall.get();
     }
 }
