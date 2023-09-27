@@ -14,3 +14,11 @@ export const BlogTitle = styled.div`
   margin-bottom: 100px;
 `;
 export const Hr = styled.hr``;
+export const SaveBox = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  margin: 150px 0px 30px 0px;
+`;
+export const ButtonBox = styled.div`
+  margin-bottom: 200px;
+`;

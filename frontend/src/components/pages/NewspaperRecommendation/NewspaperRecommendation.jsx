@@ -4,14 +4,17 @@ import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
 import ChannelRecommendation from "../../organisms/ChannelRecommendation";
 import ProducerRecommendation from "../../organisms/ProducerCardList";
-import Buttons from "../../organisms/ResultPageButtens";
 import {
   Container,
   TargetBox,
   Box,
   Hr,
   ProducerTitleItem,
+  SaveBox,
+  ButtonBox,
 } from "./NewspaperRecommendation";
+import Button from "../../atoms/Button";
+import { useNavigate } from "react-router-dom";
 
 const APPLICATION_SERVER_URL =
   process.env.NODE_ENV === "production"
@@ -19,6 +22,7 @@ const APPLICATION_SERVER_URL =
     : "http://j9c107.p.ssafy.io:8080";
 
 export const NewsPaperRecommendation = () => {
+  const navigate = useNavigate();
   const ages = [80, 60, 45, 42, 32, 29]; // state
   // const ages = useSelector((state) => state.result.target);
   const male = 75; // state
@@ -195,9 +199,43 @@ export const NewsPaperRecommendation = () => {
           cardDatas={producerCardDatas}
         ></ProducerRecommendation>
       </Box>
-      <Box>
-        <Buttons></Buttons>
-      </Box>
+      <ButtonBox>
+        <SaveBox>
+          <Button
+            backgroundColor="white"
+            width="350px"
+            height="80px"
+            border="1px solid #3C486B"
+            textColor="#3C486B"
+            fontSize="24px"
+          >
+            보관함에 추가
+          </Button>
+          <Button
+            backgroundColor="white"
+            width="350px"
+            height="80px"
+            border="1px solid #3C486B"
+            textColor="#3C486B"
+            fontSize="24px"
+          >
+            PDF로 저장
+          </Button>
+        </SaveBox>
+        <Button
+          backgroundColor="#3C486B"
+          width="890px"
+          height="80px"
+          textColor="white"
+          fontSize="24px"
+          onClick={() => {
+            console.log(1);
+            navigate("/mediaRecommend");
+          }}
+        >
+          다시 추천받기
+        </Button>
+      </ButtonBox>
     </Container>
   );
 };
