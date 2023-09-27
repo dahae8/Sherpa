@@ -177,7 +177,7 @@ export const NewsPaperRecommendation = () => {
           title={`추천 드리는 신문사는 ${recommendedNewspaper} 입니다.`}
           datas={newspaperDatas}
           labels={newspaperLabels}
-          description={`${target}이 이용하는 신문사 통계`}
+          description={`${age}대 ${target}이 이용하는 신문사 통계`}
         ></ChannelRecommendation>
       </Box>
       <Box>
