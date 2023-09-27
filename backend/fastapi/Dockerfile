@@ -7,10 +7,6 @@ COPY ./requirements.txt /code/requirements.txt
 
 ### install dependencies ###
 
-# java stuff
-RUN apt-get update && \
-    apt-get install -y curl openjdk-11-jdk
-
 # install python packages
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir --upgrade -r /code/requirements.txt
