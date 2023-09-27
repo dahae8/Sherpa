@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn:python3.8
+FROM tiangolo/uvicorn-gunicorn:python3.11
 
 # 작업디렉토리 설정
 WORKDIR /code
@@ -7,17 +7,9 @@ COPY ./requirements.txt /code/requirements.txt
 
 ### install dependencies ###
 
-# java stuff
-RUN apt-get update && \
-    apt-get install -y curl openjdk-11-jdk
-
 # install python packages
 RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir --upgrade -r /code/requirements.txt
-
-# mecab
-# RUN cd /code && \
-#    curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh | bash -s
 
 # 현재경로에 존재하는 app의 모든 소스파일을 /code/app 경로 이미지에 복사
 COPY ./app /code/app

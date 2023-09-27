@@ -10,10 +10,27 @@ class Target(BaseModel):
     sidoId:  int
 
 
-router = APIRouter()
+class ResponseItem(BaseModel):
+    success: bool
+    data: dict
+    count: int
+    msg: str
 
-@router.post("/api/news/newspaper", status_code=200)
+router = APIRouter(prefix="/fastapi/offline")
+
+@router.post("/news/newspaper", status_code=200)
 async def read_root(target: Target):
+
+    if target.sidoId<1 or target.sidoId>17:
+        response_data = ResponseItem(
+            success=False,
+            data={},
+            count= 0 ,
+            msg="sidoId가 잘못 되었습니다. 1~17 사이의 숫자로 보내세요."
+        )
+        return response_data
+
+
     # 연결 설정
     connection = pymysql.connect(
         host='j9c107.p.ssafy.io',
@@ -117,6 +134,15 @@ async def read_root(target: Target):
         result["ratio"] = round((value / total_score) * 100)
         results.append(result)
     sorted_results = sorted(results, key=lambda x: x["ratio"], reverse=True)
-    return sorted_results
+
+    response_data = ResponseItem(
+        success=False,
+        data={
+            "newsList" : sorted_results
+        },
+        count=len(sorted_results),
+        msg="데이터를 성공적으로 불러왔습니다."
+    )
+    return response_data
 
 
