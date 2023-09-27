@@ -4,9 +4,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SelectAutoWidth({ data = [], onSelect }) {
+export default function SelectAutoWidth({ data = [], onSelect, width = '210px' }) {
   return (
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 210 }}>
+    <FormControl variant="standard" sx={{ m: 1, minWidth: width }}>
       <InputLabel id="demo-simple-select-standard-label"></InputLabel>
       <Select
         labelId="demo-simple-select-standard-label"
