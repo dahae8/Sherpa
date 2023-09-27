@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Chip from '@mui/material/Chip';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, Typography } from "@mui/material";
-import CancelIcon from '@mui/icons-material/Cancel';
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -26,7 +25,10 @@ const TitleBox = styled.div`
 const DateBox = styled.div`
   color: #3C486B;
   `
-
+const ChipBox = styled.div`
+  text-align: center;
+  margin: 20px;
+`
 const UrlBox = styled.div`
   text-align: right;
 `;
@@ -41,13 +43,6 @@ const UrlItem = styled.button`
 const IconContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
-const KeyBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 25px;
-  margin-left: 25px;
-  
 `
 
 const style = {
@@ -64,10 +59,15 @@ const style = {
   padding: 7,
 };
 
-function KeywordCard() {
+function KeywordCard2() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleDelete = () => {
+    console.info('You clicked the delete icon.');
+  };
+
 
   return (
     <Container>
@@ -86,9 +86,9 @@ function KeywordCard() {
         <br></br>
         사리곰탕
       </TitleBox>
-      <Chip label="#선크림" />
+      <Chip label="#라면" />
       <UrlBox>
-        <UrlItem onClick={handleOpen}>>> 키워드 더보기</UrlItem>
+        <UrlItem onClick={handleOpen}>>> 키워드 더 보기</UrlItem>
       </UrlBox>
 
       <Modal
@@ -97,17 +97,38 @@ function KeywordCard() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style} overflow="auto">
-          <Chip label="#선크림" />
-          <Typography fontSize={40} align="center">
+        <Box sx={style}>
+          <Chip label="#라면" />
+          <Typography id="modal-modal-title" variant="h5" component="h1" align="center">
             키워드
           </Typography>
-          <KeyBox>
-          <Typography fontSize={24}>
-            톤업선크림
-          </Typography>
-          <CancelIcon fontSize="large" color="disabled"></CancelIcon>
-          </KeyBox>
+          <ChipBox>
+          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
+          <ChipBox>
+          <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
+          <ChipBox>
+          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
+          <ChipBox>
+          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
+          <ChipBox>
+          <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
+          <ChipBox>
+          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
+          <ChipBox>
+          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
+          <ChipBox>
+          <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
+          <ChipBox>
+          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox> 
         </Box>
       </Modal>
 
@@ -115,4 +136,4 @@ function KeywordCard() {
   );
 }
 
-export default KeywordCard;
+export default KeywordCard2;
