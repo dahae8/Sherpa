@@ -82,7 +82,7 @@ def offline(item: Product):
             media_list.append(item)
         # count = len(media_list)
         # 응답 데이터 생성
-        response_data = ResponseItem(
+        response_data = ResponseProduct(
             success=True,
             data={
                 "recommend": recommend,
