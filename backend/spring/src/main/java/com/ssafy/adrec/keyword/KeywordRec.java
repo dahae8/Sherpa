@@ -1,9 +1,12 @@
 package com.ssafy.adrec.keyword;
 
+import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.product.ProductSmall;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -11,27 +14,29 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "adKeyword")
-public class KeywordAd {
+@Table(name = "keywordRec")
+public class KeywordRec {
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private LocalDateTime recDate;
 
-    @Column(nullable = false)
-    private int total;
+    @ManyToOne
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "productSmall_id", referencedColumnName = "id")
     private ProductSmall productSmall;
 
     @Builder
-    public KeywordAd(String name, int total, ProductSmall productSmall) {
-        this.name = name;
-        this.total = total;
+    public KeywordRec(LocalDateTime recDate, Member member, ProductSmall productSmall) {
+        this.recDate = recDate;
+        this.member = member;
         this.productSmall = productSmall;
     }
+
 }
