@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Chip from '@mui/material/Chip';
+import ClearIcon from '@mui/icons-material/Clear';
+
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -31,12 +33,20 @@ const UrlItem = styled.a`
   text-decoration: none;
 `;
 
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 function MediaCard() {
   return (
     <Container>
+      <IconContainer>
       <DateBox>
         2023년 9월 10일
       </DateBox>
+      <ClearIcon></ClearIcon>
+      </IconContainer>
       <TitleBox>
         온라인 매체 추천
         <br></br>
