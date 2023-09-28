@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +55,28 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return list;
+    }
+
+    // 품목 대, 중, 소분류 아이디 가져오기
+    @Override
+    public Long getProductId(ProductType productType, Long id) {
+        Long productId = null;
+
+        switch (productType) {
+            case SMALL:
+                Optional<ProductSmall> productSmall = productSmallRepository.findById(id);
+                if (productSmall.isPresent()) {
+                    productId = productSmall.get().getProductMedium().getId();
+                }
+                break;
+            case MEDIUM:
+                Optional<ProductMedium> productMedium = productMediumRepository.findById(id);
+                if (productMedium.isPresent()) {
+                    productId = productMedium.get().getProductLarge().getId();
+                }
+                break;
+        }
+
+        return productId;
     }
 }

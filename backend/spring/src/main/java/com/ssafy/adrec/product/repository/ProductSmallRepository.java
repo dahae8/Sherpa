@@ -10,4 +10,5 @@ public interface ProductSmallRepository extends JpaRepository<ProductSmall, Long
 
     Optional<ProductSmall> findById(Long id);
     List<ProductSmall> findAllByProductMedium_Id(Long ProductMedium_Id);
+
 }

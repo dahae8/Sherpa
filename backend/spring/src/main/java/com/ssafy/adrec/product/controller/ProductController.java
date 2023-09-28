@@ -62,4 +62,24 @@ public class ProductController {
         return new ResponseEntity<>(resultMap, httpStatus);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductId(@PathVariable("id") Long id) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        Long mediumId = productService.getProductId(ProductType.SMALL, id);
+        Long largeId = productService.getProductId(ProductType.MEDIUM, mediumId);
+
+        Map<String, Object> productIds = new HashMap<>();
+        productIds.put("M", mediumId);
+        productIds.put("L", largeId);
+
+        resultMap.put("success", true);
+        resultMap.put("data", productIds);
+        resultMap.put("msg", "품목 대/중 아이디 조회");
+        httpStatus = HttpStatus.OK;
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
 }
