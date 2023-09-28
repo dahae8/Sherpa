@@ -81,10 +81,10 @@ for key, value in data.items():
                 sql_data_age['total'].append(v*per_int)
 
 
-print('total_data : ', total_data)
-print('idx_gender : ', idx_gender)
-print('idx_age : ', idx_age)
-print('idx_area : ', idx_area)
+# print('total_data : ', total_data)
+# print('idx_gender : ', idx_gender)
+# print('idx_age : ', idx_age)
+# print('idx_area : ', idx_area)
 
 # INSERT 쿼리 작성
 insert_query_gender = "INSERT INTO newsThemeGender (gender, theme, total) VALUES (%s,%s, %s)"
