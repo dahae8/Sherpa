@@ -1,5 +1,6 @@
 package com.ssafy.adrec.myPage.response;
 
+import com.ssafy.adrec.keyword.KeywordLike;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,15 +10,20 @@ import java.util.List;
 @Getter
 public class KeywordRecRes {
 
+    Long id;
     LocalDateTime recDate;
     String productSmall;
-    List<String> keywordList;
+    List<KeywordIdKeyword> keywordList;
 
     @Builder
-
-    public KeywordRecRes(LocalDateTime recDate, String productSmall, List<String> keywordList) {
+    public KeywordRecRes(Long id,LocalDateTime recDate, String productSmall, List<KeywordIdKeyword> keywordList) {
+        this.id = id;
         this.recDate = recDate;
         this.productSmall = productSmall;
         this.keywordList = keywordList;
     }
+
+
 }
+
+
