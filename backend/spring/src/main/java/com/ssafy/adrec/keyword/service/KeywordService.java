@@ -20,4 +20,6 @@ public interface KeywordService {
     KeywordRec saveKeywordRec(Member member, ProductSmall productSmall);
 
     KeywordLike saveKeywordLike(String keyword, KeywordRec keywordRec);
+
+    KeywordLike getKeywordLike (Long keywordLikeId);
 }

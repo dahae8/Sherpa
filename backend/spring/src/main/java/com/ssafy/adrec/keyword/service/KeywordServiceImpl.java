@@ -59,14 +59,9 @@ public class KeywordServiceImpl implements KeywordService {
 
     @Override
     public KeywordRec getKeywordRec(Long keywordRecId){
+
         Optional<KeywordRec> opKeywordRec = keywordRecRepository.findById(keywordRecId);
-
-        if(opKeywordRec.isEmpty()){
-            return null;
-        }
-        KeywordRec keywordRec = opKeywordRec.get();
-
-        return keywordRec;
+        return opKeywordRec.orElse(null);
 
     }
 
@@ -91,5 +86,13 @@ public class KeywordServiceImpl implements KeywordService {
                 .build();
         KeywordLike savedkeywordLike = keywordLikeRepository.save(keywordLike);
         return savedkeywordLike;
+    }
+
+    @Override
+    public KeywordLike getKeywordLike(Long keywordLikeId){
+
+        Optional<KeywordLike> keywordLike = keywordLikeRepository.findById(keywordLikeId);
+        return keywordLike.orElse(null);
+
     }
 }
