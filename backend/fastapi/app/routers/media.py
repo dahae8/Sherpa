@@ -494,6 +494,10 @@ def offline(total_item: Total):
         if name in merged_list:
             filtered_list.append({'name': name, 'value': item['value']})
 
+    total_sum = sum(item['value'] for item in filtered_list)
+    for item in filtered_list:
+        item['value'] = (item['value'] / total_sum) * 100
+
     # 응답 데이터 생성
     response_data = Response(
         success=True,
