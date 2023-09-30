@@ -14,8 +14,20 @@ class Target(BaseModel):
     sidoId: int
 
 
+class TargetAge(BaseModel):
+    age: dict
+
+
 class Response(BaseModel):
     success: bool
+    data: dict
+    count: int
+    msg: str
+
+
+class ResponseTime(BaseModel):
+    success: bool
+    type: str
     data: dict
     count: int
     msg: str
@@ -131,3 +143,113 @@ async def read_root(target: Target):
         msg="데이터를 성공적으로 불러왔습니다."
     )
     return response_data
+
+
+@router.post("/tv/time", status_code=200)
+async def tv_timeline(target: TargetAge):
+    # 연결 설정
+    connection = pymysql.connect(
+        host='j9c107.p.ssafy.io',
+        user='c107',
+        password='c107adrec',
+        database='adrec'
+    )
+
+    # 커서 생성
+    cursor = connection.cursor()
+
+    weekday_data = {}
+    weekend_data = {}
+
+    # 주중 시간대 데이터 가져오기
+    weekday_select_query = "SELECT * FROM tvTime WHERE is_weekday=0"
+    cursor.execute(weekday_select_query)
+
+    weekday_time_sql = cursor.fetchall()
+    # print(weekday_time_sql)
+    for row in weekday_time_sql:
+        if row[3] not in weekday_data:
+            weekday_data[row[3]] = {}
+
+        weekday_data[row[3]][str(row[1])] = row[4]
+    # print(data)
+
+    # 주말 시간대 데이터 가져오기
+    weekend_select_query = "SELECT * FROM tvTime WHERE is_weekday=1"
+    cursor.execute(weekend_select_query)
+
+    weekend_time_sql = cursor.fetchall()
+    # print(weekend_time_sql)
+    for row in weekend_time_sql:
+        if row[3] not in weekend_data:
+            weekend_data[row[3]] = {}
+
+        weekend_data[row[3]][str(row[1])] = row[4]
+    # print(weekend_data)
+    cursor.close()
+
+    # 주중별 각 TV 방송 유형 점수 계산
+    weekday_scores = {}
+    weekday_total_score = 0
+
+    for key, value in weekday_data.items():
+        time = key
+        score = 0
+        for k, v in target.age.items():
+            if k not in value:
+                continue
+            score += v * value[k]
+        weekday_scores[time] = score
+        weekday_total_score += score
+
+    # 주말별 각 TV 방송 유형 점수 계산
+    weekend_scores = {}
+    weekend_total_score = 0
+
+    for key, value in weekend_data.items():
+        time = key
+        score = 0
+        for k, v in target.age.items():
+            if k not in value:
+                continue
+            score += v * value[k]
+        weekend_scores[time] = score
+        weekend_total_score += score
+    # print(weekend_scores)
+
+    weekday_results = []
+    weekday_max_time = 0
+    weekday_max_time_value = 0
+    for key, value in weekday_scores.items():
+        result = round((value / weekday_total_score) * 100)
+        weekday_results.append(result)
+
+        if result > weekday_max_time_value:
+            weekday_max_time = key
+            weekday_max_time_value = result
+
+    weekend_results = []
+    weekend_max_time = 0
+    weekend_max_time_value = 0
+    for key, value in weekend_scores.items():
+        result = round((value / weekend_total_score) * 100)
+        weekend_results.append(result)
+
+        if result > weekend_max_time_value:
+            weekend_max_time = key
+            weekend_max_time_value = result
+
+    response_data = ResponseTime(
+        success=True,
+        type="bar/line",
+        data={
+            "weekday_recommend": weekday_max_time,
+            "weekdaysDatas": weekday_results,
+            "weekend_recommend": weekend_max_time,
+            "weekendssDatas": weekend_results
+        },
+        count=len(weekday_results),
+        msg="티비 광고 시간대 분석 데이터를 성공적으로 불러왔습니다."
+    )
+    return response_data
+
