@@ -6,19 +6,19 @@ const initialState = {
   token: sessionStorage.getItem('accessToken'),
   name: '',
   email: '',
-  productSmall: 1,
-  productMedium: 2,
+  productSmall: 27,
+  productMedium: 6,
   productLarge: 2,
   isLogin: false,
   isLoginError: false,
   userInfo: null,
-  isValidToken: false,
+  isValidToken: false
 };
 
 const persistConfig = {
   key: 'user',
   storage: storageSession,
-  whitelist: ['token', 'email', 'name', 'productSmall','productMedium', 'productLarge', 'isLogin']
+  whitelist: ['token', 'email', 'name', 'productSmall', 'productMedium', 'productLarge', 'isLogin']
 };
 
 const userSlice = createSlice({
@@ -61,7 +61,19 @@ const userSlice = createSlice({
   }
 });
 
-export const { setToken, setEmail, setName, setProductSmall, setProductMedium, setProductLarge, setIsLogin, setIsLoginError, setIsValidToken, setUserInfo, logoutUser } = userSlice.actions;
+export const {
+  setToken,
+  setEmail,
+  setName,
+  setProductSmall,
+  setProductMedium,
+  setProductLarge,
+  setIsLogin,
+  setIsLoginError,
+  setIsValidToken,
+  setUserInfo,
+  logoutUser
+} = userSlice.actions;
 
 const persistedReducer = persistReducer(persistConfig, userSlice.reducer);
 export default persistedReducer;

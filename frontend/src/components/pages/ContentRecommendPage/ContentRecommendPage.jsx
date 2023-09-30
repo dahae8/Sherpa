@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import styled from 'styled-components';
@@ -61,6 +62,7 @@ export const MediaRecommendPage = () => {
   const [dataL, setDataL] = useState([]);
   const [dataM, setDataM] = useState([]);
   const [dataS, setDataS] = useState([]);
+  // const [defaultSelectL, setDfaultSelectL] = useSelector();
 
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {

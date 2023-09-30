@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import styled from 'styled-components';
@@ -37,7 +38,7 @@ const BudgetAdvertisement = styled.div`
 `;
 const ChooseKindOfRecommend = styled.div`
   display: flex;
-  width:45%;
+  width: 45%;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
@@ -61,6 +62,10 @@ export const MediaRecommendPage = () => {
   const [dataL, setDataL] = useState([]);
   const [dataM, setDataM] = useState([]);
   const [dataS, setDataS] = useState([]);
+  const defaultSelectL = useSelector((state) => state.user.productLarge);
+  const defaultSelectM = useSelector((state) => state.user.productMedium);
+  const defaultSelectS = useSelector((state) => state.user.productSmall);
+
   // 시/도 시/군/구 변수
   const [selectDataSido, setSelectDataSido] = useState([]);
   const [selectDataSigungu, setSelectDataSigungu] = useState([]);
@@ -69,8 +74,11 @@ export const MediaRecommendPage = () => {
 
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
-    console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
+    console.log(defaultSelectL);
+    console.log(defaultSelectM);
+    console.log(defaultSelectS);
     console.log(APPLICATION_SERVER_URL);
+
     const getDataL = async () => {
       try {
         const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/L/0`);
@@ -86,9 +94,10 @@ export const MediaRecommendPage = () => {
     getDataL();
   }, []);
   useEffect(() => {
+    const selectedL = selectDataL !== null ? selectDataL : defaultSelectL;
     const getDataM = async () => {
       try {
-        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/M/${selectDataL}`);
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/M/${selectedL}`);
         if (response.data.success) {
           console.log(response.data);
           setDataM(response.data.data);
@@ -98,11 +107,12 @@ export const MediaRecommendPage = () => {
       }
     };
     getDataM();
-  }, [selectDataL]);
+  }, [selectDataL, defaultSelectL]);
   useEffect(() => {
+    const selectedM = selectDataM !== null ? selectDataM : defaultSelectM;
     const getDataS = async () => {
       try {
-        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectDataM}`);
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectedM}`);
         if (response.data.success) {
           console.log(response.data);
           setDataS(response.data.data);
@@ -113,7 +123,7 @@ export const MediaRecommendPage = () => {
     };
 
     getDataS();
-  }, [selectDataM]);
+  }, [selectDataM, defaultSelectM]);
 
   //  시/도, 시/군/구 effect
   // useLayoutEffect(() => {
@@ -158,6 +168,9 @@ export const MediaRecommendPage = () => {
         onSelectL={setSelectDataL}
         onSelectM={setSelectDataM}
         onSelectS={setSelectDataS}
+        defaultSelectL={defaultSelectL}
+        defaultSelectM={defaultSelectM}
+        defaultSelectS={defaultSelectS}
       ></MediaSelectOption>
       <RecommendSelect>
         <BudgetAdvertisement>
@@ -184,11 +197,11 @@ export const MediaRecommendPage = () => {
         </ChooseKindOfRecommend>
         <Choosesido>
           <Paragraph>광고 지역 선택</Paragraph>
-          <Select width='400px'></Select>
+          <Select width="400px"></Select>
         </Choosesido>
         <Choosedong>
           <Paragraph>광고 상세 지역 선택</Paragraph>
-          <Select dataSido={dataSido} onSelect={setDataSido} width='400px'></Select>
+          <Select dataSido={dataSido} onSelect={setDataSido} width="400px"></Select>
         </Choosedong>
       </RecommendSelect>
       <Box>
