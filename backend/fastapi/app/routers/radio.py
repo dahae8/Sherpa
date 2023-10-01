@@ -181,7 +181,7 @@ async def radio_timeline(target: TargetAge):
     # print(weekend_data)
     cursor.close()
 
-    # 주중별 각 TV 방송 유형 점수 계산
+    # 주중별 각 라디오 방송 유형 점수 계산
     weekday_scores = {}
     weekday_total_score = 0
 
@@ -195,7 +195,7 @@ async def radio_timeline(target: TargetAge):
         weekday_scores[time] = score
         weekday_total_score += score
 
-    # 주말별 각 TV 방송 유형 점수 계산
+    # 주말별 각 라디오 방송 유형 점수 계산
     weekend_scores = {}
     weekend_total_score = 0
 
