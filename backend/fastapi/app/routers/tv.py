@@ -237,7 +237,7 @@ async def tv_timeline(target: TargetAge):
             "weekday_recommend": weekday_max_time,
             "weekdaysDatas": weekday_results,
             "weekend_recommend": weekend_max_time,
-            "weekendssDatas": weekend_results
+            "weekendsDatas": weekend_results
         },
         count=len(weekday_results),
         msg="티비 광고 시간대 분석 데이터를 성공적으로 불러왔습니다."
