@@ -72,18 +72,20 @@ export const MediaRecommendPage = () => {
   const [dataSido, setDataSido] = useState([]);
   const [dataSigungu, setDataSigungu] = useState([]);
 
+  const [selectedButton, setSelectedButton] = useState('online');
+
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
-    console.log(defaultSelectL);
-    console.log(defaultSelectM);
-    console.log(defaultSelectS);
-    console.log(APPLICATION_SERVER_URL);
+    // console.log(defaultSelectL);
+    // console.log(defaultSelectM);
+    // console.log(defaultSelectS);
+    // console.log(APPLICATION_SERVER_URL);
 
     const getDataL = async () => {
       try {
         const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/L/0`);
         if (response.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
           setDataL(response.data.data);
         }
       } catch (error) {
@@ -99,7 +101,7 @@ export const MediaRecommendPage = () => {
       try {
         const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/M/${selectedL}`);
         if (response.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
           setDataM(response.data.data);
         }
       } catch (error) {
@@ -114,7 +116,7 @@ export const MediaRecommendPage = () => {
       try {
         const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectedM}`);
         if (response.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
           setDataS(response.data.data);
         }
       } catch (error) {
@@ -126,36 +128,36 @@ export const MediaRecommendPage = () => {
   }, [selectDataM, defaultSelectM]);
 
   //  시/도, 시/군/구 effect
-  // useLayoutEffect(() => {
-  //   const getSido = async () => {
-  //     try {
-  //       const response = await axios.get(APPLICATION_SERVER_URL + `/api/address/sido`);
-  //       if (response.data.success) {
-  //         console.log(response.data);
-  //         setDataSido(response.data.data);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching initial data:', error);
-  //     }
-  //   };
+  useLayoutEffect(() => {
+    const getSido = async () => {
+      try {
+        const response = await axios.get(`${APPLICATION_SERVER_URL}/api/area/sido/0`);
+        if (response.data.success) {
+          // console.log(response.data.data);
+          setDataSido(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+      }
+    };
 
-  //   getSido();
-  // }, []);
-  // useEffect(() => {
-  //   const getSigungu = async () => {
-  //     try {
-  //       const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectDataM}`);
-  //       if (response.data.success) {
-  //         console.log(response.data);
-  //         setDataSigungu(response.data.data);
-  //       }
-  //     } catch (error) {
-  //       console.log('Error!!', error);
-  //     }
-  //   };
+    getSido();
+  }, []);
+  useEffect(() => {
+    const getSigungu = async () => {
+      try {
+        const response = await axios.get(`${APPLICATION_SERVER_URL}/api/area/sigungu/${selectDataSido}`);
+        if (response.data.success) {
+          console.log(response.data);
+          setDataSigungu(response.data.data);
+        }
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
 
-  //   getSigungu();
-  // }, [selectDataSido]);
+    getSigungu();
+  }, [selectDataSido]);
   return (
     <Container>
       <h1>매체 추천</h1>
@@ -180,28 +182,37 @@ export const MediaRecommendPage = () => {
         <ChooseKindOfRecommend>
           <Paragraph>온/오프라인</Paragraph>
           <Buttons>
-            <Button backgroundColor="#3C486B" width="200px" height="50px" textColor="white" fontSize="24px">
-              온라인
-            </Button>
-            <Button
-              backgroundColor="white"
-              width="200px"
-              height="50px"
-              textColor="#3C486B"
-              fontSize="24px"
-              border="solid 1px"
-            >
-              오프라인
-            </Button>
+          <Button
+            onClick={() => setSelectedButton('online')}
+            backgroundColor={selectedButton === 'online' ? "#3C486B" : "white"}
+            width="200px"
+            height="50px"
+            textColor={selectedButton === 'online' ? "white" : "#3C486B"}
+            fontSize="24px"
+            border={selectedButton !== 'online' ? "solid 1px" : "none"}
+          >
+            온라인
+          </Button>
+          <Button
+            onClick={() => setSelectedButton('offline')}
+            backgroundColor={selectedButton === 'offline' ? "#3C486B" : "white"}
+            width="200px"
+            height="50px"
+            textColor={selectedButton === 'offline' ? "white" : "#3C486B"}
+            fontSize="24px"
+            border={selectedButton !== 'offline' ? "solid 1px" : "none"}
+          >
+            오프라인
+          </Button>
           </Buttons>
         </ChooseKindOfRecommend>
         <Choosesido>
           <Paragraph>광고 지역 선택</Paragraph>
-          <Select width="400px"></Select>
+          <Select data={dataSido} onSelect={setSelectDataSido}  width="400px"></Select>
         </Choosesido>
         <Choosedong>
           <Paragraph>광고 상세 지역 선택</Paragraph>
-          <Select dataSido={dataSido} onSelect={setDataSido} width="400px"></Select>
+          <Select data={dataSigungu} onSelect={setSelectDataSigungu} width="400px"></Select>
         </Choosedong>
       </RecommendSelect>
       <Box>

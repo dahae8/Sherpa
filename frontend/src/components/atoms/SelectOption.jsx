@@ -34,9 +34,9 @@ export default function SelectAutoWidth({ data = [], onSelect, defaultSelect, wi
         onChange={handleChange}
       >
       {
-        Array.isArray(data) && data.map(({ id, product }) => (
-          <MenuItem value={id} key={id}>
-            {product}
+        Array.isArray(data) && data.map((item) => (
+          <MenuItem value={item.id} key={item.id}>
+            {Object.values(item)[1]}
           </MenuItem>
         ))
       }
