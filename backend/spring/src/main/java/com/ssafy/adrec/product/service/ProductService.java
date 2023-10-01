@@ -1,5 +1,6 @@
 package com.ssafy.adrec.product.service;
 
+import com.ssafy.adrec.product.ProductSmall;
 import com.ssafy.adrec.product.ProductType;
 import com.ssafy.adrec.product.response.ProductGetRes;
 
@@ -9,4 +10,6 @@ public interface ProductService {
 
     // 품목 대,중,소분류 리스트
     List<ProductGetRes> getList(ProductType productType, Long id);
+
+    ProductSmall getProductSmall (Long id);
 }
