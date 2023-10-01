@@ -25,14 +25,6 @@ class Response(BaseModel):
     msg: str
 
 
-class ResponseTime(BaseModel):
-    success: bool
-    type: str
-    data: dict
-    count: int
-    msg: str
-
-
 @router.post("/tv", status_code=200)
 async def read_root(target: Target):
     if target.sidoId < 1 or target.sidoId > 17:
@@ -239,9 +231,8 @@ async def tv_timeline(target: TargetAge):
             weekend_max_time = key
             weekend_max_time_value = result
 
-    response_data = ResponseTime(
+    response_data = Response(
         success=True,
-        type="bar/line",
         data={
             "weekday_recommend": weekday_max_time,
             "weekdaysDatas": weekday_results,
