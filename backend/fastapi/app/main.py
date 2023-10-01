@@ -1,6 +1,6 @@
 from fastapi import FastAPI, responses
 
-from app.routers import news, newsTheme
+from app.routers import news, newsTheme, keyword
 from app.routers import media
 
 app = FastAPI()
@@ -12,3 +12,4 @@ def main():
 app.include_router(news.router)
 app.include_router(newsTheme.router)
 app.include_router(media.router)
+app.include_router(keyword.router)

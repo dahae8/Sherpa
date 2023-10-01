@@ -2,6 +2,7 @@ package com.ssafy.adrec.offline.outdoor.service;
 
 import com.ssafy.adrec.member.service.MemberServiceImpl;
 import com.ssafy.adrec.offline.outdoor.repository.BusRepository;
+import com.ssafy.adrec.offline.outdoor.request.BusReq;
 import com.ssafy.adrec.offline.outdoor.response.BusRes;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class OutdoorServiceImpl implements OutdoorService {
     private final BusRepository busRepository;
 
     @Override
-    public List<BusRes> getBusList(int gender, int age, String area){
+    public List<BusRes> getBusList(BusReq busReq){
         List<BusRes> list = new ArrayList<>();
 
         return list;
