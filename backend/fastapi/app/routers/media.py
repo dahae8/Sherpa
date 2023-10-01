@@ -245,12 +245,25 @@ def offline(item: Budget):
     query = "SELECT * FROM budget WHERE mediaType_id > 2"
     cursor.execute(query)
     budget = cursor.fetchall()
+    cursor.close()
+    conn.close()
     # print(budget)
     # id    min_budget  max_budget  mediaType_id    mediaSub_id
     # ((1, 1000000, 57000000, 1, None), (2, 1500, 1000000, 2, None), (3, 250000, 15000000, 3, None), (4, 43600, 900000, 4, None), (5, 1200000, 199800000, 5, None), (6, 350000, 2200000, 6, 1), (7, 1000000, 4000000, 6, 2), (8, 4500, 12000, 6, 3))
 
-    filtered_tuple = tuple(item for item in budget if item[2] < user_budget)
-    # print(filtered_tuple)  # ((2, 1500, 1000000, 2, None), (4, 43600, 900000, 4, None), (8, 4500, 12000, 6, 3))
+    filtered_tuple = tuple(item for item in budget if item[2] <= user_budget)
+    print(filtered_tuple)  # ((2, 1500, 1000000, 2, None), (4, 43600, 900000, 4, None), (8, 4500, 12000, 6, 3))
+    if not filtered_tuple:
+        response_data = Response(
+            success=True,
+            data={
+                "recommend": "",
+                "budgetList": ""
+            },
+            count=0,
+            msg="현재 금액으로 광고 할 수 있는 매체가 없습니다."
+        )
+        return response_data
     sorted_list = sorted(filtered_tuple)
 
     sorted_list = tuple(tuple(0 if value is None else value for value in tpl) for tpl in sorted_list)
@@ -464,8 +477,22 @@ def offline(total_item: Total):
     query = "SELECT * FROM budget WHERE mediaType_id > 2"
     cursor.execute(query)
     budget = cursor.fetchall()
+    cursor.close()
+    conn.close()
 
-    filtered_tuple = tuple(item for item in budget if item[2] < user_budget)
+    filtered_tuple = tuple(item for item in budget if item[2] <= user_budget)
+    print(filtered_tuple)  # ((2, 1500, 1000000, 2, None), (4, 43600, 900000, 4, None), (8, 4500, 12000, 6, 3))
+    if not filtered_tuple:
+        response_data = Response(
+            success=True,
+            data={
+                "recommend": "",
+                "budgetList": ""
+            },
+            count=0,
+            msg="현재 금액으로 광고 할 수 있는 매체가 없습니다."
+        )
+        return response_data
     sorted_list = sorted(filtered_tuple)
     sorted_list = tuple(tuple(0 if value is None else value for value in tpl) for tpl in sorted_list)
 
@@ -493,6 +520,10 @@ def offline(total_item: Total):
         name = item['name']
         if name in merged_list:
             filtered_list.append({'name': name, 'value': item['value']})
+
+    total_sum = sum(item['value'] for item in filtered_list)
+    for item in filtered_list:
+        item['value'] = (item['value'] / total_sum) * 100
 
     # 응답 데이터 생성
     response_data = Response(
