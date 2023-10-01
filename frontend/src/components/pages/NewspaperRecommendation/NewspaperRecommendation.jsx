@@ -37,7 +37,6 @@ export const NewsPaperRecommendation = () => {
   // const mediaLabels = useSelector((state) => state.result.media);
   const mainDatas = [23, 19, 13, 5]; // state
   // const mainDatas = useSelector((state) => state.result.media);
-  // const prices = [23, 19, 13, 5]; // 오프라인 매체 추천 - 예산 필터링 API 통신
   const recommendedMedia = "신문 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
   const [subMediaLabels, setSubMediaLabels] = useState([]);
