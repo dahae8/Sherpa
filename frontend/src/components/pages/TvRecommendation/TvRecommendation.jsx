@@ -40,17 +40,7 @@ export const TvRecommendation = () => {
   // const mainDatas = useSelector((state) => state.result.media);
   const recommendedMedia = "TV 영상 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
-  const weekdaysDatas = [
-    3, 5.9, 7.4, 12.8, 13, 22, 24, 43, 42, 55, 44, 33, 22, 34, 44, 56, 66, 54,
-    66, 64, 66, 64, 33, 22, 19,
-  ]; // TV 광고 시간대 분석 API
-  // const weekdaysDatas = data.weekdaysDatas
-  const weekendsDatas = [
-    23, 26, 32, 36, 34, 34, 46, 52, 41, 53, 63, 53, 49, 64, 72, 81, 79, 78, 69,
-    67, 59, 52, 51, 47, 39,
-  ]; // TV 광고 시간대 분석 API
   // const weekendsDatas = data.weekendsDatas
-  const recommendedtime = "18"; // TV 광고 시간대 분석 API
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
@@ -72,6 +62,9 @@ export const TvRecommendation = () => {
   const [recommendedTvChennl, setRecommendedTvChennl] = useState("");
   const [tvLabels, setTvLabels] = useState([]);
   const [tvChannelDatas, setTvChannelDatas] = useState([]);
+  const [recommendedtime, setRecommendedtime] = useState("");
+  const [weekdaysDatas, setWeekdaysDatas] = useState([]);
+  const [weekendsDatas, setWeekendsDatas] = useState([]);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -186,9 +179,50 @@ export const TvRecommendation = () => {
         console.error("tv채널 오류:", error);
       }
     };
+    const recommendTime = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/offline/tv/time`,
+          {
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+          }
+        );
+        console.log("tv시간", response);
+        setRecommendedtime(response.data.data.weekend_recommend);
+        const weekdaysDatas = [];
+        for (let i = 0; i < response.data.data.weekdaysDatas.length; i++) {
+          if (response.data.data.weekdaysDatas[i]) {
+            weekdaysDatas.push(response.data.data.weekdaysDatas[i]);
+          } else {
+            weekdaysDatas.push(0);
+          }
+          setWeekdaysDatas(weekdaysDatas);
+        }
+        const weekendsDatas = [];
+        for (let i = 0; i < response.data.data.weekendssDatas.length; i++) {
+          if (response.data.data.weekdaysDatas[i]) {
+            weekendsDatas.push(response.data.data.weekendssDatas[i]);
+          } else {
+            weekendsDatas.push(0);
+          }
+          setWeekendsDatas(weekendsDatas);
+        }
+      } catch (error) {
+        console.log("tv시간오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
     recommendTvChannel();
+    recommendTime();
   }, []);
 
   return (
@@ -220,7 +254,7 @@ export const TvRecommendation = () => {
           title={`추천 드리는 TV 채널은 ${recommendedTvChennl} 입니다.`}
           datas={tvChannelDatas}
           labels={tvLabels}
-          description={`${target}이 시청하는 TV 프로그램 통계`}
+          description={`${age}대 ${target}이 시청하는 TV 프로그램 통계`}
         ></ChannelRecommendation>
       </Box>
       <Hr />
@@ -228,7 +262,7 @@ export const TvRecommendation = () => {
         <TimeRecommendation
           weekdaysDatas={weekdaysDatas}
           weekendsDatas={weekendsDatas}
-          description={`${target}이 TV를 시청하는 시간대 데이터`}
+          description={`${age}대 ${target}이 TV를 시청하는 시간대 데이터`}
           recommendedtime={recommendedtime}
         ></TimeRecommendation>
       </Box>
