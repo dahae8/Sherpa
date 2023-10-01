@@ -1,4 +1,4 @@
-# tv 추천
+# radio 추천
 import pandas as pd
 import pymysql
 
@@ -25,7 +25,7 @@ class Response(BaseModel):
     msg: str
 
 
-@router.post("/tv", status_code=200)
+@router.post("/radio", status_code=200)
 async def read_root(target: Target):
     if target.sidoId < 1 or target.sidoId > 17:
         response_data = Response(
@@ -50,52 +50,53 @@ async def read_root(target: Target):
     data = {}
 
     # 성별 데이터 가져오기
-    gender_select_query = "SELECT * FROM tvGender WHERE is_free=0"
+    gender_select_query = "SELECT * FROM radioGender"
     cursor.execute(gender_select_query)
 
     gender_sql = cursor.fetchall()
     print(gender_sql)
     for row in gender_sql:
 
-        if row[2] not in data:
-            data[row[2]] = {}
+        if row[3] not in data:
+            data[row[3]] = {}
 
         if row[1] == 1:
             key = '1'
         else:
             key = '0'
-        data[row[2]][key] = row[4]
+        data[row[3]][key] = row[2]
 
     # 연령 데이터 가져오기
-    age_select_query = "SELECT * FROM tvAge WHERE is_free=0"
+    age_select_query = "SELECT * FROM radioAge"
     cursor.execute(age_select_query)
 
     age_sql = cursor.fetchall()
     for row in age_sql:
-        data[row[2]][str(row[1])] = row[4]
+        data[row[3]][str(row[1])] = row[2]
 
     # 지역 데이터 가져오기
     seoul = "서울"
     in_gyeon = "인천/경기"
-    dae_se_chung = "대전/충청/세종"
-    gwang_jeo_jeju = "광주/전라/제주"
+    dae_se_chung = "대전/충청"
+    gwang_jeo = "광주/전라"
     dae_gyeong = "대구/경북"
     bu_ul_gyeong = "부산/울산/경남"
     gangwon = "강원"
+    jeju = "제주"
 
-    area_data = {1: gangwon, 2: in_gyeon, 3: bu_ul_gyeong, 4: dae_gyeong, 5: gwang_jeo_jeju, 6: dae_gyeong,
+    area_data = {1: gangwon, 2: in_gyeon, 3: bu_ul_gyeong, 4: dae_gyeong, 5: gwang_jeo, 6: dae_gyeong,
                  7: dae_se_chung, 8: bu_ul_gyeong, 9: seoul, 10: dae_se_chung, 11: bu_ul_gyeong, 12: in_gyeon,
-                 13: gwang_jeo_jeju, 14: gwang_jeo_jeju, 15: gwang_jeo_jeju, 16: dae_se_chung, 17: dae_se_chung}
+                 13: gwang_jeo, 14: gwang_jeo, 15: jeju, 16: dae_se_chung, 17: dae_se_chung}
 
-    area_select_query = "SELECT * FROM tvArea where area = %s and is_free=0"
+    area_select_query = "SELECT * FROM radioArea where area = %s"
     cursor.execute(area_select_query, area_data[target.sidoId])
 
     area_sql = cursor.fetchall()
     for row in area_sql:
-        data[row[2]]["area"] = row[4]
+        data[row[3]]["area"] = row[2]
 
     # 가중치 - 전체 인원 수가 없어 news 데이터 사용
-    weight = 58936
+    weight = 1948
 
     # 각 TV 방송 유형 점수 계산
     scores = {}
@@ -105,7 +106,7 @@ async def read_root(target: Target):
     # '뉴스/시사보도': {'0': 66, '1': 70, '10': 18, '20': 39, '30': 58, '40': 75, '50': 85, '60': 88, '70': 82, 'area': 73}
     # '교양': {'0': 37, '1': 38, '10': 14, '20': 16, '30': 27, '40': 37, '50': 51, '60': 54, '70': 48, 'area': 32}
     for key, value in data.items():
-        tv = key
+        radio = key
         score = 0
         for k, v in target.age.items():
             if k not in value:
@@ -115,7 +116,7 @@ async def read_root(target: Target):
         for k, v in target.gender.items():
             score += weight * v * value[k]
         score += weight * value["area"]
-        scores[tv] = score
+        scores[radio] = score
         total_score += score
 
     results = []
@@ -129,7 +130,7 @@ async def read_root(target: Target):
     response_data = Response(
         success=True,
         data={
-            "tvList": sorted_results
+            "radioList": sorted_results
         },
         count=len(sorted_results),
         msg="데이터를 성공적으로 불러왔습니다."
@@ -137,8 +138,8 @@ async def read_root(target: Target):
     return response_data
 
 
-@router.post("/tv/time", status_code=200)
-async def tv_timeline(target: TargetAge):
+@router.post("/radio/time", status_code=200)
+async def radio_timeline(target: TargetAge):
     # 연결 설정
     connection = pymysql.connect(
         host='j9c107.p.ssafy.io',
@@ -154,7 +155,7 @@ async def tv_timeline(target: TargetAge):
     weekend_data = {}
 
     # 주중 시간대 데이터 가져오기
-    weekday_select_query = "SELECT * FROM tvTime WHERE is_weekday=0"
+    weekday_select_query = "SELECT * FROM radioTime WHERE is_weekday=0"
     cursor.execute(weekday_select_query)
 
     weekday_time_sql = cursor.fetchall()
@@ -167,7 +168,7 @@ async def tv_timeline(target: TargetAge):
     # print(data)
 
     # 주말 시간대 데이터 가져오기
-    weekend_select_query = "SELECT * FROM tvTime WHERE is_weekday=1"
+    weekend_select_query = "SELECT * FROM radioTime WHERE is_weekday=1"
     cursor.execute(weekend_select_query)
 
     weekend_time_sql = cursor.fetchall()
@@ -180,7 +181,7 @@ async def tv_timeline(target: TargetAge):
     # print(weekend_data)
     cursor.close()
 
-    # 주중별 각 TV 방송 유형 점수 계산
+    # 주중별 각 라디오 방송 유형 점수 계산
     weekday_scores = {}
     weekday_total_score = 0
 
@@ -194,7 +195,7 @@ async def tv_timeline(target: TargetAge):
         weekday_scores[time] = score
         weekday_total_score += score
 
-    # 주말별 각 TV 방송 유형 점수 계산
+    # 주말별 각 라디오 방송 유형 점수 계산
     weekend_scores = {}
     weekend_total_score = 0
 
@@ -240,7 +241,7 @@ async def tv_timeline(target: TargetAge):
             "weekendsDatas": weekend_results
         },
         count=len(weekday_results),
-        msg="티비 광고 시간대 분석 데이터를 성공적으로 불러왔습니다."
+        msg="라디오 광고 시간대 분석 데이터를 성공적으로 불러왔습니다."
     )
     return response_data
 
