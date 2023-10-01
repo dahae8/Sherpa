@@ -66,8 +66,6 @@ async def recommend_community(target: Target):
 
         data_gender[row['year']][row['name']][row['gender']] = row['total']
 
-    print('성별 데이터')
-    print(data_gender)
 
     # 연령별
     data_age={}
@@ -87,8 +85,6 @@ async def recommend_community(target: Target):
 
         data_age[row['year']][row['name']][row['age']] = row['total']
 
-    print('연령별 데이터')
-    print(data_age)
 
     # 지역별
     data_area={}
@@ -96,6 +92,7 @@ async def recommend_community(target: Target):
     data_area[2021] = {}
     data_area[2022] = {}
 
+    # 시도 이름 DB에서 조회
     query = "SELECT name FROM sido WHERE id = %s;"
     cursor.execute(query, target.sidoId)
     result_sido_name = cursor.fetchone()
@@ -104,16 +101,12 @@ async def recommend_community(target: Target):
     if result_sido_name:
         sido_name = str(result_sido_name[0])
 
-        print('시도 아이디 db에서 조회')
-        print(sido_name)
-
         query = "SELECT * FROM communityArea WHERE area = %s;"
         cursor.execute(query, (sido_name))
         community_sql = cursor.fetchall()
 
 
         community_area = pd.DataFrame(community_sql, columns=['id', 'area', 'name', 'total', 'year'])
-        print(community_area)
 
         for index, row in community_area.iterrows():
             if row['year'] not in data_area:
@@ -124,19 +117,15 @@ async def recommend_community(target: Target):
 
             data_area[row['year']][row['name']][row['area']] = row['total']
 
-        print('지역별 데이터')
-        print(data_area)
+    else:
+        print('해당 지역 아이디가 없습니다.')
 
     # 커뮤니티 별 점수 계산
     scores = {}
     scores[2021] = {}
     scores[2022] = {}
     total_scores = [0, 1]
-    print('아니 대체 왜 out of range 아니 제발')
-    print(total_scores[0])
-    print(total_scores[1])
 
-    # 성별 가중치 계산
 
     # 가중치 설정
     weight = {}
@@ -147,6 +136,7 @@ async def recommend_community(target: Target):
     weight[2022][1] = 235.2
     weight[2022][0] = 374.9
 
+    # 성별 가중치 계산
     cnt = 0
     for year, community_data in data_gender.items():
         for community, value in community_data.items():
@@ -155,11 +145,8 @@ async def recommend_community(target: Target):
                 score += weight[year][int(gender_data)] * ratio * value[int(gender_data)]
             scores[year][community] = score
             total_scores[cnt] += score
-            print(total_scores)
         cnt += 1
 
-    print('성별 가중치 계산')
-    print(scores)
 
     # 가중치 설정
     weight[2021][10] = 47
@@ -189,8 +176,6 @@ async def recommend_community(target: Target):
             total_scores[cnt] += score
         cnt += 1
 
-    print('연령별 가중치 계산')
-    print(scores)
 
     # 지역 가중치 계산
 
@@ -241,9 +226,6 @@ async def recommend_community(target: Target):
             scores[year][community] += score
             total_scores[cnt] += score
         cnt += 1
-
-    print('지역 가중치 계산')
-    print(scores)
 
     sorted_results = []
 
