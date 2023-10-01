@@ -19,7 +19,7 @@ export default function SelectAutoWidth({ data = [], onSelect, defaultSelect, wi
   // 선택된 값이 변경될 때마다, onSelect 콜백 함수와 내부 상태를 모두 업데이트 합니다.
   const handleChange = (e) => {
     const value = e.target.value;
-    console.log("값 변경 완료",value)
+    // console.log("값 변경 완료",value)
     setSelectedValue(value);
     onSelect(value);
   };

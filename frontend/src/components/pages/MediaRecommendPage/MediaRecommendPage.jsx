@@ -67,8 +67,8 @@ export const MediaRecommendPage = () => {
   const defaultSelectS = useSelector((state) => state.user.productSmall);
 
   // 시/도 시/군/구 변수
-  const [selectDataSido, setSelectDataSido] = useState([]);
-  const [selectDataSigungu, setSelectDataSigungu] = useState([]);
+  const [selectDataSido, setSelectDataSido] = useState(null);
+  const [selectDataSigungu, setSelectDataSigungu] = useState(null);
   const [dataSido, setDataSido] = useState([]);
   const [dataSigungu, setDataSigungu] = useState([]);
 
@@ -158,6 +158,33 @@ export const MediaRecommendPage = () => {
 
     getSigungu();
   }, [selectDataSido]);
+
+  // 광고 타겟층 분석 effect
+  useEffect(() => {
+    const getTarget = async () => {
+      try {
+        const response = await axios.post(`${APPLICATION_SERVER_URL}/api/target`, {
+          "productSmallId" : selectDataS,
+	        "sigunguId" : selectDataSigungu
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response.data.success) {
+          console.log(response.data);
+          
+        }
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    }
+
+    if (selectDataS !== null && selectDataSigungu !== null ) {
+      getTarget();
+    }
+  }, [selectDataS, selectDataSigungu]);
   return (
     <Container>
       <h1>매체 추천</h1>
