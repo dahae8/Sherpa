@@ -92,8 +92,8 @@ DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`name`	VARCHAR(80)	NOT NULL,
-	`url`	VARCHAR(255)	NOT NULL,
-	`img`	VARCHAR(255)	NULL,
+	`url`	TEXT	NOT NULL,
+	`img`	TEXT	NULL,
 	`mediaType_id`	BIGINT	NOT NULL,
 	`mediaSub_id`	BIGINT	NULL
 );
