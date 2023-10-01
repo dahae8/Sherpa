@@ -43,7 +43,6 @@ export const NewsPaperRecommendation = () => {
   const prices = [23, 19, 13, 5]; // 오프라인 매체 추천 - 예산 필터링 API 통신
   const recommendedMedia = "신문 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
-
   // const recommendedNewspaper = "동아일보"; // 신문사 추천 API
   const [recommendedNewspaper, setRecommendedNewspaper] = useState("");
   const [newspaperLabels, setNewspaperLabels] = useState([]);
@@ -56,6 +55,22 @@ export const NewsPaperRecommendation = () => {
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
     console.log(APPLICATION_SERVER_URL);
+    const recommendMedia = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/offline/product`,
+          {
+            productSmallId: 2,
+            sigunguId: 0,
+            gender: 0,
+            age: 20,
+          }
+        );
+        console.log(response);
+      } catch (error) {
+        console.error("추천 매체 가져오기 오류:", error);
+      }
+    };
     const recommendNewspaper = async () => {
       try {
         const response = await axios.post(
@@ -146,6 +161,7 @@ export const NewsPaperRecommendation = () => {
         console.error("추천 신문 가져오기 오류:", error);
       }
     };
+    recommendMedia();
     recommendNewspaper();
     recommendNewspaperField();
   }, []);
