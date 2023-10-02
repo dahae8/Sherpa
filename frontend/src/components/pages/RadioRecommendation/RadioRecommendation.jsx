@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
@@ -17,10 +17,15 @@ import {
 import Button from "../../atoms/Button";
 import { useNavigate } from "react-router-dom";
 
-const APPLICATION_SERVER_URL =
+const APPLICATION_FAST_SERVER_URL =
   process.env.NODE_ENV === "production"
     ? "https://j9c107.p.ssafy.io"
     : "http://j9c107.p.ssafy.io:8000";
+
+const APPLICATION_SPRING_SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8080";
 
 export const RadioRecommendation = () => {
   const navigate = useNavigate();
@@ -40,51 +45,6 @@ export const RadioRecommendation = () => {
   // const mainDatas = useSelector((state) => state.result.media);
   const recommendedMedia = "라디오 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
-  const radioChannelLabels = [
-    "음악 프로",
-    "시사/보도 프로",
-    "교통 프로",
-    "종교 프로",
-    "종합구성 프로",
-    "토크전문",
-    "생활/정보 프로",
-    "스포츠 중계",
-    "연속극(드라마)",
-  ]; // 라디오 채널 추천 API
-  // const radioChannelLabels = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     radioChannelLabels.push(data[i].type);
-  //   } else {
-  //     radioChannelLabels.push(0);
-  //   }
-  // }
-  const radioChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5, 3]; // 라디오 채널 추천 API
-  // const radioChannelDatas = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     radioChannelDatas.push(data[i].ratio);
-  //   } else {
-  //     radioChannelDatas.push(0);
-  //   }
-  // }
-  const recommendedRadioChennl = "음악 프로"; // 라디오 채널 추천 API
-  //const recommendedRadioChennl = data[0].type
-  const weekdaysDatas = [
-    3, 5.9, 7.4, 12.8, 13, 22, 24, 43, 42, 55, 44, 33, 22, 34, 44, 56, 66, 54,
-    66, 64, 66, 64, 33, 22, 19,
-  ]; // 라디오 광고 시간대 분석 API
-  const weekendsDatas = [
-    23, 26, 32, 36, 34, 34, 46, 52, 41, 53, 63, 53, 49, 64, 72, 81, 79, 78, 69,
-    67, 59, 52, 51, 47, 39,
-  ]; // 라디오 광고 시간대 분석 API
-  const recommendedtime = "18"; // 라디오 광고 시간대 분석 API
-  const producerCardDatas = [
-    { img: "url", title: "대한민국 명산 도전", url: "url" },
-    { img: "url", title: "램블러", url: "url" },
-    { img: "url", title: "놀자", url: "url" },
-    { img: "url", title: "길잡이", url: "url" },
-  ]; // 광고 제작사 리스트 받아오기 API
   let target = "성별";
 
   if (gender === 1) {
@@ -97,14 +57,22 @@ export const RadioRecommendation = () => {
   const [subDatas, setSubDatas] = useState([]);
   const [priceLabels, setPriceLabels] = useState([]);
   const [prices, setPrices] = useState([]);
+  const [recommendedRadioChennl, setRecommendedRadioChennl] = useState("");
+  const [radioChannelLabels, setRadioChannelLabels] = useState([]);
+  const [radioChannelDatas, setRadioChannelDatas] = useState([]);
+  const [recommendedtime, setRecommendedtime] = useState("");
+  const [weekdaysDatas, setWeekdaysDatas] = useState([]);
+  const [weekendsDatas, setWeekendsDatas] = useState([]);
+  const [producerCardDatas, setProducerCardDatas] = useState({});
+  const [showProducer, setShowProducer] = useState(false);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
-    console.log(APPLICATION_SERVER_URL);
+    console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/offline/product`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
             productSmallId: 2,
             sigunguId: 0,
@@ -138,7 +106,7 @@ export const RadioRecommendation = () => {
     const recommendPrice = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/offline/budget`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/budget`,
           {
             budget: 99999999999,
           }
@@ -166,8 +134,114 @@ export const RadioRecommendation = () => {
         console.error("추천 가격 가져오기 오류:", error);
       }
     };
+    const recommendRadioChannel = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/radio`,
+          {
+            gender: {
+              0: 45,
+              1: 55,
+            },
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+            sidoId: 1,
+          }
+        );
+        console.log("라디오 채널", response);
+        setRecommendedRadioChennl(response.data.data.radioList[0].type);
+        const radioChannelLabels = [];
+        for (let i = 0; i < response.data.data.radioList.length; i++) {
+          if (response.data.data.radioList[i]) {
+            radioChannelLabels.push(response.data.data.radioList[i].type);
+          } else {
+            radioChannelLabels.push(0);
+          }
+        }
+        setRadioChannelLabels(radioChannelLabels);
+        const radioChannelDatas = [];
+        for (let i = 0; i < response.data.data.radioList.length; i++) {
+          if (response.data.data.radioList[i]) {
+            radioChannelDatas.push(response.data.data.radioList[i].ratio);
+          } else {
+            radioChannelDatas.push(0);
+          }
+        }
+        setRadioChannelDatas(radioChannelDatas);
+      } catch (error) {
+        console.log("라디오 채널 오류", error);
+      }
+    };
+    const recommendTime = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/radio/time`,
+          {
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+          }
+        );
+        console.log("라디오 시간", response);
+        setRecommendedtime(response.data.data.weekend_recommend);
+        const weekdaysDatas = [];
+        for (let i = 0; i < response.data.data.weekdaysDatas.length; i++) {
+          if (response.data.data.weekdaysDatas[i]) {
+            weekdaysDatas.push(response.data.data.weekdaysDatas[i]);
+          } else {
+            weekdaysDatas.push(0);
+          }
+          setWeekdaysDatas(weekdaysDatas);
+        }
+        const weekendsDatas = [];
+        for (let i = 0; i < response.data.data.weekendsDatas.length; i++) {
+          if (response.data.data.weekendsDatas[i]) {
+            weekendsDatas.push(response.data.data.weekendsDatas[i]);
+          } else {
+            weekendsDatas.push(0);
+          }
+          setWeekendsDatas(weekendsDatas);
+        }
+      } catch (error) {
+        console.log("라디오 시간오류", error);
+      }
+    };
+    const linkproducer = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/media/company/4`
+        );
+        console.log("제작사", response);
+        setProducerCardDatas(response.data.data);
+      } catch (error) {
+        console.log("제작사 오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
+    recommendRadioChannel();
+    recommendTime();
+    linkproducer();
+  }, []);
+
+  useEffect(() => {
+    const delayProducerRender = setTimeout(() => {
+      setShowProducer(true);
+    }, 2000);
+    return () => clearTimeout(delayProducerRender);
   }, []);
 
   return (
@@ -213,9 +287,9 @@ export const RadioRecommendation = () => {
       <Hr />
       <Box>
         <ProducerTitleItem>라디오 광고 제작사</ProducerTitleItem>
-        <ProducerRecommendation
-          cardDatas={producerCardDatas}
-        ></ProducerRecommendation>
+        {showProducer && (
+          <ProducerRecommendation cardDatas={producerCardDatas} />
+        )}
       </Box>
       <ButtonBox>
         <SaveBox>

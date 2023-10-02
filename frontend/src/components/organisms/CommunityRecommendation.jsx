@@ -21,7 +21,7 @@ function makeCommunityRecommendation({
   const text = `광주 광역시에 거주하는 ${target}이 이용하는 커뮤니티 통계`;
   return (
     <Container>
-      <TitleBox>추천하는 커뮤니티는 {item} 블로그 입니다.</TitleBox>
+      <TitleBox>추천하는 커뮤니티는 {item} 입니다.</TitleBox>
       <ChartBox>
         <Chart
           labels={labels}
