@@ -1,20 +1,10 @@
 # 커뮤니티 추천
-from sklearn.decomposition import TruncatedSVD
-from scipy.sparse.linalg import svds
-
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pandas as pd
-import numpy as np
 import warnings
 
 import pymysql
 from pydantic import BaseModel
-from fastapi import FastAPI, responses, APIRouter
-
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from fastapi import APIRouter
 
 from typing import Dict
 
