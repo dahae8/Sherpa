@@ -2,8 +2,10 @@ import uvicorn
 from fastapi import FastAPI, responses
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import news, newsTheme
-from app.routers import media, tv
+
+from app.routers import news, newsTheme, keyword
+from app.routers import media, tv, radio
+from app.routers import community_rec, sns_rec
 
 app = FastAPI()
 
@@ -29,7 +31,14 @@ def main():
 app.include_router(news.router)
 app.include_router(newsTheme.router)
 app.include_router(media.router)
+app.include_router(keyword.router)
+
 app.include_router(tv.router)
+app.include_router(radio.router)
+app.include_router(community_rec.router)
+app.include_router(sns_rec.router)
+app.include_router(keyword.router)
 
 if __name__ == '__main__':
     uvicorn.run(debug=False, host='0.0.0.0', port=8000)
+
