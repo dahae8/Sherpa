@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
@@ -45,12 +45,6 @@ export const RadioRecommendation = () => {
   // const mainDatas = useSelector((state) => state.result.media);
   const recommendedMedia = "라디오 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
-  const producerCardDatas = [
-    { img: "url", title: "대한민국 명산 도전", url: "url" },
-    { img: "url", title: "램블러", url: "url" },
-    { img: "url", title: "놀자", url: "url" },
-    { img: "url", title: "길잡이", url: "url" },
-  ]; // 광고 제작사 리스트 받아오기 API
   let target = "성별";
 
   if (gender === 1) {
@@ -69,6 +63,8 @@ export const RadioRecommendation = () => {
   const [recommendedtime, setRecommendedtime] = useState("");
   const [weekdaysDatas, setWeekdaysDatas] = useState([]);
   const [weekendsDatas, setWeekendsDatas] = useState([]);
+  const [producerCardDatas, setProducerCardDatas] = useState({});
+  const [showProducer, setShowProducer] = useState(false);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -223,10 +219,32 @@ export const RadioRecommendation = () => {
         console.log("라디오 시간오류", error);
       }
     };
+    const linkproducer = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/media/company/4`
+        );
+        console.log("제작사", response);
+        setProducerCardDatas(response.data.data);
+      } catch (error) {
+        console.log("제작사 오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
     recommendRadioChannel();
     recommendTime();
+    linkproducer();
+  }, []);
+
+  // ProducerRecommendation 컴포넌트 렌더링을 지연시키기 위해 useEffect를 사용합니다.
+  useEffect(() => {
+    const delayProducerRender = setTimeout(() => {
+      setShowProducer(true);
+    }, 2000); // 2000ms (2초) 후에 ProducerRecommendation 컴포넌트를 렌더링합니다.
+
+    // 컴포넌트가 언마운트되면 타임아웃 클리어
+    return () => clearTimeout(delayProducerRender);
   }, []);
 
   return (
@@ -272,9 +290,9 @@ export const RadioRecommendation = () => {
       <Hr />
       <Box>
         <ProducerTitleItem>라디오 광고 제작사</ProducerTitleItem>
-        <ProducerRecommendation
-          cardDatas={producerCardDatas}
-        ></ProducerRecommendation>
+        {showProducer && (
+          <ProducerRecommendation cardDatas={producerCardDatas} />
+        )}
       </Box>
       <ButtonBox>
         <SaveBox>

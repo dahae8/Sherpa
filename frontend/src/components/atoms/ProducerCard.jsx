@@ -11,6 +11,9 @@ const Container = styled.div`
 const ImgBox = styled.div`
   width: 200px;
   height: 200px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 `;
 const TitleBox = styled.div`
   font-size: 24px;
@@ -28,7 +31,7 @@ function makeCard({ img, title, url }) {
   return (
     <Container>
       <ImgBox>
-        <img src={img} alt="" />
+        <img src={img} alt="" width={310} height={170} />
       </ImgBox>
       <TitleBox>{title}</TitleBox>
       <UrlBox>
