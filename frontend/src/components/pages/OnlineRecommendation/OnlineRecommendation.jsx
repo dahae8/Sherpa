@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import CommunityRecommendation from "../../organisms/CommunityRecommendation";
@@ -17,10 +17,15 @@ import {
 import { useNavigate } from "react-router-dom";
 import Button from "../../atoms/Button";
 
-const APPLICATION_SERVER_URL =
+const APPLICATION_FAST_SERVER_URL =
   process.env.NODE_ENV === "production"
     ? "https://j9c107.p.ssafy.io"
     : "http://j9c107.p.ssafy.io:8000";
+
+const APPLICATION_SPRING_SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8080";
 
 export const OnlineRecommendation = () => {
   const navigate = useNavigate();
@@ -44,12 +49,6 @@ export const OnlineRecommendation = () => {
   const selectedItem = "등산화"; // state
   // const selectedItem = useSelector((state) => state.user.productSmall);
   const description = `${selectedItem}에 알맞는 블로그 목록`;
-  const producerCardDatas = [
-    { img: "url", title: "대한민국 명산 도전", url: "url" },
-    { img: "url", title: "램블러", url: "url" },
-    { img: "url", title: "놀자", url: "url" },
-    { img: "url", title: "길잡이", url: "url" },
-  ]; // 광고 제작사 리스트 받아오기 API
   let target = "성별";
 
   if (gender === 1) {
@@ -66,14 +65,17 @@ export const OnlineRecommendation = () => {
   const [snsLabels, setSnsLabels] = useState([]);
   const [snsFirstDatas, setSnsFirstDatas] = useState([]);
   const [snsSecondDatas, setSnsSecondDatas] = useState([]);
+  const [producerCardDatas, setProducerCardDatas] = useState({});
+  const [producerCardDatas2, setProducerCardDatas2] = useState({});
+  const [showProducer, setShowProducer] = useState(false);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
-    console.log(APPLICATION_SERVER_URL);
+    console.log(APPLICATION_FAST_SERVER_URL);
     const recommendCommunity = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/online/community`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/online/community`,
           {
             gender: {
               0: 45,
@@ -131,7 +133,7 @@ export const OnlineRecommendation = () => {
     const recommendSns = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/online/sns`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/online/sns`,
           {
             gender: {
               0: 45,
@@ -182,8 +184,39 @@ export const OnlineRecommendation = () => {
         console.log("sns 추천 오류", error);
       }
     };
+    const linkproducer = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/media/company/1`
+        );
+        console.log("제작사", response);
+        setProducerCardDatas(response.data.data);
+      } catch (error) {
+        console.log("제작사 오류", error);
+      }
+    };
+    const linkproducer2 = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/media/company/2`
+        );
+        console.log("제작사", response);
+        setProducerCardDatas2(response.data.data);
+      } catch (error) {
+        console.log("제작사 오류", error);
+      }
+    };
     recommendCommunity();
     recommendSns();
+    linkproducer();
+    linkproducer2();
+  }, []);
+
+  useEffect(() => {
+    const delayProducerRender = setTimeout(() => {
+      setShowProducer(true);
+    }, 2000);
+    return () => clearTimeout(delayProducerRender);
   }, []);
 
   return (
@@ -227,10 +260,14 @@ export const OnlineRecommendation = () => {
       </Box>
       <Hr />
       <Box>
-        <BlogTitle>온라인 광고 제작사</BlogTitle>
-        <ProducerRecommendation
-          cardDatas={producerCardDatas}
-        ></ProducerRecommendation>
+        <BlogTitle>커뮤니티 광고 제작사</BlogTitle>
+        {showProducer && (
+          <ProducerRecommendation cardDatas={producerCardDatas} />
+        )}
+        <BlogTitle>SNS 광고 제작사</BlogTitle>
+        {showProducer && (
+          <ProducerRecommendation cardDatas={producerCardDatas2} />
+        )}
       </Box>
       <ButtonBox>
         <SaveBox>
