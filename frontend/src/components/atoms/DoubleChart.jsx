@@ -38,7 +38,6 @@ const options = {
   },
   scales: {
     x: {
-      max: 100,
       ticks: {
         callback: (value) => `${value}%`,
       },
@@ -51,13 +50,13 @@ function makeDoubleChart({ labels, firstDatas, secondDatas }) {
     labels,
     datasets: [
       {
-        label: "2020년",
+        label: "2021년",
         data: firstDatas,
         borderColor: "#B4B4B4",
         backgroundColor: "#B4B4B4",
       },
       {
-        label: "2021년",
+        label: "2022년",
         data: secondDatas,
         borderColor: "#53AC8E",
         backgroundColor: "#53AC8E",

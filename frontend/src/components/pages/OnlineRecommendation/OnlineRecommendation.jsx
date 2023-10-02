@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
+import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import CommunityRecommendation from "../../organisms/CommunityRecommendation";
 import BlogRecommendation from "../../organisms/ProducerCardList";
@@ -16,6 +17,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import Button from "../../atoms/Button";
 
+const APPLICATION_SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8000";
+
 export const OnlineRecommendation = () => {
   const navigate = useNavigate();
   const ages = [80, 60, 45, 42, 32, 29]; // state
@@ -28,35 +34,7 @@ export const OnlineRecommendation = () => {
   // const gender = useSelector((state) => state.result.target);
   const age = 30; // state
   // const age = useSelector((state) => state.result.target);
-  const communityLabels = ["네이버", "다음", "싸이월드", "텀블러", "구글"]; //커뮤니티 추천 API
-  // const communityLabels = [];
-  // for (let i = 0; i < communityList.length; i++) {
-  //   if (data[0].communityList[i]) {
-  //     communityLabels.push(data[0].communityList[i].name);
-  //   } else {
-  //     communityLabels.push(0);
-  //   }
-  // }
-  const recommendedCommunity = "네이버"; // 커뮤니티 추천 API
   // const recommendedCommunity = data[0].communityList[0].name
-  const coummunityfirstDatas = [80, 60, 45, 25, 10]; // 커뮤니티 추천 API
-  // const coummunityfirstDatas = [];
-  // for (let i = 0; i < communityList.length; i++) {
-  //   if (data[0].communityList[i]) {
-  //     coummunityfirstDatas.push(data[0].communityList[i].percent);
-  //   } else {
-  //     coummunityfirstDatas.push(0);
-  //   }
-  // }
-  const coummunitysecondDatas = [70, 75, 50, 20, 5]; // 커뮤니티 추천 API
-  // const coummunitysecondDatas = [];
-  // for (let i = 0; i < communityList.length; i++) {
-  //   if (data[1].communityList[i]) {
-  //     coummunitysecondDatas.push(data[1].communityList[i].percent);
-  //   } else {
-  //     coummunitysecondDatas.push(0);
-  //   }
-  // }
   const blogCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
@@ -66,47 +44,6 @@ export const OnlineRecommendation = () => {
   const selectedItem = "등산화"; // state
   // const selectedItem = useSelector((state) => state.user.productSmall);
   const description = `${selectedItem}에 알맞는 블로그 목록`;
-  const snsLabels = [
-    "인스타 그램",
-    "페이스북",
-    "트위터",
-    "싸이월드",
-    "카카오스토리",
-    "네이버밴드",
-    "비트윈",
-    "핀터레스트",
-    "웨이보",
-    "틱톡",
-    "기타",
-  ]; // SNS 추천 API
-  // const snsLabels = [];
-  // for (let i = 0; i < snsList.length; i++) {
-  //   if (data[0].snsList[i]) {
-  //     snsLabels.push(data[0].snsList[i].name);
-  //   } else {
-  //     snsLabels.push(0);
-  //   }
-  // }
-  const recommendedSns = "인스타그램"; // SNS 추천 API
-  // const recommendedSns = data[0].snsList[0].name
-  const snsFirstDatas = [80, 60, 45, 25, 10, 20, 30, 20, 30, 12, 5]; // SNS 추천 API
-  // const snsFirstDatas = [];
-  // for (let i = 0; i < snsList.length; i++) {
-  //   if (data[0].snsList[i]) {
-  //     snsFirstDatas.push(data[0].snsList[i].percent);
-  //   } else {
-  //     snsFirstDatas.push(0);
-  //   }
-  // }
-  const snsSecondDatas = [70, 75, 50, 20, 5, 20, 30, 20, 30, 12, 5]; // SNS 추천 API
-  // const snsSecondDatas = [];
-  // for (let i = 0; i < snsList.length; i++) {
-  //   if (data[1].snsList[i]) {
-  //     snsSecondDatas.push(data[1].snsList[i].percent);
-  //   } else {
-  //     snsSecondDatas.push(0);
-  //   }
-  // }
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
@@ -120,6 +57,134 @@ export const OnlineRecommendation = () => {
   } else {
     target = "여성";
   }
+
+  const [recommendedCommunity, setRecommendedCommunity] = useState("");
+  const [firstCommunityLabels, setFirstCommunityLabels] = useState([]);
+  const [coummunityfirstDatas, setCoummunityfirstDatas] = useState([]);
+  const [coummunitysecondDatas, setCoummunitysecondDatas] = useState([]);
+  const [recommendedSns, setRecommendedSns] = useState("");
+  const [snsLabels, setSnsLabels] = useState([]);
+  const [snsFirstDatas, setSnsFirstDatas] = useState([]);
+  const [snsSecondDatas, setSnsSecondDatas] = useState([]);
+
+  useLayoutEffect(() => {
+    console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
+    console.log(APPLICATION_SERVER_URL);
+    const recommendCommunity = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/online/community`,
+          {
+            gender: {
+              0: 45,
+              1: 55,
+            },
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+            sidoId: 2,
+          }
+        );
+        console.log("추천 커뮤니티 가져오기", response);
+        setRecommendedCommunity(response.data.data.communityList_2022[0].type);
+        const communityLabels = [];
+        for (let i = 0; i < response.data.data.communityList_2022.length; i++) {
+          if (response.data.data.communityList_2022[i]) {
+            communityLabels.push(response.data.data.communityList_2022[i].type);
+          } else {
+            communityLabels.push(0);
+          }
+        }
+        setFirstCommunityLabels(communityLabels);
+        const coummunityfirstDatas = [];
+        for (let i = 0; i < response.data.data.communityList_2022.length; i++) {
+          if (response.data.data.communityList_2021[i]) {
+            coummunityfirstDatas.push(
+              response.data.data.communityList_2021[i].ratio
+            );
+          } else {
+            coummunityfirstDatas.push(0);
+          }
+        }
+        setCoummunityfirstDatas(coummunityfirstDatas);
+        const coummunitysecondDatas = [];
+        for (let i = 0; i < response.data.data.communityList_2022.length; i++) {
+          if (response.data.data.communityList_2022[i]) {
+            coummunitysecondDatas.push(
+              response.data.data.communityList_2022[i].ratio
+            );
+          } else {
+            coummunitysecondDatas.push(0);
+          }
+        }
+        setCoummunitysecondDatas(coummunitysecondDatas);
+      } catch (error) {
+        console.log("추천 커뮤니티 오류", error);
+      }
+    };
+    const recommendSns = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/online/sns`,
+          {
+            gender: {
+              0: 45,
+              1: 55,
+            },
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+            sidoId: 3,
+          }
+        );
+        console.log("sns 추천", response);
+        setRecommendedSns(response.data.data.snsList_2022[0].type);
+        const snsLabels = [];
+        for (let i = 0; i < response.data.data.snsList_2022.length; i++) {
+          if (response.data.data.snsList_2022[i]) {
+            snsLabels.push(response.data.data.snsList_2022[i].type);
+          } else {
+            snsLabels.push(0);
+          }
+        }
+        setSnsLabels(snsLabels);
+        const snsFirstDatas = [];
+        for (let i = 0; i < response.data.data.snsList_2021.length; i++) {
+          if (response.data.data.snsList_2021[i]) {
+            snsFirstDatas.push(response.data.data.snsList_2021[i].ratio);
+          } else {
+            snsFirstDatas.push(0);
+          }
+        }
+        setSnsFirstDatas(snsFirstDatas);
+        const snsSecondDatas = [];
+        for (let i = 0; i < response.data.data.snsList_2022.length; i++) {
+          if (response.data.data.snsList_2022[i]) {
+            snsSecondDatas.push(response.data.data.snsList_2022[i].ratio);
+          } else {
+            snsSecondDatas.push(0);
+          }
+        }
+        setSnsSecondDatas(snsSecondDatas);
+      } catch (error) {
+        console.log("sns 추천 오류", error);
+      }
+    };
+    recommendCommunity();
+    recommendSns();
+  }, []);
 
   return (
     <Container>
@@ -139,12 +204,12 @@ export const OnlineRecommendation = () => {
           firstDatas={coummunityfirstDatas}
           secondDatas={coummunitysecondDatas}
           target={target}
-          labels={communityLabels}
+          labels={firstCommunityLabels}
         ></CommunityRecommendation>
       </Box>
       <Hr />
       <Box>
-        <BlogTitle>추천하는 {recommendedCommunity} 블로그 입니다.</BlogTitle>
+        <BlogTitle>추천하는 {recommendedCommunity} 입니다.</BlogTitle>
         <BlogRecommendation
           cardDatas={blogCardDatas}
           description={description}
