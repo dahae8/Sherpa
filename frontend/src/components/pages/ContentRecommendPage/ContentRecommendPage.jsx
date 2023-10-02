@@ -52,7 +52,7 @@ const Bundle = styled.div`
   justify-content: center;
 `;
 
-export const MediaRecommendPage = () => {
+export const ContentRecommendPage = () => {
   // 매체 선택 리스트
   const [mediaList, setMediaList] = useState([]);
 
@@ -109,7 +109,7 @@ export const MediaRecommendPage = () => {
 
       // Extract the recommendation from the response
       const recommendation = response.data.choices[0].message.content.split('\n');
-      
+
       // Extract phrase and scenario
       const phrase = recommendation[0];
       let scenario = {};
@@ -250,4 +250,4 @@ export const MediaRecommendPage = () => {
   );
 };
 
-export default MediaRecommendPage;
+export default ContentRecommendPage;
