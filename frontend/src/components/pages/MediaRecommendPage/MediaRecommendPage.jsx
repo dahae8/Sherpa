@@ -7,9 +7,13 @@ import MediaSelectOption from '../../organisms/MediaSelectOption';
 import { TextField } from '@mui/material';
 import Button from '../../atoms/Button';
 import Select from '../../atoms/SelectOption';
+import { setMedia, setSelectedBigRegion, setSelectedOnOffline, setSelectedSmallRegion, setTarget } from '../../../slices/resultSlice';
 
-const APPLICATION_SERVER_URL =
+const APPLICATION_SPRING_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
+
+  const APPLICATION_FAST_SERVER_URL =
+  process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8000';
 
 const Container = styled.div`
   margin: 0 320px;
@@ -72,18 +76,31 @@ export const MediaRecommendPage = () => {
   const [dataSido, setDataSido] = useState([]);
   const [dataSigungu, setDataSigungu] = useState([]);
 
+  // 예산 및 온/오프라인
+  const [selectedPrice, setSelectedPrice] = useState(0);
   const [selectedButton, setSelectedButton] = useState('online');
+
+  const dispatch = useDispatch();
+
+  function getResult() {
+  
+    dispatch(setSelectedPrice(selectedPrice));
+    dispatch(setSelectedOnOffline(selectedButton));
+    dispatch(setSelectedBigRegion(selectDataSido));
+    dispatch(setSelectedSmallRegion(selectDataSigungu));
+
+  }
 
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
     // console.log(defaultSelectL);
     // console.log(defaultSelectM);
     // console.log(defaultSelectS);
-    // console.log(APPLICATION_SERVER_URL);
+    // console.log(APPLICATION_SPRING_SERVER_URL);
 
     const getDataL = async () => {
       try {
-        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/L/0`);
+        const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/L/0`);
         if (response.data.success) {
           // console.log(response.data);
           setDataL(response.data.data);
@@ -99,7 +116,7 @@ export const MediaRecommendPage = () => {
     const selectedL = selectDataL !== null ? selectDataL : defaultSelectL;
     const getDataM = async () => {
       try {
-        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/M/${selectedL}`);
+        const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/M/${selectedL}`);
         if (response.data.success) {
           // console.log(response.data);
           setDataM(response.data.data);
@@ -114,7 +131,7 @@ export const MediaRecommendPage = () => {
     const selectedM = selectDataM !== null ? selectDataM : defaultSelectM;
     const getDataS = async () => {
       try {
-        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectedM}`);
+        const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/S/${selectedM}`);
         if (response.data.success) {
           // console.log(response.data);
           setDataS(response.data.data);
@@ -131,7 +148,7 @@ export const MediaRecommendPage = () => {
   useLayoutEffect(() => {
     const getSido = async () => {
       try {
-        const response = await axios.get(`${APPLICATION_SERVER_URL}/api/area/sido/0`);
+        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/area/sido/0`);
         if (response.data.success) {
           // console.log(response.data.data);
           setDataSido(response.data.data);
@@ -146,7 +163,7 @@ export const MediaRecommendPage = () => {
   useEffect(() => {
     const getSigungu = async () => {
       try {
-        const response = await axios.get(`${APPLICATION_SERVER_URL}/api/area/sigungu/${selectDataSido}`);
+        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/area/sigungu/${selectDataSido}`);
         if (response.data.success) {
           console.log(response.data);
           setDataSigungu(response.data.data);
@@ -163,7 +180,7 @@ export const MediaRecommendPage = () => {
   useEffect(() => {
     const getTarget = async () => {
       try {
-        const response = await axios.post(`${APPLICATION_SERVER_URL}/api/target`, {
+        const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/target`, {
           "productSmallId" : selectDataS,
 	        "sigunguId" : selectDataSigungu
         },
@@ -173,16 +190,37 @@ export const MediaRecommendPage = () => {
           }
         });
         if (response.data.success) {
-          console.log(response.data);
+          console.log(response.data.data);
+          dispatch(setTarget(response.data.data))
           
         }
       } catch (error) {
         console.log('Error!!', error);
       }
-    }
+    };
+
+    const getOffline = async () => {
+      try {
+        const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/fastapi/offline/total`, {
+          "productSmallId" : selectDataS,
+	        "sigunguId" : selectDataSigungu,
+          "gender" : 0,
+          "age" : 0,
+          "budget" : 0
+        })
+        if (response.data.success) {
+          console.log(response.data.data);
+          dispatch(setMedia(response.data.data))
+          
+        }
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
 
     if (selectDataS !== null && selectDataSigungu !== null ) {
       getTarget();
+      getOffline();
     }
   }, [selectDataS, selectDataSigungu]);
   return (
@@ -204,7 +242,7 @@ export const MediaRecommendPage = () => {
       <RecommendSelect>
         <BudgetAdvertisement>
           <Paragraph>내가 생각하는 광고 최대 예산</Paragraph>
-          <TextField></TextField>
+          <TextField onChange={(e) => setSelectedPrice(e.target.value)}></TextField>
         </BudgetAdvertisement>
         <ChooseKindOfRecommend>
           <Paragraph>온/오프라인</Paragraph>
@@ -243,7 +281,7 @@ export const MediaRecommendPage = () => {
         </Choosedong>
       </RecommendSelect>
       <Box>
-        <Button backgroundColor="#3C486B" width="30%" height="50px" textColor="white" fontSize="24px">
+        <Button backgroundColor="#3C486B" width="30%" height="50px" textColor="white" fontSize="24px" onChange={(e) => getResult()}>
           추천받기
         </Button>
       </Box>
