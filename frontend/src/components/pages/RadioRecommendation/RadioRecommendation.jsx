@@ -237,13 +237,10 @@ export const RadioRecommendation = () => {
     linkproducer();
   }, []);
 
-  // ProducerRecommendation 컴포넌트 렌더링을 지연시키기 위해 useEffect를 사용합니다.
   useEffect(() => {
     const delayProducerRender = setTimeout(() => {
       setShowProducer(true);
-    }, 2000); // 2000ms (2초) 후에 ProducerRecommendation 컴포넌트를 렌더링합니다.
-
-    // 컴포넌트가 언마운트되면 타임아웃 클리어
+    }, 2000);
     return () => clearTimeout(delayProducerRender);
   }, []);
 
