@@ -1,10 +1,13 @@
 package com.ssafy.adrec.media.service;
 
+import com.ssafy.adrec.media.Company;
 import com.ssafy.adrec.media.MediaSub;
 import com.ssafy.adrec.media.MediaType;
 import com.ssafy.adrec.media.MediaTypes;
+import com.ssafy.adrec.media.repository.CompanyRepository;
 import com.ssafy.adrec.media.repository.MediaSubRepository;
 import com.ssafy.adrec.media.repository.MediaTypeRepository;
+import com.ssafy.adrec.media.response.CompanyGetRes;
 import com.ssafy.adrec.media.response.MediaSubGetRes;
 import com.ssafy.adrec.media.response.MediaTypeGetRes;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
@@ -24,6 +27,7 @@ public class MediaServiceImpl implements MediaService{
 
     private final MediaTypeRepository mediaTypeRepository;
     private final MediaSubRepository mediaSubRepository;
+    private final CompanyRepository companyRepository;
 
     @Override
     public List<MediaTypeGetRes> getMediaTypeList(MediaTypes mediaTypes, Long id) {
@@ -47,6 +51,25 @@ public class MediaServiceImpl implements MediaService{
             List<MediaSub> mediaSubList = mediaSubRepository.findAllByMediaType_Id(id);
             for (MediaSub mediaSub : mediaSubList) {
                 list.add(new MediaSubGetRes(mediaSub.getId(), mediaSub.getSmall()));
+            }
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<CompanyGetRes> getCompanyList(Long mediaTypeId, Long mediaSubId){
+        List<CompanyGetRes> list = new ArrayList<>();
+
+        if(1 <= mediaTypeId && mediaTypeId <= 5){
+            List<Company> companyList = companyRepository.findAllByMediaType_Id(mediaTypeId);
+            for (Company company : companyList){
+                list.add(new CompanyGetRes(company.getImg(), company.getName(), company.getUrl()));
+            }
+        }else{
+            List<Company> companyList = companyRepository.findAllByMediaType_IdAndMediaSub_Id(mediaTypeId, mediaSubId);
+            for (Company company : companyList){
+                list.add(new CompanyGetRes(company.getImg(), company.getName(), company.getUrl()));
             }
         }
 

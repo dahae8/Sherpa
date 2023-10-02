@@ -6,6 +6,8 @@ import com.ssafy.adrec.keyword.service.KeywordService;
 import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.member.controller.MemberController;
 import com.ssafy.adrec.member.service.MemberService;
+import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
+import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
 import com.ssafy.adrec.myPage.service.MyPageService;
@@ -163,12 +165,73 @@ public class MyPageController {
         myPageService.deleteKeywordRec(keywordRec);
 
         resultMap.put("success", true);
-        resultMap.put("data", String.format("[%d]보관합을 삭제하였습니다.",keywordRecId));
+        resultMap.put("data", String.format("[%d]보관함을 삭제하였습니다.",keywordRecId));
         resultMap.put("count", 1);
         httpStatus = HttpStatus.OK;
 
         return new ResponseEntity<>(resultMap, httpStatus);
 
+    }
+
+    @GetMapping("/profile/{name}")
+    public ResponseEntity<?> getMemberInfo(@PathVariable("name") String name) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        Member member = memberService.checkName(name);
+
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "해당 계정의 정보가 존재하지 않습니다.");
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        } else {
+            resultMap.put("data", member);
+            resultMap.put("success", true);
+            resultMap.put("msg", "회원 정보 조회 성공");
+            httpStatus = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> modifyMember(@RequestBody MyPageModifyPutReq myPageModifyPutReq) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        Member member = myPageService.modifyMember(myPageModifyPutReq);
+
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "회원 정보 수정 실패");
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        } else {
+            resultMap.put("success", true);
+            resultMap.put("msg", "회원 정보 수정 성공");
+            httpStatus = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
+    @PutMapping("/product")
+    public ResponseEntity<?> modifyProduct(@RequestBody MyProductModifyPutReq myProductModifyPutReq) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        Member member = myPageService.modifyProduct(myProductModifyPutReq);
+
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "품목 정보 수정 실패");
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        } else {
+            resultMap.put("success", true);
+            resultMap.put("msg", "품목 정보 수정 성공");
+            httpStatus = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(resultMap, httpStatus);
     }
 
 }
