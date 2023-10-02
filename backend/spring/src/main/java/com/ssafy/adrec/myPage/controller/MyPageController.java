@@ -6,6 +6,7 @@ import com.ssafy.adrec.keyword.service.KeywordService;
 import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.member.controller.MemberController;
 import com.ssafy.adrec.member.service.MemberService;
+import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
 import com.ssafy.adrec.myPage.service.MyPageService;
@@ -186,6 +187,26 @@ public class MyPageController {
             resultMap.put("data", member);
             resultMap.put("success", true);
             resultMap.put("msg", "회원 정보 조회 성공");
+            httpStatus = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<?> modifyMember(@RequestBody MyPageModifyPutReq myPageModifyPutReq) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        Member member = myPageService.modifyMember(myPageModifyPutReq);
+
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "회원 정보 수정을 실패했습니다.");
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        } else {
+            resultMap.put("success", true);
+            resultMap.put("msg", "회원 정보 수정 성공");
             httpStatus = HttpStatus.OK;
         }
 

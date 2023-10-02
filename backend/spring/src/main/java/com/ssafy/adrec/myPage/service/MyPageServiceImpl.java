@@ -4,7 +4,10 @@ import com.ssafy.adrec.keyword.KeywordLike;
 import com.ssafy.adrec.keyword.KeywordRec;
 import com.ssafy.adrec.keyword.repository.KeywordLikeRepository;
 import com.ssafy.adrec.keyword.repository.KeywordRecRepository;
+import com.ssafy.adrec.member.Member;
+import com.ssafy.adrec.member.repository.MemberRepository;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
+import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class MyPageServiceImpl  implements MyPageService{
 
     private final KeywordRecRepository keywordRecRepository;
     private final KeywordLikeRepository keywordLikeRepository;
+    private final MemberRepository memberRepository;
 
 
     @Override
@@ -81,6 +86,23 @@ public class MyPageServiceImpl  implements MyPageService{
         }
         return list;
 
+    }
+
+    // 회원 정보 수정
+    @Override
+    public Member modifyMember(MyPageModifyPutReq myPageModifyPutReq) {
+        Optional<Member> member = memberRepository.findByName(myPageModifyPutReq.getName());
+
+        if (member.isPresent()) {
+            Member modifyMember = member.get();
+
+            modifyMember.setEmail(myPageModifyPutReq.getEmail());
+            modifyMember.setPwd(myPageModifyPutReq.getPwd());
+
+            return memberRepository.save(modifyMember);
+        } else {
+            return null;
+        }
     }
 
 }
