@@ -7,12 +7,18 @@ import MediaSelectOption from '../../organisms/MediaSelectOption';
 import { TextField } from '@mui/material';
 import Button from '../../atoms/Button';
 import Select from '../../atoms/SelectOption';
-import { setMedia, setSelectedBigRegion, setSelectedOnOffline, setSelectedSmallRegion, setTarget } from '../../../slices/resultSlice';
+import {
+  setMedia,
+  setSelectedBigRegion,
+  setSelectedOnOffline,
+  setSelectedSmallRegion,
+  setTarget
+} from '../../../slices/resultSlice';
 
 const APPLICATION_SPRING_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
 
-  const APPLICATION_FAST_SERVER_URL =
+const APPLICATION_FAST_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8000';
 
 const Container = styled.div`
@@ -79,16 +85,16 @@ export const MediaRecommendPage = () => {
   // 예산 및 온/오프라인
   const [selectedPrice, setSelectedPrice] = useState(0);
   const [selectedButton, setSelectedButton] = useState('online');
-
+  const [gender, setGender] = useState(null);
+  const [age, setAge] = useState(null);
+  
   const dispatch = useDispatch();
 
   function getResult() {
-  
     dispatch(setSelectedPrice(selectedPrice));
     dispatch(setSelectedOnOffline(selectedButton));
     dispatch(setSelectedBigRegion(selectDataSido));
     dispatch(setSelectedSmallRegion(selectDataSigungu));
-
   }
 
   // 대분류, 중분류, 소분류 관련 effect들
@@ -102,7 +108,7 @@ export const MediaRecommendPage = () => {
       try {
         const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/L/0`);
         if (response.data.success) {
-          // console.log(response.data);
+          console.log(response.data.data);
           setDataL(response.data.data);
         }
       } catch (error) {
@@ -118,7 +124,7 @@ export const MediaRecommendPage = () => {
       try {
         const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/M/${selectedL}`);
         if (response.data.success) {
-          // console.log(response.data);
+          console.log(response.data.data);
           setDataM(response.data.data);
         }
       } catch (error) {
@@ -133,7 +139,7 @@ export const MediaRecommendPage = () => {
       try {
         const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/S/${selectedM}`);
         if (response.data.success) {
-          // console.log(response.data);
+          console.log(response.data.data);
           setDataS(response.data.data);
         }
       } catch (error) {
@@ -178,20 +184,30 @@ export const MediaRecommendPage = () => {
 
   // 광고 타겟층 분석 effect
   useEffect(() => {
+    // console.log(selectDataL);
+    // console.log(selectDataM);
+    // console.log(selectDataS);
     const getTarget = async () => {
       try {
-        const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/target`, {
-          "productSmallId" : selectDataS,
-	        "sigunguId" : selectDataSigungu
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
+        const response = await axios.post(
+          `${APPLICATION_SPRING_SERVER_URL}/api/target`,
+          {
+            productSmallId: selectDataS,
+            sigunguId: selectDataSigungu
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
           }
-        });
+        );
         if (response.data.success) {
-          console.log(response.data.data);
-          dispatch(setTarget(response.data.data))
+          console.log(response.data);
+          dispatch(setTarget(response.data.data));
+          setGender(response.data.data.gender[0].gender);
+          console.log(gender)
+          setAge(response.data.data.age[0].age);
+          console.log(age)
           
         }
       } catch (error) {
@@ -201,24 +217,23 @@ export const MediaRecommendPage = () => {
 
     const getOffline = async () => {
       try {
-        const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/fastapi/offline/total`, {
-          "productSmallId" : selectDataS,
-	        "sigunguId" : selectDataSigungu,
-          "gender" : 0,
-          "age" : 0,
-          "budget" : 0
-        })
+        const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`, {
+          productSmallId: selectDataS,
+          sigunguId: selectDataSigungu,
+          gender: gender,
+          age: age,
+          budget: selectedPrice
+        });
         if (response.data.success) {
-          console.log(response.data.data);
-          dispatch(setMedia(response.data.data))
-          
+          console.log(response.data);
+          dispatch(setMedia(response.data.data));
         }
       } catch (error) {
         console.log('Error!!', error);
       }
     };
 
-    if (selectDataS !== null && selectDataSigungu !== null ) {
+    if (selectDataS !== null && selectDataSigungu !== null) {
       getTarget();
       getOffline();
     }
@@ -247,33 +262,33 @@ export const MediaRecommendPage = () => {
         <ChooseKindOfRecommend>
           <Paragraph>온/오프라인</Paragraph>
           <Buttons>
-          <Button
-            onClick={() => setSelectedButton('online')}
-            backgroundColor={selectedButton === 'online' ? "#3C486B" : "white"}
-            width="200px"
-            height="50px"
-            textColor={selectedButton === 'online' ? "white" : "#3C486B"}
-            fontSize="24px"
-            border={selectedButton !== 'online' ? "solid 1px" : "none"}
-          >
-            온라인
-          </Button>
-          <Button
-            onClick={() => setSelectedButton('offline')}
-            backgroundColor={selectedButton === 'offline' ? "#3C486B" : "white"}
-            width="200px"
-            height="50px"
-            textColor={selectedButton === 'offline' ? "white" : "#3C486B"}
-            fontSize="24px"
-            border={selectedButton !== 'offline' ? "solid 1px" : "none"}
-          >
-            오프라인
-          </Button>
+            <Button
+              onClick={() => setSelectedButton('online')}
+              backgroundColor={selectedButton === 'online' ? '#3C486B' : 'white'}
+              width="200px"
+              height="50px"
+              textColor={selectedButton === 'online' ? 'white' : '#3C486B'}
+              fontSize="24px"
+              border={selectedButton !== 'online' ? 'solid 1px' : 'none'}
+            >
+              온라인
+            </Button>
+            <Button
+              onClick={() => setSelectedButton('offline')}
+              backgroundColor={selectedButton === 'offline' ? '#3C486B' : 'white'}
+              width="200px"
+              height="50px"
+              textColor={selectedButton === 'offline' ? 'white' : '#3C486B'}
+              fontSize="24px"
+              border={selectedButton !== 'offline' ? 'solid 1px' : 'none'}
+            >
+              오프라인
+            </Button>
           </Buttons>
         </ChooseKindOfRecommend>
         <Choosesido>
           <Paragraph>광고 지역 선택</Paragraph>
-          <Select data={dataSido} onSelect={setSelectDataSido}  width="400px"></Select>
+          <Select data={dataSido} onSelect={setSelectDataSido} width="400px"></Select>
         </Choosesido>
         <Choosedong>
           <Paragraph>광고 상세 지역 선택</Paragraph>
@@ -281,7 +296,14 @@ export const MediaRecommendPage = () => {
         </Choosedong>
       </RecommendSelect>
       <Box>
-        <Button backgroundColor="#3C486B" width="30%" height="50px" textColor="white" fontSize="24px" onChange={(e) => getResult()}>
+        <Button
+          backgroundColor="#3C486B"
+          width="30%"
+          height="50px"
+          textColor="white"
+          fontSize="24px"
+          onChange={(e) => getResult()}
+        >
           추천받기
         </Button>
       </Box>
