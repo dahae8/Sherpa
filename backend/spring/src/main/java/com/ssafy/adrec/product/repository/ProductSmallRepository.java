@@ -22,4 +22,5 @@ public interface ProductSmallRepository extends JpaRepository<ProductSmall, Long
             "JOIN ProductLarge l ON m2.productLarge.id = l.id " +
             "WHERE s2.id = :productSmallId)")
     List<Long> findIdsByProductSmallId(@Param("productSmallId") Long productSmallId);
+    
 }
