@@ -8,8 +8,11 @@ import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.member.repository.MemberRepository;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
 import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
+import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
+import com.ssafy.adrec.product.ProductSmall;
+import com.ssafy.adrec.product.repository.ProductSmallRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,7 @@ public class MyPageServiceImpl  implements MyPageService{
     private final KeywordRecRepository keywordRecRepository;
     private final KeywordLikeRepository keywordLikeRepository;
     private final MemberRepository memberRepository;
+    private final ProductSmallRepository productSmallRepository;
 
 
     @Override
@@ -105,4 +109,30 @@ public class MyPageServiceImpl  implements MyPageService{
         }
     }
 
+    // 품목 정보 수정
+    @Override
+    public Member modifyProduct(MyProductModifyPutReq myProductModifyPutReq) {
+        Optional<Member> member = memberRepository.findByName(myProductModifyPutReq.getName());
+
+        if (member.isPresent()) {
+            Member modifyProduct = member.get();
+
+            ProductSmall modifyProductSmall = null;
+
+            if (myProductModifyPutReq.getProductSmall_id() != null) {
+                Optional<ProductSmall> productSmall = productSmallRepository.findById(myProductModifyPutReq.getProductSmall_id());
+                if (productSmall.isPresent()) {
+                    modifyProductSmall = productSmall.get();
+
+                    modifyProduct.setProductSmall(modifyProductSmall);
+
+                    Member saved = memberRepository.save(modifyProduct);
+
+                    return saved;
+                }
+            }
+        }
+        return null;
+    }
+    
 }
