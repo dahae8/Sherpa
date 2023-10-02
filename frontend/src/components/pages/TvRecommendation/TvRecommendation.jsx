@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
@@ -17,10 +17,15 @@ import {
 import Button from "../../atoms/Button";
 import { useNavigate } from "react-router-dom";
 
-const APPLICATION_SERVER_URL =
+const APPLICATION_FAST_SERVER_URL =
   process.env.NODE_ENV === "production"
     ? "https://j9c107.p.ssafy.io"
     : "http://j9c107.p.ssafy.io:8000";
+
+const APPLICATION_SPRING_SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8080";
 
 export const TvRecommendation = () => {
   const navigate = useNavigate();
@@ -40,21 +45,12 @@ export const TvRecommendation = () => {
   // const mainDatas = useSelector((state) => state.result.media);
   const recommendedMedia = "TV 영상 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
-  // const weekendsDatas = data.weekendsDatas
-  const producerCardDatas = [
-    { img: "url", title: "대한민국 명산 도전", url: "url" },
-    { img: "url", title: "램블러", url: "url" },
-    { img: "url", title: "놀자", url: "url" },
-    { img: "url", title: "길잡이", url: "url" },
-  ]; // 광고 제작사 리스트 받아오기 API
   let target = "성별";
-
   if (gender === 1) {
     target = "남성";
   } else {
     target = "여성";
   }
-
   const [subMediaLabels, setSubMediaLabels] = useState([]);
   const [subDatas, setSubDatas] = useState([]);
   const [priceLabels, setPriceLabels] = useState([]);
@@ -65,14 +61,16 @@ export const TvRecommendation = () => {
   const [recommendedtime, setRecommendedtime] = useState("");
   const [weekdaysDatas, setWeekdaysDatas] = useState([]);
   const [weekendsDatas, setWeekendsDatas] = useState([]);
+  const [producerCardDatas, setProducerCardDatas] = useState({});
+  const [showProducer, setShowProducer] = useState(false);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
-    console.log(APPLICATION_SERVER_URL);
+    console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/offline/product`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
             productSmallId: 2,
             sigunguId: 0,
@@ -106,7 +104,7 @@ export const TvRecommendation = () => {
     const recommendPrice = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/offline/budget`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/budget`,
           {
             budget: 99999999999,
           }
@@ -137,7 +135,7 @@ export const TvRecommendation = () => {
     const recommendTvChannel = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/offline/tv`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/tv`,
           {
             gender: {
               0: 45,
@@ -182,7 +180,7 @@ export const TvRecommendation = () => {
     const recommendTime = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/offline/tv/time`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/tv/time`,
           {
             age: {
               10: 19,
@@ -219,10 +217,29 @@ export const TvRecommendation = () => {
         console.log("tv시간오류", error);
       }
     };
+    const linkproducer = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/media/company/3`
+        );
+        console.log("제작사", response);
+        setProducerCardDatas(response.data.data);
+      } catch (error) {
+        console.log("제작사 오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
     recommendTvChannel();
     recommendTime();
+    linkproducer();
+  }, []);
+
+  useEffect(() => {
+    const delayProducerRender = setTimeout(() => {
+      setShowProducer(true);
+    }, 2000);
+    return () => clearTimeout(delayProducerRender);
   }, []);
 
   return (
@@ -269,9 +286,9 @@ export const TvRecommendation = () => {
       <Hr />
       <Box>
         <ProducerTitleItem>TV 광고 제작사</ProducerTitleItem>
-        <ProducerRecommendation
-          cardDatas={producerCardDatas}
-        ></ProducerRecommendation>
+        {showProducer && (
+          <ProducerRecommendation cardDatas={producerCardDatas} />
+        )}
       </Box>
       <ButtonBox>
         <SaveBox>
