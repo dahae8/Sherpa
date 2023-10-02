@@ -1,5 +1,7 @@
+import React from "react";
 import styled from "styled-components";
 import Button from "../atoms/Button";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div``;
 const SaveBox = styled.div`
@@ -8,7 +10,8 @@ const SaveBox = styled.div`
   margin: 150px 0px 30px 0px;
 `;
 
-function makeButtons() {
+function MakeButtons() {
+  const navigate = useNavigate();
   return (
     <Container>
       <SaveBox>
@@ -39,10 +42,14 @@ function makeButtons() {
         height="80px"
         textColor="white"
         fontSize="24px"
+        onClick={() => {
+          console.log(1);
+          navigate("/mediaRecommend");
+        }}
       >
         다시 추천받기
       </Button>
     </Container>
   );
 }
-export default makeButtons;
+export default MakeButtons;
