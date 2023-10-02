@@ -115,7 +115,7 @@ export const NewsPaperRecommendation = () => {
           setPrices(prices);
         }
       } catch (error) {
-        console.error("추천 매체 가져오기 오류:", error);
+        console.error("추천 가격 가져오기 오류:", error);
       }
     };
     const recommendNewspaper = async () => {
