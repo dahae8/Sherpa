@@ -205,9 +205,9 @@ export const TvRecommendation = () => {
           setWeekdaysDatas(weekdaysDatas);
         }
         const weekendsDatas = [];
-        for (let i = 0; i < response.data.data.weekendssDatas.length; i++) {
-          if (response.data.data.weekdaysDatas[i]) {
-            weekendsDatas.push(response.data.data.weekendssDatas[i]);
+        for (let i = 0; i < response.data.data.weekendsDatas.length; i++) {
+          if (response.data.data.weekendsDatas[i]) {
+            weekendsDatas.push(response.data.data.weekendsDatas[i]);
           } else {
             weekendsDatas.push(0);
           }
