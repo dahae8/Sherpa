@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import SelectAutoWidth from '../atoms/SelectOption';
 import styled from 'styled-components';
 import { TextField } from '@mui/material';
@@ -21,6 +21,7 @@ const ConfirmContainer = styled.div`
 `
 
 function SignUp() {
+  const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
@@ -37,6 +38,59 @@ function SignUp() {
   const [pwConfirm, setpwConfirm] = useState(null);
   const [eConfirm, seteConfirm] = useState(null);
 
+  const [selectDataL, setSelectDataL] = useState(null);
+  const [selectDataM, setSelectDataM] = useState(null);
+  const [selectDataS, setSelectDataS] = useState(null);
+  const [dataL, setDataL] = useState([]);
+  const [dataM, setDataM] = useState([]);
+  const [dataS, setDataS] = useState([]);
+
+  useLayoutEffect(() => {
+    const getDataL = async () => {
+      try {
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/L/0`);
+        if (response.data.success) {
+          console.log(response.data);
+          setDataL(response.data.data);
+        }
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
+
+    getDataL();
+  }, []);
+  useEffect(() => {
+    const getDataM = async () => {
+      try {
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/M/${selectDataL}`);
+        if (response.data.success) {
+          console.log(response.data);
+          setDataM(response.data.data);
+        }
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
+    getDataM();
+  }, [selectDataL]);
+  useEffect(() => {
+    const getDataS = async () => {
+      try {
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectDataM}`);
+        if (response.data.success) {
+          console.log(response.data);
+          setDataS(response.data.data);
+        }
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
+
+    getDataS();
+  }, [selectDataM]);
+
+
   useEffect(() => {
     if (pwValue !== pw2Value && pw2Value !== "") {
       setPw2Helper("비밀번호가 일치하지 않습니다.");
@@ -52,12 +106,12 @@ function SignUp() {
       e.preventDefault();
 
       if (pwConfirm&&pwValue&&name&&email&&idConfirm&&eConfirm) {
-        const url = "http://j9c107.p.ssafy.io:8080/api/member";
+        const url = APPLICATION_SERVER_URL + "/api/member" ;
         const data = {
           name: name,
           email: email,
           pwd: pwValue,
-          productSmall_id: 2,
+          productSmall_id: selectDataS,
         };
         try {
           const response = await axios.post(url, data);
@@ -72,8 +126,7 @@ function SignUp() {
   }
 
   async function checkName() {
-    const url =
-      "http://j9c107.p.ssafy.io:8080/api/member/check/id/"+ name;
+    const url = APPLICATION_SERVER_URL + "/api/member/check/id/"+ name;
     try {
       const response = await axios.get(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -100,8 +153,7 @@ function SignUp() {
 
   const checkMail = async (e) => {
     e.preventDefault();
-    const url =
-      "http://j9c107.p.ssafy.io:8080/api/member/check/email/"+ email;
+    const url = APPLICATION_SERVER_URL + "/api/member/check/email/"+ email;
     try {
       const response = await axios.get(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -167,9 +219,9 @@ function SignUp() {
           <p>{eHelper}</p>
         </ValidContainer>
         <div>
-            <SelectAutoWidth></SelectAutoWidth>
-            <SelectAutoWidth></SelectAutoWidth>
-            <SelectAutoWidth></SelectAutoWidth>
+            <SelectAutoWidth data={dataL || []} onSelect={setSelectDataL}></SelectAutoWidth>
+            <SelectAutoWidth data={dataM} onSelect={setSelectDataM}></SelectAutoWidth>
+            <SelectAutoWidth data={dataS} onSelect={setSelectDataS}></SelectAutoWidth>
         </div>       
         <button className="form-button" onClick={addUser}>회원가입</button>
       </form>
