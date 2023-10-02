@@ -17,7 +17,7 @@ import java.util.Date;
 @Table(name = "keywordRec")
 public class KeywordRec {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

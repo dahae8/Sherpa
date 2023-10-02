@@ -87,7 +87,7 @@ public class KeywordController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<?> saveKewordLike(@RequestBody KeywordLikeReq keywordLikeReq){
+    public ResponseEntity<?> saveKeywordLike(@RequestBody KeywordLikeReq keywordLikeReq){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
 
