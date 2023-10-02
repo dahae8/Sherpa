@@ -1,88 +1,52 @@
-import styled from "styled-components";
+import React, { useState, useLayoutEffect } from "react";
+import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
 import ChannelRecommendation from "../../organisms/ChannelRecommendation";
 import TimeRecommendation from "../../organisms/TimeRecommendation";
 import ProducerRecommendation from "../../organisms/ProducerCardList";
-import Buttons from "../../organisms/ResultPageButtens";
+import {
+  Container,
+  TargetBox,
+  Box,
+  Hr,
+  ProducerTitleItem,
+  SaveBox,
+  ButtonBox,
+} from "./TvRecommendation";
+import Button from "../../atoms/Button";
+import { useNavigate } from "react-router-dom";
 
-const Container = styled.div`
-  margin: 0 320px;
-`;
-const TargetBox = styled.div`
-  margin-bottom: 100px;
-`;
-const Box = styled.div`
-  margin: 150px 0px 150px 0px;
-`;
-const Hr = styled.hr``;
-const ProducerTitleItem = styled.div`
-  font-size: 48px;
-  margin-bottom: 100px;
-`;
+const APPLICATION_SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8000";
 
 export const TvRecommendation = () => {
-  const ages = [80, 60, 45, 42, 32, 29]; // 광고 타겟층 분석 API state로 변경 예정
-  //  ages = [data.age10, data.age20, data.age30, data.age40, data.age50, data.age60]
-  const male = 75; // 광고 타겟층 분석 API state로 변경 예정
-  const female = 25; // 광고 타겟층 분석 API state로 변경 예정
-  const gender = 1; // 광고 타겟층 분석 API state로 변경 예정
-  const age = 30; // 광고 타겟층 분석 API state로 변경 예정
-  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const subMediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const priceLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; //API state로 변경 예정
-  const mainDatas = [23, 19, 13, 5]; //API state로 변경 예정
-  const subDatas = [23, 19, 13, 5]; //API state로 변경 예정
-  const prices = [23, 19, 13, 5]; //API state로 변경 예정
-  const recommendedMedia = "TV 영상 광고"; //API state로 변경 예정
-  const tvLabels = [
-    "스포츠",
-    "뉴스",
-    "드라마",
-    "예능",
-    "영화",
-    "애니메이션",
-    "토론",
-    "교양",
-  ]; // TV 채널 추천 API
-  // const tvLabels = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     tvLabels.push(data[i].type);
-  //   } else {
-  //     tvLabels.push(0);
-  //   }
-  // }
-  const tvChannelDatas = [80, 60, 45, 42, 32, 29, 19, 5]; // TV 채널 추천 API
-  // const tvChannelDatas = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     tvChannelDatas.push(data[i].ratio);
-  //   } else {
-  //     tvChannelDatas.push(0);
-  //   }
-  // }
-  const recommendedTvChennl = "스포츠"; // TV 채널 추천 API
-  // const recommendedTvChennl = data[0].type
-  const weekdaysDatas = [
-    3, 5.9, 7.4, 12.8, 13, 22, 24, 43, 42, 55, 44, 33, 22, 34, 44, 56, 66, 54,
-    66, 64, 66, 64, 33, 22, 19,
-  ]; // TV 광고 시간대 분석 API
-  // const weekdaysDatas = data.weekdaysDatas
-  const weekendsDatas = [
-    23, 26, 32, 36, 34, 34, 46, 52, 41, 53, 63, 53, 49, 64, 72, 81, 79, 78, 69,
-    67, 59, 52, 51, 47, 39,
-  ]; // TV 광고 시간대 분석 API
+  const navigate = useNavigate();
+  const ages = [80, 60, 45, 42, 32, 29]; // state
+  // const ages = useSelector((state) => state.result.target);
+  const male = 75; // state
+  // const male = useSelector((state) => state.result.target);
+  const female = 25; // state
+  // const female = useSelector((state) => state.result.target);
+  const gender = 1; // state
+  // const gender = useSelector((state) => state.result.target);
+  const age = 30; // state
+  // const age = useSelector((state) => state.result.target);
+  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
+  // const mediaLabels = useSelector((state) => state.result.media);
+  const mainDatas = [23, 19, 13, 5]; // state
+  // const mainDatas = useSelector((state) => state.result.media);
+  const recommendedMedia = "TV 영상 광고"; // state
+  // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
   // const weekendsDatas = data.weekendsDatas
-  const recommendedtime = "18"; // TV 광고 시간대 분석 API
-
   const producerCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
     { img: "url", title: "놀자", url: "url" },
     { img: "url", title: "길잡이", url: "url" },
-  ]; //API
-
+  ]; // 광고 제작사 리스트 받아오기 API
   let target = "성별";
 
   if (gender === 1) {
@@ -90,6 +54,176 @@ export const TvRecommendation = () => {
   } else {
     target = "여성";
   }
+
+  const [subMediaLabels, setSubMediaLabels] = useState([]);
+  const [subDatas, setSubDatas] = useState([]);
+  const [priceLabels, setPriceLabels] = useState([]);
+  const [prices, setPrices] = useState([]);
+  const [recommendedTvChennl, setRecommendedTvChennl] = useState("");
+  const [tvLabels, setTvLabels] = useState([]);
+  const [tvChannelDatas, setTvChannelDatas] = useState([]);
+  const [recommendedtime, setRecommendedtime] = useState("");
+  const [weekdaysDatas, setWeekdaysDatas] = useState([]);
+  const [weekendsDatas, setWeekendsDatas] = useState([]);
+
+  useLayoutEffect(() => {
+    console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
+    console.log(APPLICATION_SERVER_URL);
+    const recommendMedia = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/offline/product`,
+          {
+            productSmallId: 2,
+            sigunguId: 0,
+            gender: 0,
+            age: 20,
+          }
+        );
+        console.log("추천 매체 가져오기", response);
+        const subMediaLabels = [];
+        for (let i = 0; i < response.data.data.mediaList.length; i++) {
+          if (response.data.data.mediaList[i]) {
+            subMediaLabels.push(response.data.data.mediaList[i].name);
+          } else {
+            subMediaLabels.push(0);
+          }
+          setSubMediaLabels(subMediaLabels);
+        }
+        const subDatas = [];
+        for (let i = 0; i < response.data.data.mediaList.length; i++) {
+          if (response.data.data.mediaList[i]) {
+            subDatas.push(response.data.data.mediaList[i].value);
+          } else {
+            subDatas.push(0);
+          }
+          setSubDatas(subDatas);
+        }
+      } catch (error) {
+        console.error("추천 매체 가져오기 오류:", error);
+      }
+    };
+    const recommendPrice = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/offline/budget`,
+          {
+            budget: 99999999999,
+          }
+        );
+        console.log("추천 가격 가져오기", response);
+        const priceLabels = [];
+        for (let i = 0; i < response.data.data.budgetList.length; i++) {
+          if (response.data.data.budgetList[i]) {
+            priceLabels.push(response.data.data.budgetList[i].name);
+          } else {
+            priceLabels.push(0);
+          }
+          setPriceLabels(priceLabels);
+        }
+        const prices = [];
+        for (let i = 0; i < response.data.data.budgetList.length; i++) {
+          if (response.data.data.budgetList[i]) {
+            prices.push(response.data.data.budgetList[i].value);
+          } else {
+            prices.push(0);
+          }
+          setPrices(prices);
+        }
+      } catch (error) {
+        console.error("추천 가격 가져오기 오류:", error);
+      }
+    };
+    const recommendTvChannel = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/offline/tv`,
+          {
+            gender: {
+              0: 45,
+              1: 55,
+            },
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+            sidoId: 1,
+          }
+        );
+        console.log("tv채널", response);
+        setRecommendedTvChennl(response.data.data.tvList[0].type);
+        const tvLabels = [];
+        for (let i = 0; i < response.data.data.tvList.length; i++) {
+          if (response.data.data.tvList[i]) {
+            tvLabels.push(response.data.data.tvList[i].type);
+          } else {
+            tvLabels.push(0);
+          }
+        }
+        setTvLabels(tvLabels);
+        const tvChannelDatas = [];
+        for (let i = 0; i < response.data.data.tvList.length; i++) {
+          if (response.data.data.tvList[i]) {
+            tvChannelDatas.push(response.data.data.tvList[i].ratio);
+          } else {
+            tvChannelDatas.push(0);
+          }
+        }
+        setTvChannelDatas(tvChannelDatas);
+      } catch (error) {
+        console.error("tv채널 오류:", error);
+      }
+    };
+    const recommendTime = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SERVER_URL}/fastapi/offline/tv/time`,
+          {
+            age: {
+              10: 19,
+              20: 17,
+              30: 13,
+              40: 20,
+              50: 21,
+              60: 5,
+              70: 5,
+            },
+          }
+        );
+        console.log("tv시간", response);
+        setRecommendedtime(response.data.data.weekend_recommend);
+        const weekdaysDatas = [];
+        for (let i = 0; i < response.data.data.weekdaysDatas.length; i++) {
+          if (response.data.data.weekdaysDatas[i]) {
+            weekdaysDatas.push(response.data.data.weekdaysDatas[i]);
+          } else {
+            weekdaysDatas.push(0);
+          }
+          setWeekdaysDatas(weekdaysDatas);
+        }
+        const weekendsDatas = [];
+        for (let i = 0; i < response.data.data.weekendssDatas.length; i++) {
+          if (response.data.data.weekdaysDatas[i]) {
+            weekendsDatas.push(response.data.data.weekendssDatas[i]);
+          } else {
+            weekendsDatas.push(0);
+          }
+          setWeekendsDatas(weekendsDatas);
+        }
+      } catch (error) {
+        console.log("tv시간오류", error);
+      }
+    };
+    recommendMedia();
+    recommendPrice();
+    recommendTvChannel();
+    recommendTime();
+  }, []);
 
   return (
     <Container>
@@ -114,34 +248,70 @@ export const TvRecommendation = () => {
           recommendedMedia={recommendedMedia}
         ></OfflineMediaRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ChannelRecommendation
           title={`추천 드리는 TV 채널은 ${recommendedTvChennl} 입니다.`}
           datas={tvChannelDatas}
           labels={tvLabels}
-          description={`${target}이 시청하는 TV 프로그램 통계`}
+          description={`${age}대 ${target}이 시청하는 TV 프로그램 통계`}
         ></ChannelRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <TimeRecommendation
           weekdaysDatas={weekdaysDatas}
           weekendsDatas={weekendsDatas}
-          description={`${target}이 TV를 시청하는 시간대 데이터`}
+          description={`${age}대 ${target}이 TV를 시청하는 시간대 데이터`}
           recommendedtime={recommendedtime}
         ></TimeRecommendation>
       </Box>
-      <Hr></Hr>
+      <Hr />
       <Box>
         <ProducerTitleItem>TV 광고 제작사</ProducerTitleItem>
         <ProducerRecommendation
           cardDatas={producerCardDatas}
         ></ProducerRecommendation>
       </Box>
-      <Box>
-        <Buttons></Buttons>
-      </Box>
+      <ButtonBox>
+        <SaveBox>
+          <Button
+            backgroundColor="white"
+            width="350px"
+            height="80px"
+            border="1px solid #3C486B"
+            textColor="#3C486B"
+            fontSize="24px"
+            onClick={() => {
+              navigate("/mypage");
+            }}
+          >
+            보관함에 추가
+          </Button>
+          <Button
+            backgroundColor="white"
+            width="350px"
+            height="80px"
+            border="1px solid #3C486B"
+            textColor="#3C486B"
+            fontSize="24px"
+          >
+            PDF로 저장
+          </Button>
+        </SaveBox>
+        <Button
+          backgroundColor="#3C486B"
+          width="890px"
+          height="80px"
+          textColor="white"
+          fontSize="24px"
+          onClick={() => {
+            navigate("/mediaRecommend");
+          }}
+        >
+          다시 추천받기
+        </Button>
+      </ButtonBox>
     </Container>
   );
 };

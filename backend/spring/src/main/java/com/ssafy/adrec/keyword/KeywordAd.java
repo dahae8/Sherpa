@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "adkeyword")
+@Table(name = "adKeyword")
 public class KeywordAd {
     @Id
     @GeneratedValue

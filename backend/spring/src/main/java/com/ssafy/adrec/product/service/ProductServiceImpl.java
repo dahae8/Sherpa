@@ -79,4 +79,15 @@ public class ProductServiceImpl implements ProductService {
 
         return productId;
     }
+
+    @Override
+    public ProductSmall getProductSmall (Long id){
+        Optional<ProductSmall> productSmall = productSmallRepository.findById(id);
+        if(productSmall.isEmpty()){
+            return null;
+        }
+
+        return productSmall.get();
+    }
+    
 }
