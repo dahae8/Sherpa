@@ -57,7 +57,6 @@ function makeSingleChart({ labels, datas, text, width, height }) {
     },
     scales: {
       x: {
-        max: 100,
         ticks: {
           callback: (value) => `${value}%`,
         },
