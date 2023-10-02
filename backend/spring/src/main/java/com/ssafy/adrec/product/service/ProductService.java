@@ -11,5 +11,9 @@ public interface ProductService {
     // 품목 대,중,소분류 리스트
     List<ProductGetRes> getList(ProductType productType, Long id);
 
+    // 품목 대, 중분류 아이디 가져오기
+    Long getProductId(ProductType productType,Long id);
+
     ProductSmall getProductSmall (Long id);
+    
 }
