@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 public class BusReq {
     int gender;
     int age;
-    String Area;
+    Long sigunguId;
 
     @Builder
-    public BusReq(int gender, int age, String area) {
+    public BusReq(int gender, int age, Long sigunguId) {
         this.gender = gender;
         this.age = age;
-        Area = area;
+        this.sigunguId = sigunguId;
     }
 }
