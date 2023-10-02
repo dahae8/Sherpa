@@ -13,6 +13,7 @@ export const Hr = styled.hr``;
 export const ProducerTitleItem = styled.div`
   font-size: 48px;
   margin-bottom: 100px;
+  margin-top: 150px;
 `;
 export const SaveBox = styled.div`
   display: flex;

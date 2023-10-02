@@ -12,6 +12,7 @@ export const Box = styled.div`
 export const BlogTitle = styled.div`
   font-size: 48px;
   margin-bottom: 100px;
+  margin-top: 150px;
 `;
 export const Hr = styled.hr``;
 export const SaveBox = styled.div`
