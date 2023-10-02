@@ -189,14 +189,14 @@ export const OutdoorRecommendation = () => {
         const prices = [];
         for (let i = 0; i < response.data.data.budgetList.length; i++) {
           if (response.data.data.budgetList[i]) {
-            prices.push(response.data.data.budgetList[i].value);
+            prices.push(response.data.data.budgetList[i].value * 0.0001);
           } else {
             prices.push(0);
           }
           setPrices(prices);
         }
       } catch (error) {
-        console.error("추천 매체 가져오기 오류:", error);
+        console.error("추천 가격 가져오기 오류:", error);
       }
     };
     const linkproducer = async () => {

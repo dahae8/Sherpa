@@ -122,7 +122,7 @@ export const TvRecommendation = () => {
         const prices = [];
         for (let i = 0; i < response.data.data.budgetList.length; i++) {
           if (response.data.data.budgetList[i]) {
-            prices.push(response.data.data.budgetList[i].value);
+            prices.push(response.data.data.budgetList[i].value * 0.0001);
           } else {
             prices.push(0);
           }
