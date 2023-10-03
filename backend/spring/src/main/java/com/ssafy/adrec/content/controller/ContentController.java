@@ -7,6 +7,7 @@ import com.ssafy.adrec.content.request.ContentRecListReq;
 import com.ssafy.adrec.content.request.ContentRecReq;
 import com.ssafy.adrec.content.service.ContentService;
 import com.ssafy.adrec.keyword.request.KeywordLikeReq;
+import com.ssafy.adrec.keyword.service.KeywordService;
 import com.ssafy.adrec.media.MediaSub;
 import com.ssafy.adrec.media.MediaType;
 import com.ssafy.adrec.media.MediaTypes;
@@ -14,6 +15,7 @@ import com.ssafy.adrec.media.service.MediaService;
 import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.member.controller.MemberController;
 import com.ssafy.adrec.member.service.MemberService;
+import com.ssafy.adrec.myPage.service.MyPageService;
 import com.ssafy.adrec.product.ProductSmall;
 import com.ssafy.adrec.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,7 @@ public class ContentController {
     private final ProductService productService;
     private final MediaService mediaService;
     private final ContentService contentService;
+    private final MyPageService myPageService;
 
     @PostMapping("/save")
     public ResponseEntity<?> saveContent(@RequestBody ContentRecReq contentRecReq) {
@@ -101,5 +104,47 @@ public class ContentController {
         httpStatus = HttpStatus.OK;
         return new ResponseEntity<>(resultMap, httpStatus);
     }
+
+    @GetMapping("/keyword/{memberName}/{productSmallId}")
+    public ResponseEntity<?> getKeywordList(@PathVariable("memberName") String memberName,@PathVariable("productSmallId") Long productSmallId){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        Member member = memberService.checkName(memberName);
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",memberName));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
+
+        }
+
+        ProductSmall productSmall =productService.getProductSmall(productSmallId);
+        if (productSmall == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%d]은/는 유요한 품목 코드가 아닙니다.",productSmallId));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
+        }
+
+        List<String> keywordList = myPageService.getKeywordList(member, productSmall);
+
+        if (keywordList.size() == 0) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "해당 데이터가 없습니다.");
+            httpStatus = HttpStatus.NOT_FOUND;
+        } else {
+            resultMap.put("msg", "품목에 해당하는 좋아용한 키워드 목록 가져오기.");
+            resultMap.put("success", true);
+            resultMap.put("data", keywordList);
+            resultMap.put("count", keywordList.size());
+            httpStatus = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+
+
+    }
+
 
 }
