@@ -9,6 +9,7 @@ import com.ssafy.adrec.area.repository.SidoRepository;
 import com.ssafy.adrec.area.repository.SigunguRepository;
 import com.ssafy.adrec.area.response.AreaGetRes;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
+import com.ssafy.adrec.product.ProductSmall;
 import com.ssafy.adrec.product.response.ProductGetRes;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +56,15 @@ public class AreaServiceImpl implements AreaService{
 
         return list;
 
+    }
+
+    @Override
+    public Sigungu getSigungu (Long id){
+        Optional<Sigungu> sigungu = sigunguRepository.findById(id);
+        if(sigungu.isEmpty()){
+            return null;
+        }
+
+        return sigungu.get();
     }
 }
