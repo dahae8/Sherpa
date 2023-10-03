@@ -7,7 +7,8 @@ import {
   setName,
   setProductSmall,
   setProductMedium,
-  setProductLarge
+  setProductLarge,
+  setProductSmallName
 } from './userSlice';
 
 import axios from 'axios';
@@ -55,6 +56,7 @@ export const getUserInfo = (name) => async (dispatch) => {
     dispatch(setProductSmall(response.data.data.productSmall.id));
     dispatch(setProductMedium(response.data.data.productSmall.productMedium.id));
     dispatch(setProductLarge(response.data.data.productSmall.productMedium.productLarge.id));
+    dispatch(setProductSmallName(response.data.data.productSmall.small));
 
     return ;
   } catch (error) {
