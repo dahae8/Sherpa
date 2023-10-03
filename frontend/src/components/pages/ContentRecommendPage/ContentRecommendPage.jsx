@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import OpenAI from 'openai';
 
@@ -10,8 +11,11 @@ import Button from '../../atoms/Button';
 import { TextField } from '@mui/material';
 import { Chip } from '@mui/material';
 
-const APPLICATION_SERVER_URL =
+const APPLICATION_SPRING_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
+
+const APPLICATION_FAST_SERVER_URL =
+  process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8000';
 
 const Container = styled.div`
   margin: 0 320px;
@@ -19,7 +23,6 @@ const Container = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   align-content: center;
-  justify-content: center;
 `;
 const Paragraph = styled.p`
   text-align: start;
@@ -54,17 +57,19 @@ const Bundle = styled.div`
 `;
 
 export const ContentRecommendPage = () => {
-  // 매체 선택 리스트
-  const [mediaList, setMediaList] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // 분류 관련 변수
-  const [selectDataL, setSelectDataL] = useState(null);
-  const [selectDataM, setSelectDataM] = useState(null);
-  const [selectDataS, setSelectDataS] = useState(null);
+  const defaultSelectL = useSelector((state) => state.user.productLarge);
+  const defaultSelectM = useSelector((state) => state.user.productMedium);
+  const defaultSelectS = useSelector((state) => state.user.productSmall);
+  const [selectDataL, setSelectDataL] = useState(defaultSelectL || null);
+  const [selectDataM, setSelectDataM] = useState(defaultSelectM || null);
+  const [selectDataS, setSelectDataS] = useState(defaultSelectS || null);
   const [dataL, setDataL] = useState([]);
   const [dataM, setDataM] = useState([]);
   const [dataS, setDataS] = useState([]);
-  // const [defaultSelectL, setDfaultSelectL] = useSelector();
 
   const [media, setMedia] = useState('TV');
   const [keywords, setKeywords] = useState(['이탈리안', '재료']);
@@ -158,38 +163,34 @@ export const ContentRecommendPage = () => {
 
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
-    const getMediaData = async () => {
-      try {
-        const response = await axios.get(`${APPLICATION_SERVER_URL}/api/media`);
-        if (response.data.success) {
-          console.log(response.data);
-          // setMediaList(response.data);
-        }
-      } catch (error) {
-        console.log('Media Error!!', error);
-      }
-    };
     const getDataL = async () => {
       try {
-        const response = await axios.get(`${APPLICATION_SERVER_URL}/api/product/L/0`);
+        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/product/L/0`);
         if (response.data.success) {
-          console.log(response.data);
+          console.log(response.data.data);
           setDataL(response.data.data);
         }
       } catch (error) {
         console.log('Error!!', error);
       }
     };
+    const getMedia = async () => {
+      try {
+        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/media/type/{type}/{id}`)
+      } catch (error) {
 
-    getMediaData();
+      }
+    }
+
     getDataL();
   }, []);
   useEffect(() => {
+    const selectedL = selectDataL !== null ? selectDataL : defaultSelectL;
     const getDataM = async () => {
       try {
-        const response = await axios.get(`${APPLICATION_SERVER_URL}/api/product/M/${selectDataL}`);
+        const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/M/${selectedL}`);
         if (response.data.success) {
-          console.log(response.data);
+          console.log(response.data.data);
           setDataM(response.data.data);
         }
       } catch (error) {
@@ -197,13 +198,14 @@ export const ContentRecommendPage = () => {
       }
     };
     getDataM();
-  }, [selectDataL]);
+  }, [selectDataL, defaultSelectL]);
   useEffect(() => {
+    const selectedM = selectDataM !== null ? selectDataM : defaultSelectM;
     const getDataS = async () => {
       try {
-        const response = await axios.get(APPLICATION_SERVER_URL + `/api/product/S/${selectDataM}`);
+        const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/S/${selectedM}`);
         if (response.data.success) {
-          console.log(response.data);
+          console.log(response.data.data);
           setDataS(response.data.data);
         }
       } catch (error) {
@@ -212,7 +214,7 @@ export const ContentRecommendPage = () => {
     };
 
     getDataS();
-  }, [selectDataM]);
+  }, [selectDataM, defaultSelectM]);
 
   return (
     <Container>
@@ -228,6 +230,9 @@ export const ContentRecommendPage = () => {
         onSelectL={setSelectDataL}
         onSelectM={setSelectDataM}
         onSelectS={setSelectDataS}
+        defaultSelectL={defaultSelectL}
+        defaultSelectM={defaultSelectM}
+        defaultSelectS={defaultSelectS}
         width="200px"
       ></MediaSelectOption>
       <Bunch>
@@ -284,8 +289,10 @@ export const ContentRecommendPage = () => {
         ))}
 
         <h2>시나리오</h2>
-        <h3>{scenario.title}</h3>
-        <p>{scenario.content}</p>
+        {/* {scenario.map((index) => (
+          <h3 key={index}>{title}</h3>
+          <p key={index}>{content}</p>
+        ))}; */}
       </div>
     </Container>
   );
