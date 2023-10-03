@@ -65,65 +65,91 @@ export const ContentRecommendPage = () => {
   const [dataS, setDataS] = useState([]);
   // const [defaultSelectL, setDfaultSelectL] = useSelector();
 
-  const [media, setMedia] = useState('신문');
-  const [keywords, setKeywords] = useState(['신소재', '경량']);
+  const [media, setMedia] = useState('TV');
+  const [keywords, setKeywords] = useState(['이탈리안', '재료']);
   const [category, setCategory] = useState({
-    major: '레포츠/문화/취미',
-    middle: '레저/스포츠',
-    minor: '스포츠용품점'
+    major: '식생활',
+    middle: '일반음식점',
+    minor: '양식'
   });
-  const [adContent, setAdContent] = useState({
-    phrase: '',
-    scenario: {
-      title: '',
-      content: ''
-    }
+  const [phrase, setPhrase] = useState([]);
+  const [scenario, setScenario] = useState({
+    title: '',
+    content: ''
   });
 
-  async function getRecommend(media, keywords, category, setAdContent) {
+  async function getRecommend(media, keywords, category, setPhrase, setScenario) {
     const API_KEY = process.env.REACT_APP_API_KEY;
     const openai = new OpenAI({
       apiKey: API_KEY,
       dangerouslyAllowBrowser: true
     });
     try {
-      // Construct the message for OpenAI
-      const message = `나는 ${media} 매체에서 광고하려고 합니다. 주요 키워드는 ${keywords.join(
-        ', '
-      )}입니다. 광고의 업종은 ${category.major} > ${category.middle} > ${
-        category.minor
-      }입니다. 이를 기반으로 광고 문구와 시나리오를 추천해주세요.`;
+      // media가 TV, 라디오인 경우
+      if (['TV', '라디오'].includes(media)) {
+        console.log('시나리오 추천받는 중');
+        const scenarioMessage = `나는 ${media} 매체에서 광고하려고 합니다. 주요 키워드는 ${keywords.join(
+          ', '
+        )}입니다. 광고의 업종은 ${category.major} > ${category.middle} > ${
+          category.minor
+        }입니다. 음악의 경우 저작권이 없는 ncm 혹은 클래식을 위주로 해주세요. 
+        예산의 경우 고려하지 않고 진행합니다. 
+        광고 시나리오에는 반드시 각각 제목을 달고 '제목: 시나리오제목'의 형식으로 해주세요. 
+        대사도 추가해서 작성해주세요.
+        광고 시나리오 2개를 추천해주세요.`;
 
-      // Call OpenAI API
-      const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: message }],
-        temperature: 0.8, // 모델의 출력 다양성
-        max_tokens: 1024, // 응답받을 메시지 최대 토큰(단어) 수 설정
-        top_p: 1, // 토큰 샘플링 확률을 설정
-        frequency_penalty: 0.5, // 일반적으로 나오지 않는 단어를 억제하는 정도
-        presence_penalty: 0.5 // 동일한 단어나 구문이 반복되는 것을 억제하는 정도
-      });
+        const scenarioResponse = await openai.chat.completions.create({
+          model: 'gpt-3.5-turbo',
+          messages: [{ role: 'user', content: scenarioMessage }],
+          temperature: 0.8,
+          max_tokens: 3000,
+          top_p: 1,
+          frequency_penalty: 0.5,
+          presence_penalty: 0.5
+        });
 
-      console.log(response.choices);
+        console.log(scenarioResponse.choices[0].message.content);
+         // "제목:"이라는 문자열을 기준으로 시나리오들을 분리
+        const scenarioStrings = scenarioResponse.choices[0].message.content.split('제목:').slice(1);
 
-      // Extract the recommendation from the response
-      const recommendation = response.data.choices[0].message.content.split('\n');
+        // 각 시나리오 문자열을 처리하여 원하는 객체 형태로 변형
+        const scenarios = scenarioStrings.map(s => {
+          const lines = s.trim().split('\n');
+          const title = lines[0].replace(/["]/g, '').trim();
+          const content = lines.slice(1).join('\n').replace('시나리오:\n', '').trim();
+          return { title, content };
+        });
+        console.log(scenarios);
+        setScenario(scenarios);
 
-      // Extract phrase and scenario
-      const phrase = recommendation[0];
-      let scenario = {};
+        // media가 TV, 라디오가 아닌 다른 경우
+      } else {
+        console.log('문구 추천받는 중');
+        const phraseMessage = `나는 ${media} 매체에서 광고하려고 합니다. 주요 키워드는 ${keywords.join(
+          ', '
+        )}입니다. 광고의 업종은 ${category.major} > ${category.middle} > ${
+          category.minor
+        }입니다. 광고 문구 5개를 추천해주세요. 광고 문구의 경우 숫자를 통해 시작하지 않고 바로 문장이 시작되고 줄바꿈을 통해서 구분해주었으면해.`;
 
-      if (media === 'TV' || media === '라디오') {
-        scenario.title = recommendation[1];
-        scenario.content = recommendation.slice(2).join('\n');
+        const phraseResponse = await openai.chat.completions.create({
+          model: 'gpt-3.5-turbo',
+          messages: [{ role: 'user', content: phraseMessage }],
+          temperature: 0.8,
+          max_tokens: 1024,
+          top_p: 1,
+          frequency_penalty: 0.5,
+          presence_penalty: 0.5
+        });
+
+        if (phraseResponse.created) {
+          console.log(phraseResponse.choices[0].message.content);
+
+          const receiveMessage = phraseResponse.choices[0].message.content;
+          const processedPhrase = receiveMessage.split('\n').map((str) => str.replace(/^\d+\.\s*/, ''));
+          setPhrase(processedPhrase);
+          console.log(phrase);
+        }
       }
-
-      // Set the state with the recommendation
-      setAdContent({
-        phrase: phrase,
-        scenario: scenario
-      });
     } catch (error) {
       console.error('Error getting recommendation:', error);
     }
@@ -225,7 +251,7 @@ export const ContentRecommendPage = () => {
           textColor="white"
           fontSize="24px"
           onClick={() => {
-            getRecommend(media, keywords, category, setAdContent);
+            getRecommend(media, keywords, category, setPhrase, setScenario);
           }}
         >
           추가
@@ -240,11 +266,13 @@ export const ContentRecommendPage = () => {
       </Bundle>
       <div>
         <h2>광고 문구</h2>
-        <p>{adContent.phrase}</p>
+        {phrase.map((p, index) => (
+          <p key={index}>{p}</p>
+        ))}
 
         <h2>시나리오</h2>
-        <h3>{adContent.scenario.title}</h3>
-        <p>{adContent.scenario.content}</p>
+        <h3>{scenario.title}</h3>
+        <p>{scenario.content}</p>
       </div>
     </Container>
   );
