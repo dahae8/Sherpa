@@ -74,7 +74,7 @@ export const ContentRecommendPage = () => {
   // 매체 리스트
   const [mediaList, setMediaList] = useState([]);
 
-  const [media, setMedia] = useState('TV');
+  const [media, setMedia] = useState('');
   const [keywords, setKeywords] = useState(['이탈리안', '재료']);
   const [category, setCategory] = useState({
     major: '식생활',
@@ -179,13 +179,29 @@ export const ContentRecommendPage = () => {
     };
     const getMedia = async () => {
       try {
-        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/media/type/largeMedium/0`);
-        if (response.data.success) {
-          console.log(response.data);
-          const swappedMediaList = response.data.data.map(item => {
-            return { id: item.id, large: item.medium, medium: item.large };
-        });
-          console.log('수정된 리스트', swappedMediaList);
+        const mediumResponse = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/media/type/largeMedium/0`);
+        const smallResponse = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/media/type/small/6`);
+        if (mediumResponse.data.success && smallResponse.data.success) {
+          console.log(mediumResponse.data);
+          console.log(smallResponse.data);
+          const mediumMediaList = mediumResponse.data.data.map(item => {
+            return { id: item.id, medium: item.medium};
+          }).slice(0, -1); // 옥외 제거
+
+          // smallResponse에서 "type"을 "medium"으로 이름 변경
+          const smallMediaList = smallResponse.data.data.map(item => {
+            return { medium: item.type };
+          });
+
+          // 두 리스트 합치기
+          const combinedMediaList = [...mediumMediaList, ...smallMediaList];
+
+          // 새로운 ID 부여
+          const swappedMediaList = combinedMediaList.map((item, index) => {
+              return { id: index + 1, medium: item.medium };
+          });
+
+          // console.log('수정된 리스트', swappedMediaList);
 
           // 수정된 데이터를 상태로 설정합니다.
           setMediaList(swappedMediaList);
@@ -234,7 +250,7 @@ export const ContentRecommendPage = () => {
     <Container>
       <h1>광고 매체를 선택해주세요</h1>
       <Box>
-        <Select data={mediaList} onSelect={media} width="700px"></Select>
+        <Select data={mediaList} onSelect={setMedia} width="700px"></Select>
       </Box>
       <h1>광고 품목을 선택해 주세요</h1>
       <MediaSelectOption
