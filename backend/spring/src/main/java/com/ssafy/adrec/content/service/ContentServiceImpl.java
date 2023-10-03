@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -92,6 +93,12 @@ public class ContentServiceImpl implements ContentService {
         }
 
         return contentLike;
+    }
+
+    @Override
+    public ContentRec getContentRec(Long contentRecId){
+        Optional<ContentRec> contentRec = contentRecRepository.findById(contentRecId);
+        return contentRec.orElse(null);
     }
 
 
