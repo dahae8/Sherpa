@@ -10,6 +10,5 @@ public class ContentLikeRes {
     Long id;
     String title;
     String content;
-    Long contentRecId;
 
 }
