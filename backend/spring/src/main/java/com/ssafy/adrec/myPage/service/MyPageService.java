@@ -10,6 +10,7 @@ import com.ssafy.adrec.myPage.MediaRec;
 import com.ssafy.adrec.myPage.request.MediaRecReq;
 import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
+import com.ssafy.adrec.myPage.response.ContentRecRes;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
 import com.ssafy.adrec.myPage.response.MediaRecRes;
@@ -43,4 +44,6 @@ public interface MyPageService {
 
     MediaType getMediaType(Long id);
     MediaSub getMediaSub(Long id);
+
+    List<ContentRecRes> getContentRecList(Long id);
 }

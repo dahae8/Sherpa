@@ -2,6 +2,8 @@ package com.ssafy.adrec.myPage.controller;
 
 import com.ssafy.adrec.area.Sigungu;
 import com.ssafy.adrec.area.service.AreaService;
+import com.ssafy.adrec.content.ContentRec;
+import com.ssafy.adrec.content.service.ContentService;
 import com.ssafy.adrec.keyword.KeywordLike;
 import com.ssafy.adrec.keyword.KeywordRec;
 import com.ssafy.adrec.keyword.request.KeywordLikeReq;
@@ -15,6 +17,7 @@ import com.ssafy.adrec.myPage.MediaRec;
 import com.ssafy.adrec.myPage.request.MediaRecReq;
 import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
+import com.ssafy.adrec.myPage.response.ContentRecRes;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
 import com.ssafy.adrec.myPage.response.MediaRecRes;
@@ -45,6 +48,7 @@ public class MyPageController {
     private final KeywordService keywordService;
     private final ProductService productService;
     private final AreaService areaService;
+    private final ContentService contentService;
 
     @GetMapping("/keyword/{memberName}")
     public ResponseEntity<?> getKeywordRecList(@PathVariable("memberName") String memberName){
@@ -428,6 +432,39 @@ public class MyPageController {
             resultMap.put("msg",  String.format("[%d]은/는 [%s]유저의 매체추천 결과가 아닙니다.",id,memberName));
             httpStatus = HttpStatus.BAD_REQUEST;
         }
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
+    @GetMapping("/content/{memberName}")
+    public ResponseEntity<?> getContentRecList(@PathVariable("memberName") String memberName){
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+        resultMap.put("msg", "컨텐츠 추천 목록 조회");
+
+        Member member = memberService.checkName(memberName);
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",memberName));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(resultMap, httpStatus);
+
+        }
+
+        List<ContentRecRes> contentRecResList = myPageService.getContentRecList(member.getId());
+
+        if (contentRecResList.size() == 0) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "해당 데이터가 없습니다.");
+            httpStatus = HttpStatus.NOT_FOUND;
+        } else {
+            resultMap.put("success", true);
+            resultMap.put("data", contentRecResList);
+            resultMap.put("count", contentRecResList.size());
+            httpStatus = HttpStatus.OK;
+        }
+
 
         return new ResponseEntity<>(resultMap, httpStatus);
     }
