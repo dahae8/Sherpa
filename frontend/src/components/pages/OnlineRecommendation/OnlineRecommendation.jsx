@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import CommunityRecommendation from "../../organisms/CommunityRecommendation";
@@ -29,17 +30,23 @@ const APPLICATION_SPRING_SERVER_URL =
 
 export const OnlineRecommendation = () => {
   const navigate = useNavigate();
-  const ages = [80, 60, 45, 42, 32, 29]; // state
-  // const ages = useSelector((state) => state.result.target);
-  const male = 75; // state
-  // const male = useSelector((state) => state.result.target);
-  const female = 25; // state
-  // const female = useSelector((state) => state.result.target);
-  const gender = 1; // state
-  // const gender = useSelector((state) => state.result.target);
-  const age = 30; // state
-  // const age = useSelector((state) => state.result.target);
-  // const recommendedCommunity = data[0].communityList[0].name
+  const ageDatas = useSelector((state) => state.result.target.age);
+  const [ages, setAges] = useState([]);
+  useLayoutEffect(() => {
+    const newAges = [];
+    for (let i = 0; i < ageDatas.length; i++) {
+      if (ageDatas[i]) {
+        newAges.push(ageDatas[i].value);
+      } else {
+        newAges.push(0);
+      }
+    }
+    setAges(newAges);
+  }, [ageDatas]);
+  const male = useSelector((state) => state.result.target.gender[0].value);
+  const female = useSelector((state) => state.result.target.gender[1].value);
+  const gender = useSelector((state) => state.result.target.recommend.gender);
+  const age = useSelector((state) => state.result.target.recommend.age);
   const blogCardDatas = [
     { img: "url", title: "대한민국 명산 도전", url: "url" },
     { img: "url", title: "램블러", url: "url" },
