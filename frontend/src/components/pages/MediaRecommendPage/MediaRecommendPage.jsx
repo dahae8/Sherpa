@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ import {
   setMedia,
   setSelectedBigRegion,
   setSelectedOnOffline,
+  setSelectedPrice,
   setSelectedSmallRegion,
   setTarget
 } from '../../../slices/resultSlice';
@@ -65,6 +67,10 @@ const Choosedong = styled.div`
 `;
 
 export const MediaRecommendPage = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   // 분류 관련 변수
   const [selectDataL, setSelectDataL] = useState(null);
   const [selectDataM, setSelectDataM] = useState(null);
@@ -83,18 +89,25 @@ export const MediaRecommendPage = () => {
   const [dataSigungu, setDataSigungu] = useState([]);
 
   // 예산 및 온/오프라인
-  const [selectedPrice, setSelectedPrice] = useState(0);
+  const [selectedBudget, setSelectedBudget] = useState(0);
   const [selectedButton, setSelectedButton] = useState('online');
   const [gender, setGender] = useState(null);
   const [age, setAge] = useState(null);
-  
-  const dispatch = useDispatch();
 
   function getResult() {
-    dispatch(setSelectedPrice(selectedPrice));
+    dispatch(setSelectedPrice(selectedBudget));
     dispatch(setSelectedOnOffline(selectedButton));
     dispatch(setSelectedBigRegion(selectDataSido));
     dispatch(setSelectedSmallRegion(selectDataSigungu));
+    console.log(gender);
+    console.log(age);
+    console.log(selectedButton);
+    if ( gender !== null && age !== null && selectedButton === 'online') {
+      navigate('/mediaResult/online');
+    } else if (gender !== null && age !== null && selectedButton === 'offline') {
+      console.log("여기까지 와요 오프라인");
+      navigate('/mediaResult/online');
+    };
   }
 
   // 대분류, 중분류, 소분류 관련 effect들
@@ -184,11 +197,13 @@ export const MediaRecommendPage = () => {
 
   // 광고 타겟층 분석 effect
   useEffect(() => {
+    console.log("여기 잘나와요 ???")
     // console.log(selectDataL);
     // console.log(selectDataM);
     // console.log(selectDataS);
     const getTarget = async () => {
       try {
+        console.log("여기 잘나와요 !!!")
         const response = await axios.post(
           `${APPLICATION_SPRING_SERVER_URL}/api/target`,
           {
@@ -201,42 +216,50 @@ export const MediaRecommendPage = () => {
             }
           }
         );
+        console.log(response);
         if (response.data.success) {
           console.log(response.data);
           dispatch(setTarget(response.data.data));
-          setGender(response.data.data.gender[0].gender);
+          if (response.data.data.recommend.gender === true) {
+            setGender(0);
+          } else {
+            setGender(1);
+          }
+          console.log("추천값", response.data.data.recommend);
           console.log(gender)
-          setAge(response.data.data.age[0].age);
+          setAge(response.data.data.recommend.age);
           console.log(age)
           
         }
       } catch (error) {
-        console.log('Error!!', error);
+        console.log('getTargetError!!', error);
       }
     };
 
     const getOffline = async () => {
+      console.log(type())
       try {
         const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`, {
           productSmallId: selectDataS,
           sigunguId: selectDataSigungu,
           gender: gender,
           age: age,
-          budget: selectedPrice
+          budget: selectedBudget
         });
         if (response.data.success) {
-          console.log(response.data);
+          console.log('getOffline',response.data);
           dispatch(setMedia(response.data.data));
         }
       } catch (error) {
-        console.log('Error!!', error);
+        console.log('getOfflineError!!', error);
       }
     };
 
-    if (selectDataS !== null && selectDataSigungu !== null) {
-      getTarget();
-      getOffline();
-    }
+    
+    getTarget();
+    console.log('getTarget 실행');
+    getOffline();
+    
   }, [selectDataS, selectDataSigungu]);
   return (
     <Container>
@@ -257,7 +280,7 @@ export const MediaRecommendPage = () => {
       <RecommendSelect>
         <BudgetAdvertisement>
           <Paragraph>내가 생각하는 광고 최대 예산</Paragraph>
-          <TextField onChange={(e) => setSelectedPrice(e.target.value)}></TextField>
+          <TextField onChange={(e) => setSelectedBudget(e.target.value)}></TextField>
         </BudgetAdvertisement>
         <ChooseKindOfRecommend>
           <Paragraph>온/오프라인</Paragraph>
@@ -302,7 +325,7 @@ export const MediaRecommendPage = () => {
           height="50px"
           textColor="white"
           fontSize="24px"
-          onChange={(e) => getResult()}
+          onClick={(e) => getResult()}
         >
           추천받기
         </Button>
