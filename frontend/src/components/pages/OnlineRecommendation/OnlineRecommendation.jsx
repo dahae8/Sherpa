@@ -30,6 +30,9 @@ const APPLICATION_SPRING_SERVER_URL =
 
 export const OnlineRecommendation = () => {
   const navigate = useNavigate();
+  const name = useSelector((state) => state.user.name);
+  const targetCheck = useSelector((state) => state.result.target);
+  console.log("전역 target", targetCheck);
   const ageDatas = useSelector((state) => state.result.target.age);
   const [ages, setAges] = useState([]);
   useLayoutEffect(() => {
@@ -43,31 +46,23 @@ export const OnlineRecommendation = () => {
     }
     setAges(newAges);
   }, [ageDatas]);
-  const male = useSelector((state) => state.result.target.gender[0].value);
-  const female = useSelector((state) => state.result.target.gender[1].value);
+  const male = useSelector((state) => state.result.target.gender[1].value);
+  const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
-  const blogCardDatas = [
-    { img: "url", title: "대한민국 명산 도전", url: "url" },
-    { img: "url", title: "램블러", url: "url" },
-    { img: "url", title: "놀자", url: "url" },
-    { img: "url", title: "길잡이", url: "url" },
-  ]; // 커뮤니티 주제별 추천 API
-  const selectedItem = "등산화"; // state
-  // const selectedItem = useSelector((state) => state.user.productSmall);
+  const selectedItem = useSelector((state) => state.user.productSmallName);
   const description = `${selectedItem}에 알맞는 블로그 목록`;
   let target = "성별";
-
-  if (gender === 1) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";
   }
-
   const [recommendedCommunity, setRecommendedCommunity] = useState("");
   const [firstCommunityLabels, setFirstCommunityLabels] = useState([]);
   const [coummunityfirstDatas, setCoummunityfirstDatas] = useState([]);
   const [coummunitysecondDatas, setCoummunitysecondDatas] = useState([]);
+  const [blogCardDatas, setBlogCardDatas] = useState([]);
   const [recommendedSns, setRecommendedSns] = useState("");
   const [snsLabels, setSnsLabels] = useState([]);
   const [snsFirstDatas, setSnsFirstDatas] = useState([]);
@@ -75,6 +70,11 @@ export const OnlineRecommendation = () => {
   const [producerCardDatas, setProducerCardDatas] = useState({});
   const [producerCardDatas2, setProducerCardDatas2] = useState({});
   const [showProducer, setShowProducer] = useState(false);
+  const item = useSelector((state) => state.user.productSmall);
+  const sido = useSelector((state) => state.result.selectedBigRegion);
+  const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
+  const selectedPrice = useSelector((state) => state.result.selectedPrice);
+  const onOff = useSelector((state) => state.result.selectedOnOffline);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -85,19 +85,19 @@ export const OnlineRecommendation = () => {
           `${APPLICATION_FAST_SERVER_URL}/fastapi/online/community`,
           {
             gender: {
-              0: 45,
-              1: 55,
+              0: Number(targetCheck.gender[0].value),
+              1: Number(targetCheck.gender[1].value),
             },
             age: {
-              10: 19,
-              20: 17,
-              30: 13,
-              40: 20,
-              50: 21,
-              60: 5,
-              70: 5,
+              10: Number(ageDatas[0].value),
+              20: Number(ageDatas[1].value),
+              30: Number(ageDatas[2].value),
+              40: Number(ageDatas[3].value),
+              50: Number(ageDatas[4].value),
+              60: Number(ageDatas[5].value),
+              70: Number(ageDatas[6].value),
             },
-            sidoId: 2,
+            sidoId: sido,
           }
         );
         console.log("추천 커뮤니티 가져오기", response);
@@ -137,25 +137,40 @@ export const OnlineRecommendation = () => {
         console.log("추천 커뮤니티 오류", error);
       }
     };
+    const detailCommunity = async () => {
+      console.log("세부 커뮤니티 item", item);
+      try {
+        const response = await axios.post(
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/online/community/sub`,
+          {
+            productSmallId: item,
+          }
+        );
+        console.log("세부 커뮤니티 가져오기", response);
+        setBlogCardDatas(response.data.data);
+      } catch (error) {
+        console.log("세부 커뮤니티 오류", error);
+      }
+    };
     const recommendSns = async () => {
       try {
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/online/sns`,
           {
             gender: {
-              0: 45,
-              1: 55,
+              0: Number(targetCheck.gender[0].value),
+              1: Number(targetCheck.gender[1].value),
             },
             age: {
-              10: 19,
-              20: 17,
-              30: 13,
-              40: 20,
-              50: 21,
-              60: 5,
-              70: 5,
+              10: Number(ageDatas[0].value),
+              20: Number(ageDatas[1].value),
+              30: Number(ageDatas[2].value),
+              40: Number(ageDatas[3].value),
+              50: Number(ageDatas[4].value),
+              60: Number(ageDatas[5].value),
+              70: Number(ageDatas[6].value),
             },
-            sidoId: 3,
+            sidoId: sido,
           }
         );
         console.log("sns 추천", response);
@@ -214,6 +229,7 @@ export const OnlineRecommendation = () => {
       }
     };
     recommendCommunity();
+    detailCommunity();
     recommendSns();
     linkproducer();
     linkproducer2();
@@ -225,6 +241,25 @@ export const OnlineRecommendation = () => {
     }, 2000);
     return () => clearTimeout(delayProducerRender);
   }, []);
+
+  const save = async () => {
+    try {
+      const response = await axios.post(
+        `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
+        {
+          memberName: name,
+          productSmallId: item,
+          budget: selectedPrice,
+          inOnOff: onOff,
+          sigunguId: sigunguId,
+          mediaTypeId: 1,
+        }
+      );
+      console.log("저장 성공", response);
+    } catch (error) {
+      console.log("저장 오류", error);
+    }
+  };
 
   return (
     <Container>
@@ -286,6 +321,7 @@ export const OnlineRecommendation = () => {
             textColor="#3C486B"
             fontSize="24px"
             onClick={() => {
+              save();
               navigate("/mypage");
             }}
           >

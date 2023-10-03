@@ -9,13 +9,17 @@ import { TextField } from '@mui/material';
 import Button from '../../atoms/Button';
 import Select from '../../atoms/SelectOption';
 import {
+  setTarget,
   setMedia,
-  setSelectedBigRegion,
-  setSelectedOnOffline,
+  setRecommendedMedia,
   setSelectedPrice,
+  setSelectedOnOffline,
+  setSelectedBigRegion,
   setSelectedSmallRegion,
-  setTarget
+  setbigRegionName,
+  setsmallRegionName
 } from '../../../slices/resultSlice';
+import { setProductSmallName, setProductSmall } from '../../../slices/userSlice';
 
 const APPLICATION_SPRING_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
@@ -71,15 +75,15 @@ export const MediaRecommendPage = () => {
   const navigate = useNavigate();
 
   // 분류 관련 변수
-  const [selectDataL, setSelectDataL] = useState(null);
-  const [selectDataM, setSelectDataM] = useState(null);
-  const [selectDataS, setSelectDataS] = useState(null);
-  const [dataL, setDataL] = useState([]);
-  const [dataM, setDataM] = useState([]);
-  const [dataS, setDataS] = useState([]);
   const defaultSelectL = useSelector((state) => state.user.productLarge);
   const defaultSelectM = useSelector((state) => state.user.productMedium);
   const defaultSelectS = useSelector((state) => state.user.productSmall);
+  const [selectDataL, setSelectDataL] = useState(defaultSelectL || null);
+  const [selectDataM, setSelectDataM] = useState(defaultSelectM || null);
+  const [selectDataS, setSelectDataS] = useState(defaultSelectS || null);
+  const [dataL, setDataL] = useState([]);
+  const [dataM, setDataM] = useState([]);
+  const [dataS, setDataS] = useState([]);
 
   // 시/도 시/군/구 변수
   const [selectDataSido, setSelectDataSido] = useState(null);
@@ -93,29 +97,68 @@ export const MediaRecommendPage = () => {
   const [gender, setGender] = useState(null);
   const [age, setAge] = useState(null);
 
+  function getNames() {
+    const targetSidoData = dataSido.find((data) => data.id === selectDataSido);
+    const sidoName = targetSidoData ? targetSidoData.area : null;
+    dispatch(setbigRegionName(sidoName));
+    console.log('시도명', sidoName);
+    const targetSigunguData = dataSigungu.find((data) => data.id === selectDataSigungu);
+    const sigunguName = targetSigunguData ? targetSigunguData.area : null;
+    dispatch(setsmallRegionName(sigunguName));
+    console.log('시군구명', sigunguName);
+    const targetProductData = dataS.find((data) => data.id === selectDataS);
+    const productName = targetProductData ? targetProductData.product : null;
+    dispatch(setProductSmallName(productName));
+    console.log('품목명', productName);
+  }
   function getResult() {
+    getNames();
     dispatch(setSelectedPrice(selectedBudget));
     dispatch(setSelectedOnOffline(selectedButton));
     dispatch(setSelectedBigRegion(selectDataSido));
     dispatch(setSelectedSmallRegion(selectDataSigungu));
-    console.log(gender);
-    console.log(age);
-    console.log(selectedButton);
+    dispatch(setProductSmall(selectDataS));
+
     if (gender !== null && age !== null && selectedButton === 'online') {
       navigate('/mediaResult/online');
     } else if (gender !== null && age !== null && selectedButton === 'offline') {
-      console.log('여기까지 와요 오프라인');
-      navigate('/mediaResult/online');
+      const getOffline = async () => {
+        try {
+          const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`, {
+            productSmallId: selectDataS,
+            sigunguId: selectDataSigungu,
+            gender: gender,
+            age: age,
+            budget: selectedBudget
+          });
+          if (response.data.success) {
+            console.log('getOffline', response.data);
+            dispatch(setMedia(response.data.data));
+
+            const recommendMedia = response.data.data.recommend;
+            dispatch(setRecommendedMedia(recommendMedia));
+            console.log('추천매체', recommendMedia);
+
+            if (recommendMedia === 'TV') {
+              navigate('/mediaResult/tv');
+            } else if (recommendMedia === '라디오') {
+              navigate('/mediaResult/radio');
+            } else if (recommendMedia === '인쇄') {
+              navigate('/mediaResult/newspaper');
+            } else if (recommendMedia === '버스' || recommendMedia === '현수막' || recommendMedia === '지하철') {
+              navigate('/mediaResult/outdoor');
+            }
+          }
+        } catch (error) {
+          console.log('getOfflineError!!', error);
+        }
+      };
+      getOffline();
     }
   }
 
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
-    // console.log(defaultSelectL);
-    // console.log(defaultSelectM);
-    // console.log(defaultSelectS);
-    // console.log(APPLICATION_SPRING_SERVER_URL);
-
     const getDataL = async () => {
       try {
         const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/L/0`);
@@ -196,33 +239,29 @@ export const MediaRecommendPage = () => {
 
   // 광고 타겟층 분석 effect
   useEffect(() => {
-    console.log('여기 잘나와요 ???');
-    // console.log(selectDataL);
-    // console.log(selectDataM);
-    // console.log(selectDataS);
     const getTarget = async () => {
+      const data = {
+        productSmallId: selectDataS,
+        sigunguId: selectDataSigungu
+      };
+
+      console.log('productSmallId', data.productSmallId);
+      console.log(typeof data.productSmallId);
+      console.log('sigunguId', data.sigunguId);
+      console.log(typeof data.sigunguId);
       try {
-        console.log('여기 잘나와요 !!!');
-        const response = await axios.post(
-          `${APPLICATION_SPRING_SERVER_URL}/api/target`,
-          {
-            productSmallId: selectDataS,
-            sigunguId: selectDataSigungu
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
+        const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/target`, data, {
+          headers: {
+            'Content-Type': 'application/json'
           }
-        );
-        console.log(response);
+        });
         if (response.data.success) {
-          console.log(response.data);
+          console.log(response.data.data);
           dispatch(setTarget(response.data.data));
           if (response.data.data.recommend.gender === true) {
-            setGender(0);
-          } else {
             setGender(1);
+          } else {
+            setGender(0);
           }
           console.log('추천값', response.data.data.recommend);
           console.log(gender);
@@ -230,32 +269,11 @@ export const MediaRecommendPage = () => {
           console.log(age);
         }
       } catch (error) {
-        console.log('getTargetError!!', error);
-      }
-    };
-
-    const getOffline = async () => {
-      console.log(gender);
-      try {
-        const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`, {
-          productSmallId: selectDataS,
-          sigunguId: selectDataSigungu,
-          gender: gender,
-          age: age,
-          budget: selectedBudget
-        });
-        if (response.data.success) {
-          console.log('getOffline', response.data);
-          dispatch(setMedia(response.data.data));
-        }
-      } catch (error) {
-        console.log('getOfflineError!!', error);
+        console.log('getTargetError!!', error.response ? error.response.data : error);
       }
     };
 
     getTarget();
-    console.log('getTarget 실행');
-    getOffline();
   }, [selectDataS, selectDataSigungu]);
   return (
     <Container>
@@ -276,7 +294,7 @@ export const MediaRecommendPage = () => {
       <RecommendSelect>
         <BudgetAdvertisement>
           <Paragraph>내가 생각하는 광고 최대 예산</Paragraph>
-          <TextField onChange={(e) => setSelectedBudget(e.target.value)}></TextField>
+          <TextField onChange={(e) => setSelectedBudget(Number(e.target.value))}></TextField>
         </BudgetAdvertisement>
         <ChooseKindOfRecommend>
           <Paragraph>온/오프라인</Paragraph>

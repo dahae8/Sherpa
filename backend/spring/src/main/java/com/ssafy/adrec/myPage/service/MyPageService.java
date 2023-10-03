@@ -1,6 +1,9 @@
 package com.ssafy.adrec.myPage.service;
 
 import com.ssafy.adrec.area.Sigungu;
+import com.ssafy.adrec.content.ContentKeyword;
+import com.ssafy.adrec.content.ContentLike;
+import com.ssafy.adrec.content.ContentRec;
 import com.ssafy.adrec.keyword.KeywordLike;
 import com.ssafy.adrec.keyword.KeywordRec;
 import com.ssafy.adrec.media.MediaSub;
@@ -10,9 +13,7 @@ import com.ssafy.adrec.myPage.MediaRec;
 import com.ssafy.adrec.myPage.request.MediaRecReq;
 import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
-import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
-import com.ssafy.adrec.myPage.response.KeywordRecRes;
-import com.ssafy.adrec.myPage.response.MediaRecRes;
+import com.ssafy.adrec.myPage.response.*;
 import com.ssafy.adrec.product.ProductSmall;
 
 import java.util.List;
@@ -43,4 +44,16 @@ public interface MyPageService {
 
     MediaType getMediaType(Long id);
     MediaSub getMediaSub(Long id);
+
+    List<String> getKeywordList(Member member, ProductSmall productSmall);
+
+    List<ContentRecRes> getContentRecList(Long id);
+
+    List<ContentDetailRes> getContentDetailResList(Long id, Long contentRecId);
+
+    void deleteContentRec(ContentRec contentRec);
+
+    void deleteContentKeyword(ContentKeyword contentKeyword);
+
+    void deleteContentLike(ContentLike contentLike);
 }

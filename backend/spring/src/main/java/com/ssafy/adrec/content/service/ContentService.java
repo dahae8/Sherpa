@@ -17,4 +17,8 @@ public interface ContentService {
     ContentKeyword saveContentKeyword(ContentRec contentRec, List<String> keywordList);
 
     ContentLike saveContentLike(ContentRec contentRec, List<ContentRecListReq> contentList);
+
+    ContentRec getContentRec(Long contentRecId);
+
+    ContentLike getContentLike(Long contentLikeId);
 }

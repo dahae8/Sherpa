@@ -12,4 +12,6 @@ public interface KeywordRecRepository  extends JpaRepository<KeywordRec, Long> {
 
     List<KeywordRec>findAllBymember_Id(Long memberId);
 
+    List<KeywordRec>findAllByMember_IdAndProductSmallId(Long memberId,Long ProductSmallId);
+
 }

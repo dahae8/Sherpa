@@ -29,6 +29,9 @@ const APPLICATION_SPRING_SERVER_URL =
 
 export const NewsPaperRecommendation = () => {
   const navigate = useNavigate();
+  const name = useSelector((state) => state.user.name);
+  const targetCheck = useSelector((state) => state.result.target);
+  console.log("전역 target", targetCheck);
   const ageDatas = useSelector((state) => state.result.target.age);
   const [ages, setAges] = useState([]);
   useLayoutEffect(() => {
@@ -42,18 +45,33 @@ export const NewsPaperRecommendation = () => {
     }
     setAges(newAges);
   }, [ageDatas]);
-  const male = useSelector((state) => state.result.target.gender[0].value);
-  const female = useSelector((state) => state.result.target.gender[1].value);
+  const male = useSelector((state) => state.result.target.gender[1].value);
+  const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
-  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
-  // const mediaLabels = useSelector((state) => state.result.media);
-  const mainDatas = [23, 19, 13, 5]; // state
-  // const mainDatas = useSelector((state) => state.result.media);
-  const recommendedMedia = "신문 광고"; // state
-  // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
+  const result = useSelector((state) => state.result.media);
+  console.log("메인 매체 추천", result);
+  const mediaList = useSelector((state) => state.result.media.totalList);
+  const [mediaLabels, setMediaLabels] = useState([]);
+  const [mainDatas, setMainDatas] = useState([]);
+  useLayoutEffect(() => {
+    const mediaLabels = [];
+    const mainDatas = [];
+    for (let i = 0; i < mediaList.length; i++) {
+      if (mediaList[i]) {
+        mediaLabels.push(mediaList[i].name);
+        mainDatas.push(mediaList[i].value);
+      } else {
+        mediaLabels.push(0);
+        mainDatas.push(0);
+      }
+    }
+    setMediaLabels(mediaLabels);
+    setMainDatas(mainDatas);
+  }, [mediaList]);
+  const recommendedMedia = useSelector((state) => state.result.media.recommend);
   let target = "성별";
-  if (gender === false) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";
@@ -70,6 +88,11 @@ export const NewsPaperRecommendation = () => {
   const [newspaperAreaDatas, setNewspaperAreaDatas] = useState([]);
   const [producerCardDatas, setProducerCardDatas] = useState({});
   const [showProducer, setShowProducer] = useState(false);
+  const item = useSelector((state) => state.user.productSmall);
+  const sido = useSelector((state) => state.result.selectedBigRegion);
+  const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
+  const selectedPrice = useSelector((state) => state.result.selectedPrice);
+  const onOff = useSelector((state) => state.result.selectedOnOffline);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -79,13 +102,13 @@ export const NewsPaperRecommendation = () => {
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
-            productSmallId: 2,
-            sigunguId: 0,
-            gender: 0,
-            age: 20,
+            productSmallId: item,
+            sigunguId: sigunguId,
+            gender: gender,
+            age: age,
           }
         );
-        console.log("추천 매체 가져오기", response);
+        console.log("호감도 매체 가져오기", response);
         const subMediaLabels = [];
         const subDatas = [];
 
@@ -109,7 +132,7 @@ export const NewsPaperRecommendation = () => {
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/budget`,
           {
-            budget: 99999999999,
+            budget: selectedPrice,
           }
         );
         console.log("추천 가격 가져오기", response);
@@ -137,17 +160,17 @@ export const NewsPaperRecommendation = () => {
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/news/newspaper`,
           {
             gender: {
-              0: 45,
-              1: 55,
+              0: Number(targetCheck.gender[0].value),
+              1: Number(targetCheck.gender[1].value),
             },
             age: {
-              10: 19,
-              20: 17,
-              30: 13,
-              40: 20,
-              50: 21,
-              60: 5,
-              70: 5,
+              10: Number(ageDatas[0].value),
+              20: Number(ageDatas[1].value),
+              30: Number(ageDatas[2].value),
+              40: Number(ageDatas[3].value),
+              50: Number(ageDatas[4].value),
+              60: Number(ageDatas[5].value),
+              70: Number(ageDatas[6].value),
             },
             sidoId: 1,
           }
@@ -178,19 +201,19 @@ export const NewsPaperRecommendation = () => {
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/news/field`,
           {
             gender: {
-              0: 45,
-              1: 55,
+              0: Number(targetCheck.gender[0].value),
+              1: Number(targetCheck.gender[1].value),
             },
             age: {
-              10: 19,
-              20: 17,
-              30: 13,
-              40: 20,
-              50: 21,
-              60: 5,
-              70: 5,
+              10: Number(ageDatas[0].value),
+              20: Number(ageDatas[1].value),
+              30: Number(ageDatas[2].value),
+              40: Number(ageDatas[3].value),
+              50: Number(ageDatas[4].value),
+              60: Number(ageDatas[5].value),
+              70: Number(ageDatas[6].value),
             },
-            sidoId: 1,
+            sidoId: sido,
           }
         );
         console.log(response);
@@ -237,6 +260,25 @@ export const NewsPaperRecommendation = () => {
     }, 2000);
     return () => clearTimeout(delayProducerRender);
   }, []);
+
+  const save = async () => {
+    try {
+      const response = await axios.post(
+        `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
+        {
+          memberName: name,
+          productSmallId: item,
+          budget: selectedPrice,
+          inOnOff: onOff,
+          sigunguId: sigunguId,
+          mediaTypeId: 5,
+        }
+      );
+      console.log("저장 성공", response);
+    } catch (error) {
+      console.log("저장 오류", error);
+    }
+  };
 
   return (
     <Container>
@@ -295,6 +337,7 @@ export const NewsPaperRecommendation = () => {
             textColor="#3C486B"
             fontSize="24px"
             onClick={() => {
+              save();
               navigate("/mypage");
             }}
           >
