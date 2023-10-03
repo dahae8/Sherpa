@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 
 export default function SelectAutoWidth({ data = [], onSelect, defaultSelect, width = '210px' }) {
   // 내부 상태를 사용하여 선택된 값을 추적합니다.
-  const [selectedValue, setSelectedValue] = React.useState(defaultSelect);
+  const [selectedValue, setSelectedValue] = React.useState(defaultSelect || '');
 
   React.useEffect(() => {
     // defaultSelect 값이 변경될 때마다, 내부 상태를 업데이트합니다.
