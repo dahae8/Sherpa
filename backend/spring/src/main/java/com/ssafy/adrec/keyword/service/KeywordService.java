@@ -22,4 +22,6 @@ public interface KeywordService {
     KeywordLike saveKeywordLike(String keyword, KeywordRec keywordRec);
 
     KeywordLike getKeywordLike (Long keywordLikeId);
+
+
 }

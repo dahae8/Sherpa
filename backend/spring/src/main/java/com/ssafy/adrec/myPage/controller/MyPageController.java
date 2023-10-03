@@ -322,7 +322,6 @@ public class MyPageController {
             resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",memberName));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
-
         }
         List<MediaRecRes> mediaRecResList = myPageService.getMediaRecList(member.getId());
 
