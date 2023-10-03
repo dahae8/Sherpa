@@ -214,7 +214,7 @@ DROP TABLE IF EXISTS `contentKeyword`;
 
 CREATE TABLE `contentKeyword` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	`keywrod`	VARCHAR(80)	NOT NULL,
+	`keyword`	VARCHAR(80)	NOT NULL,
 	`contentRec_id`	BIGINT	NOT NULL
 );
 
