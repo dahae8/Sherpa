@@ -205,7 +205,16 @@ DROP TABLE IF EXISTS `contentLike`;
 
 CREATE TABLE `contentLike` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	`detail`	Text	NOT NULL,
+	`title`	Text	NOT NULL,
+	`content`	Text	NULL,
+	`contentRec_id`	BIGINT	NOT NULL
+);
+
+DROP TABLE IF EXISTS `contentKeyword`;
+
+CREATE TABLE `contentKeyword` (
+	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	`keyword`	VARCHAR(80)	NOT NULL,
 	`contentRec_id`	BIGINT	NOT NULL
 );
 
@@ -634,6 +643,13 @@ REFERENCES `mediaType` (
 );
 
 ALTER TABLE `contentLike` ADD CONSTRAINT `FK_contentRec_TO_contentLike_1` FOREIGN KEY (
+	`contentRec_id`
+)
+REFERENCES `contentRec` (
+	`id`
+);
+
+ALTER TABLE `contentKeyword` ADD CONSTRAINT `FK_contentRec_TO_contentKeyword_1` FOREIGN KEY (
 	`contentRec_id`
 )
 REFERENCES `contentRec` (
