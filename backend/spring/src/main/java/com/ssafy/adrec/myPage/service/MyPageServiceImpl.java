@@ -5,6 +5,10 @@ import com.ssafy.adrec.keyword.KeywordLike;
 import com.ssafy.adrec.keyword.KeywordRec;
 import com.ssafy.adrec.keyword.repository.KeywordLikeRepository;
 import com.ssafy.adrec.keyword.repository.KeywordRecRepository;
+import com.ssafy.adrec.media.MediaSub;
+import com.ssafy.adrec.media.MediaType;
+import com.ssafy.adrec.media.repository.MediaSubRepository;
+import com.ssafy.adrec.media.repository.MediaTypeRepository;
 import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.member.repository.MemberRepository;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
@@ -15,6 +19,7 @@ import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
+import com.ssafy.adrec.myPage.response.MediaRecRes;
 import com.ssafy.adrec.product.ProductSmall;
 import com.ssafy.adrec.product.repository.ProductSmallRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +42,8 @@ public class MyPageServiceImpl  implements MyPageService{
     private final MemberRepository memberRepository;
     private final ProductSmallRepository productSmallRepository;
     private final MediaRecRepository mediaRecRepository;
-
+    private final MediaTypeRepository mediaTypeRepository;
+    private final MediaSubRepository mediaSubRepository;
 
     @Override
     public List<KeywordRecRes> getKeywordRecList(Long memberId){
@@ -143,7 +149,7 @@ public class MyPageServiceImpl  implements MyPageService{
     }
 
     @Override
-    public MediaRec saveMediaRec(MediaRecReq mediaRecReq, ProductSmall productSmall, Sigungu sigungu, Member member){
+    public MediaRec saveMediaRec(MediaRecReq mediaRecReq, ProductSmall productSmall, Sigungu sigungu, Member member, MediaType mediaType){
         MediaRec mediaRec = MediaRec.builder()
                 .budget(mediaRecReq.getBudget())
                 .recDate(LocalDateTime.now())
@@ -151,8 +157,60 @@ public class MyPageServiceImpl  implements MyPageService{
                 .isOnOff(mediaRecReq.getInOnOff())
                 .member(member)
                 .productSmall(productSmall)
+                .mediaType(mediaType)
                 .build();
         return mediaRecRepository.save(mediaRec);
+    }
+
+    @Override
+    public List<MediaRecRes> getMediaRecList(Long id){
+        List<MediaRecRes> list = new ArrayList<>();
+        List<MediaRec> mediaRecList = mediaRecRepository.findAllByMember_Id(id);
+        for(MediaRec mediaRec: mediaRecList){
+            MediaRecRes mediaRecRes = MediaRecRes.builder()
+                    .id(mediaRec.getId())
+                    .recDate(mediaRec.getRecDate())
+                    .isOnOff(mediaRec.getIsOnOff())
+                    .budget(mediaRec.getBudget())
+                    .sigungu(mediaRec.getSigungu().getName())
+                    .productSmall(mediaRec.getProductSmall().getSmall())
+                    .mediaTypeId(mediaRec.getMediaType().getId())
+                    .build();
+            list.add(mediaRecRes);
+        }
+        return list;
+    }
+
+    @Override
+    public MediaRec getMediaRec(Long id){
+
+        Optional<MediaRec> OpMediaRec = mediaRecRepository.findById(id);
+        if(OpMediaRec.isEmpty()) return null;
+
+        return OpMediaRec.get();
+
+    }
+
+    @Override
+    public void deleteMediaRec(MediaRec mediaRec){
+        mediaRecRepository.delete(mediaRec);
+
+    }
+
+    @Override
+    public MediaType getMediaType(Long id){
+        Optional<MediaType> mediaType = mediaTypeRepository.findById(id);
+        if(mediaType.isEmpty()) return null;
+
+        return mediaType.get();
+    }
+    @Override
+    public MediaSub getMediaSub(Long id){
+        Optional<MediaSub> mediaSub = mediaSubRepository.findById(id);
+        if(mediaSub.isEmpty()) return null;
+
+        return mediaSub.get();
+
     }
     
 }

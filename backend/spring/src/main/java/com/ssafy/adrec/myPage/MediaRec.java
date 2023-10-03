@@ -2,6 +2,8 @@ package com.ssafy.adrec.myPage;
 
 import com.ssafy.adrec.area.Sigungu;
 import com.ssafy.adrec.keyword.KeywordRec;
+import com.ssafy.adrec.media.MediaSub;
+import com.ssafy.adrec.media.MediaType;
 import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.product.ProductSmall;
 import lombok.*;
@@ -43,6 +45,14 @@ public class MediaRec {
     @ManyToOne
     @JoinColumn(name = "productSmall_id", referencedColumnName = "id")
     private ProductSmall productSmall;
+
+    @ManyToOne
+    @JoinColumn(name = "mediaType_id", referencedColumnName = "id")
+    private MediaType mediaType;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "mediaSub_id", referencedColumnName = "id")
+    private MediaSub mediaSub;
 
 
 }

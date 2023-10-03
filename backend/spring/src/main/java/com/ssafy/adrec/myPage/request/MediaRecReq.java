@@ -12,13 +12,7 @@ public class MediaRecReq {
     int budget;
     int inOnOff;
     Long sigunguId;
+    Long mediaTypeId;
 
-    @Builder
-    public MediaRecReq(String memberName, Long productSmallId, int budget, int inOnOff, Long sigunguId) {
-        this.memberName = memberName;
-        this.productSmallId = productSmallId;
-        this.budget = budget;
-        this.inOnOff = inOnOff;
-        this.sigunguId = sigunguId;
-    }
+
 }
