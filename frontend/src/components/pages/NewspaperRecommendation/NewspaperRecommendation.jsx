@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
@@ -28,16 +29,23 @@ const APPLICATION_SPRING_SERVER_URL =
 
 export const NewsPaperRecommendation = () => {
   const navigate = useNavigate();
-  const ages = [80, 60, 45, 42, 32, 29]; // state
-  // const ages = useSelector((state) => state.result.target);
-  const male = 75; // state
-  // const male = useSelector((state) => state.result.target);
-  const female = 25; // state
-  // const female = useSelector((state) => state.result.target);
-  const gender = 1; // state
-  // const gender = useSelector((state) => state.result.target);
-  const age = 30; // state
-  // const age = useSelector((state) => state.result.target);
+  const ageDatas = useSelector((state) => state.result.target.age);
+  const [ages, setAges] = useState([]);
+  useLayoutEffect(() => {
+    const newAges = [];
+    for (let i = 0; i < ageDatas.length; i++) {
+      if (ageDatas[i]) {
+        newAges.push(ageDatas[i].value);
+      } else {
+        newAges.push(0);
+      }
+    }
+    setAges(newAges);
+  }, [ageDatas]);
+  const male = useSelector((state) => state.result.target.gender[0].value);
+  const female = useSelector((state) => state.result.target.gender[1].value);
+  const gender = useSelector((state) => state.result.target.recommend.gender);
+  const age = useSelector((state) => state.result.target.recommend.age);
   const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
   // const mediaLabels = useSelector((state) => state.result.media);
   const mainDatas = [23, 19, 13, 5]; // state
@@ -45,8 +53,7 @@ export const NewsPaperRecommendation = () => {
   const recommendedMedia = "신문 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
   let target = "성별";
-
-  if (gender === 1) {
+  if (gender === false) {
     target = "남성";
   } else {
     target = "여성";
@@ -80,23 +87,19 @@ export const NewsPaperRecommendation = () => {
         );
         console.log("추천 매체 가져오기", response);
         const subMediaLabels = [];
+        const subDatas = [];
+
         for (let i = 0; i < response.data.data.mediaList.length; i++) {
           if (response.data.data.mediaList[i]) {
             subMediaLabels.push(response.data.data.mediaList[i].name);
-          } else {
-            subMediaLabels.push(0);
-          }
-          setSubMediaLabels(subMediaLabels);
-        }
-        const subDatas = [];
-        for (let i = 0; i < response.data.data.mediaList.length; i++) {
-          if (response.data.data.mediaList[i]) {
             subDatas.push(response.data.data.mediaList[i].value);
           } else {
+            subMediaLabels.push(0);
             subDatas.push(0);
           }
-          setSubDatas(subDatas);
         }
+        setSubMediaLabels(subMediaLabels);
+        setSubDatas(subDatas);
       } catch (error) {
         console.error("추천 매체 가져오기 오류:", error);
       }
@@ -111,23 +114,19 @@ export const NewsPaperRecommendation = () => {
         );
         console.log("추천 가격 가져오기", response);
         const priceLabels = [];
+        const prices = [];
+
         for (let i = 0; i < response.data.data.budgetList.length; i++) {
           if (response.data.data.budgetList[i]) {
             priceLabels.push(response.data.data.budgetList[i].name);
-          } else {
-            priceLabels.push(0);
-          }
-          setPriceLabels(priceLabels);
-        }
-        const prices = [];
-        for (let i = 0; i < response.data.data.budgetList.length; i++) {
-          if (response.data.data.budgetList[i]) {
             prices.push(response.data.data.budgetList[i].value * 0.0001);
           } else {
+            priceLabels.push(0);
             prices.push(0);
           }
-          setPrices(prices);
         }
+        setPriceLabels(priceLabels);
+        setPrices(prices);
       } catch (error) {
         console.error("추천 가격 가져오기 오류:", error);
       }
@@ -156,23 +155,19 @@ export const NewsPaperRecommendation = () => {
         console.log(response);
         setRecommendedNewspaper(response.data.data.newsList[0].type);
         const newspaperLabels = [];
+        const newspaperDatas = [];
+
         for (let i = 0; i < response.data.data.newsList.length; i++) {
           if (response.data.data.newsList[i]) {
             newspaperLabels.push(response.data.data.newsList[i].type);
+            newspaperDatas.push(response.data.data.newsList[i].ratio);
           } else {
             newspaperLabels.push(0);
+            newspaperDatas.push(0);
           }
-          setNewspaperLabels(newspaperLabels);
-          const newspaperDatas = [];
-          for (let i = 0; i < response.data.data.newsList.length; i++) {
-            if (response.data.data.newsList[i]) {
-              newspaperDatas.push(response.data.data.newsList[i].ratio);
-            } else {
-              newspaperDatas.push(0);
-            }
-          }
-          setNewspaperDatas(newspaperDatas);
         }
+        setNewspaperLabels(newspaperLabels);
+        setNewspaperDatas(newspaperDatas);
       } catch (error) {
         console.error("추천 신문 가져오기 오류:", error);
       }
@@ -201,22 +196,18 @@ export const NewsPaperRecommendation = () => {
         console.log(response);
         setRecommendedNewspaperArea(response.data.data.newsThemeList[0].type);
         const newspaperAreaLabels = [];
+        const newspaperAreaDatas = [];
+
         for (let i = 0; i < response.data.data.newsThemeList.length; i++) {
           if (response.data.data.newsThemeList[i]) {
             newspaperAreaLabels.push(response.data.data.newsThemeList[i].type);
-          } else {
-            newspaperAreaLabels.push(0);
-          }
-        }
-        setNewspaperAreaLabels(newspaperAreaLabels);
-        const newspaperAreaDatas = [];
-        for (let i = 0; i < response.data.data.newsThemeList.length; i++) {
-          if (response.data.data.newsThemeList[i]) {
             newspaperAreaDatas.push(response.data.data.newsThemeList[i].ratio);
           } else {
+            newspaperAreaLabels.push(0);
             newspaperAreaDatas.push(0);
           }
         }
+        setNewspaperAreaLabels(newspaperAreaLabels);
         setNewspaperAreaDatas(newspaperAreaDatas);
       } catch (error) {
         console.error("추천 신문 가져오기 오류:", error);

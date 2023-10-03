@@ -58,7 +58,7 @@ function makeSingleChart({ labels, datas, text, width }) {
       x: {
         // max: 100,
         ticks: {
-          callback: (value) => `${value}원`,
+          callback: (value) => `${value}만원`,
         },
       },
     },
