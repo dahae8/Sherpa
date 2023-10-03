@@ -107,7 +107,7 @@ export const OutdoorRecommendation = () => {
   //   }
   // }
   let target = "성별";
-  if (gender === false) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";

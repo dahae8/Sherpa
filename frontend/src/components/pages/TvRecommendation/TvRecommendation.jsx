@@ -73,7 +73,7 @@ export const TvRecommendation = () => {
   }, [mediaList]);
   const recommendedMedia = useSelector((state) => state.result.media.recommend);
   let target = "성별";
-  if (gender === false) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";
@@ -101,6 +101,10 @@ export const TvRecommendation = () => {
     console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
+        console.log("item", item);
+        console.log("sigunguId", sigunguId);
+        console.log("gender", gender);
+        console.log("age", age);
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {

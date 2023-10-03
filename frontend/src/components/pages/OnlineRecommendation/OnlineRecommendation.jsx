@@ -53,7 +53,7 @@ export const OnlineRecommendation = () => {
   const selectedItem = useSelector((state) => state.user.productSmallName);
   const description = `${selectedItem}에 알맞는 블로그 목록`;
   let target = "성별";
-  if (gender === false) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";
