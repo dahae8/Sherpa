@@ -17,7 +17,8 @@ import {
   setSelectedBigRegion,
   setSelectedSmallRegion,
   setbigRegionName,
-  setsmallRegionName
+  setsmallRegionName,
+  setProductSmall,
 } from '../../../slices/resultSlice';
 import {setProductSmallName} from '../../../slices/userSlice';
 
@@ -118,6 +119,7 @@ export const MediaRecommendPage = () => {
     dispatch(setSelectedOnOffline(selectedButton));
     dispatch(setSelectedBigRegion(selectDataSido));
     dispatch(setSelectedSmallRegion(selectDataSigungu));
+    dispatch(setProductSmall(selectDataS));
 
     if (gender !== null && age !== null && selectedButton === 'online') {
       navigate('/mediaResult/online');
