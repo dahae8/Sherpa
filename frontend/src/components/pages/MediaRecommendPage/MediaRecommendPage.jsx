@@ -259,9 +259,9 @@ export const MediaRecommendPage = () => {
           console.log(response.data.data);
           dispatch(setTarget(response.data.data));
           if (response.data.data.recommend.gender === true) {
-            setGender(0);
-          } else {
             setGender(1);
+          } else {
+            setGender(0);
           }
           console.log('추천값', response.data.data.recommend);
           console.log(gender);
