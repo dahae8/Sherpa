@@ -29,11 +29,19 @@ public class TargetController {
         List<TargetGenderGetRes> genderList = new ArrayList<>();
         List<TargetAgeGetRes> ageList = new ArrayList<>();
 
+        List<TargetGenderGetRes> sortedGenderList = new ArrayList<>();
+        List<TargetAgeGetRes> sortedAgeList = new ArrayList<>();
+
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
 
         genderList = targetService.getTargetGenderList(targetReq);
         ageList = targetService.getTargetAgeList(targetReq);
+        sortedGenderList = targetService.getTargetGenderList(targetReq);
+        sortedAgeList = targetService.getTargetAgeList(targetReq);
+
+        genderList.sort(Comparator.comparingInt(item -> Integer.parseInt(item.getGender())));
+        ageList.sort(Comparator.comparingInt(item -> Integer.parseInt(item.getAge())));
 
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("gender", genderList);
@@ -42,10 +50,10 @@ public class TargetController {
         // 추천
         Map<String, Object> recommendMap = new HashMap<>();
 
-        genderList.sort(Comparator.comparingInt(item -> Integer.parseInt(item.getValue())));
-        Collections.reverse(genderList);
-        if (!genderList.isEmpty()) {
-            TargetGenderGetRes maxGender = genderList.get(0);
+        sortedGenderList.sort(Comparator.comparingInt(item -> Integer.parseInt(item.getValue())));
+        Collections.reverse(sortedGenderList);
+        if (!sortedGenderList.isEmpty()) {
+            TargetGenderGetRes maxGender = sortedGenderList.get(0);
 
             if ( maxGender.getGender().equals("0") ){
                 recommendMap.put("gender", true); // 여성
@@ -55,10 +63,10 @@ public class TargetController {
 
         }
 
-        ageList.sort(Comparator.comparingInt(item -> Integer.parseInt(item.getValue())));
-        Collections.reverse(ageList);
-        if (!ageList.isEmpty()) {
-            TargetAgeGetRes maxAge = ageList.get(0);
+        sortedAgeList.sort(Comparator.comparingInt(item -> Integer.parseInt(item.getValue())));
+        Collections.reverse(sortedAgeList);
+        if (!sortedAgeList.isEmpty()) {
+            TargetAgeGetRes maxAge = sortedAgeList.get(0);
 
             switch (maxAge.getAge()) {
                 case "10":
