@@ -30,47 +30,52 @@ const APPLICATION_SPRING_SERVER_URL =
 export const OutdoorRecommendation = () => {
   const navigate = useNavigate();
   const { kakao } = window;
-  const ageDatas = useSelector((state) => state.result.target.age);
-  const [ages, setAges] = useState([]);
-  useLayoutEffect(() => {
-    const newAges = [];
-    for (let i = 0; i < ageDatas.length; i++) {
-      if (ageDatas[i]) {
-        newAges.push(ageDatas[i].value);
-      } else {
-        newAges.push(0);
-      }
-    }
-    setAges(newAges);
-  }, [ageDatas]);
-  const male = useSelector((state) => state.result.target.gender[0].value);
-  const female = useSelector((state) => state.result.target.gender[1].value);
-  const gender = useSelector((state) => state.result.target.recommend.gender);
-  const age = useSelector((state) => state.result.target.recommend.age);
+  // const ageDatas = useSelector((state) => state.result.target.age);
+  // const [ages, setAges] = useState([]);
+  // useLayoutEffect(() => {
+  //   const newAges = [];
+  //   for (let i = 0; i < ageDatas.length; i++) {
+  //     if (ageDatas[i]) {
+  //       newAges.push(ageDatas[i].value);
+  //     } else {
+  //       newAges.push(0);
+  //     }
+  //   }
+  //   setAges(newAges);
+  // }, [ageDatas]);
+  // const male = useSelector((state) => state.result.target.gender[0].value);
+  // const female = useSelector((state) => state.result.target.gender[1].value);
+  // const gender = useSelector((state) => state.result.target.recommend.gender);
+  // const age = useSelector((state) => state.result.target.recommend.age);
+  const ages = [10, 20, 30, 40, 50, 60];
+  const male = 50;
+  const female = 50;
+  const gender = false;
+  const age = 30;
   const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
   // const mediaLabels = useSelector((state) => state.result.media);
   const mainDatas = [23, 19, 13, 5]; // state
   // const mainDatas = useSelector((state) => state.result.media);
   const recommendedMedia = "옥외 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
-  const regionLabels = ["장덕동", "첨단 1동", "수완동", "하남동", "송정 1동"]; //API 광고 장소 분석
-  // const regionLabels = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     regionLabels.push(data[i].type);
-  //   } else {
-  //     regionLabels.push(0);
-  //   }
-  // }
-  const regionDatas = [80, 60, 45, 42, 32, 29, 19, 5]; // 광고 장소 분석 API
-  // const regionDatas = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     regionDatas.push(data[i].ratio);
-  //   } else {
-  //     regionDatas.push(0);
-  //   }
-  // }
+  // const regionLabels = ["장덕동", "첨단 1동", "수완동", "하남동", "송정 1동"]; //API 광고 장소 분석
+  // // const regionLabels = [];
+  // // for (let i = 0; i < data.length; i++) {
+  // //   if (data[i]) {
+  // //     regionLabels.push(data[i].type);
+  // //   } else {
+  // //     regionLabels.push(0);
+  // //   }
+  // // }
+  // const regionDatas = [80, 60, 45, 42, 32, 29, 19, 5]; // 광고 장소 분석 API
+  // // const regionDatas = [];
+  // // for (let i = 0; i < data.length; i++) {
+  // //   if (data[i]) {
+  // //     regionDatas.push(data[i].ratio);
+  // //   } else {
+  // //     regionDatas.push(0);
+  // //   }
+  // // }
   const busLabels = ["장덕동", "첨단 1동", "수완동", "하남동", "송정 1동"]; // 버스 정류장 분석 API
   // const busLabels = [];
   // for (let i = 0; i < data.length; i++) {
@@ -137,6 +142,8 @@ export const OutdoorRecommendation = () => {
   const [producerCardDatas3, setProducerCardDatas3] = useState({});
   const [showProducer, setShowProducer] = useState(false);
   const [recommendedRegion, setRecommendedRegion] = useState("");
+  const [regionLabels, setRegionLabels] = useState([]);
+  const [regionDatas, setRegionDatas] = useState([]);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -241,7 +248,7 @@ export const OutdoorRecommendation = () => {
     };
     const recommendRegion = async () => {
       try {
-        const response = await axios.get(
+        const response = await axios.post(
           `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/area`,
           {
             listSize: 5,
@@ -251,6 +258,21 @@ export const OutdoorRecommendation = () => {
           }
         );
         console.log("장소 분석 가져오기", response);
+        setRecommendedRegion(response.data.data[0].type);
+        const regionLabels = [];
+        const regionDatas = [];
+
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i]) {
+            regionLabels.push(response.data.data[i].type);
+            regionDatas.push(response.data.data[i].ratio * 0.0001);
+          } else {
+            regionLabels.push(0);
+            regionDatas.push(0);
+          }
+        }
+        setRegionLabels(regionLabels);
+        setRegionDatas(regionDatas);
       } catch (error) {
         console.log("장소 분석 오류", error);
       }
