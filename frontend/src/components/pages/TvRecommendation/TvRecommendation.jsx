@@ -31,7 +31,10 @@ const APPLICATION_SPRING_SERVER_URL =
 export const TvRecommendation = () => {
   const navigate = useNavigate();
   const name = useSelector((state) => state.user.name);
+  const targetCheck = useSelector((state) => state.result.target);
+  console.log("전역 target", targetCheck);
   const ageDatas = useSelector((state) => state.result.target.age);
+  console.log("ageDages 뭉탱이", ageDatas);
   const [ages, setAges] = useState([]);
   useLayoutEffect(() => {
     const newAges = [];
@@ -48,8 +51,6 @@ export const TvRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
-  const result = useSelector((state) => state.result.media);
-  console.log("고객이 입력한 정보", result);
   const mediaList = useSelector((state) => state.result.media.totalList);
   const [mediaLabels, setMediaLabels] = useState([]);
   const [mainDatas, setMainDatas] = useState([]);
@@ -87,6 +88,11 @@ export const TvRecommendation = () => {
   const [weekendsDatas, setWeekendsDatas] = useState([]);
   const [producerCardDatas, setProducerCardDatas] = useState({});
   const [showProducer, setShowProducer] = useState(false);
+  const item = useSelector((state) => state.user.productSmall);
+  const sido = useSelector((state) => state.result.selectedBigRegion);
+  const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
+  const selectedPrice = useSelector((state) => state.result.selectedPrice);
+  const onOff = useSelector((state) => state.result.selectedOnOffline);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -96,10 +102,10 @@ export const TvRecommendation = () => {
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
-            productSmallId: 2,
-            sigunguId: 0,
-            gender: 0,
-            age: 20,
+            productSmallId: item,
+            sigunguId: sigunguId,
+            gender: gender,
+            age: age,
           }
         );
         console.log("추천 매체 가져오기", response);
@@ -130,7 +136,7 @@ export const TvRecommendation = () => {
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/budget`,
           {
-            budget: 99999999999,
+            budget: selectedPrice,
           }
         );
         console.log("추천 가격 가져오기", response);
@@ -162,19 +168,19 @@ export const TvRecommendation = () => {
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/tv`,
           {
             gender: {
-              0: 45,
-              1: 55,
+              0: Number(targetCheck.gender[0].value),
+              1: Number(targetCheck.gender[1].value),
             },
             age: {
-              10: 19,
-              20: 17,
-              30: 13,
-              40: 20,
-              50: 21,
-              60: 5,
-              70: 5,
+              10: Number(ageDatas[0].value),
+              20: Number(ageDatas[1].value),
+              30: Number(ageDatas[2].value),
+              40: Number(ageDatas[3].value),
+              50: Number(ageDatas[4].value),
+              60: Number(ageDatas[5].value),
+              70: Number(ageDatas[6].value),
             },
-            sidoId: 1,
+            sidoId: sido,
           }
         );
         console.log("tv채널", response);
@@ -207,13 +213,13 @@ export const TvRecommendation = () => {
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/tv/time`,
           {
             age: {
-              10: 19,
-              20: 17,
-              30: 13,
-              40: 20,
-              50: 21,
-              60: 5,
-              70: 5,
+              10: Number(ageDatas[0].value),
+              20: Number(ageDatas[1].value),
+              30: Number(ageDatas[2].value),
+              40: Number(ageDatas[3].value),
+              50: Number(ageDatas[4].value),
+              60: Number(ageDatas[5].value),
+              70: Number(ageDatas[6].value),
             },
           }
         );
@@ -272,11 +278,11 @@ export const TvRecommendation = () => {
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
         {
           memberName: name,
-          productSmallId: 4,
-          budget: 100000,
-          inOnOff: 0,
+          productSmallId: item,
+          budget: selectedPrice,
+          inOnOff: onOff,
           sigunguId: 113,
-          mediaTypeId: 6,
+          mediaTypeId: 3,
         }
       );
       console.log("저장 성공", response);
