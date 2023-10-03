@@ -321,10 +321,13 @@ DROP TABLE IF EXISTS `communityTheme`;
 
 CREATE TABLE `communityTheme` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-	`name`	VARCHAR(80)	NOT NULL,
-	`theme`	VARCHAR(80)	NOT NULL,
-	`url`	VARCHAR(255)	NOT NULL,
-	`img`	VARCHAR(255)	NOT NULL
+    `theme`	VARCHAR(80)	NOT NULL,
+    `theme_sub`	VARCHAR(80)	NOT NULL,
+	`name_author`	VARCHAR(80)	NOT NULL,
+	`url`	TEXT	NOT NULL,
+	`img`	TEXT	NOT NULL,
+    `title_post`	VARCHAR(255),
+    `text` TEXT
 );
 
 DROP TABLE IF EXISTS `snsGender`;
