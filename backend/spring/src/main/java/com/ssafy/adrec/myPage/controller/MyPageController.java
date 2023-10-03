@@ -460,7 +460,7 @@ public class MyPageController {
         return new ResponseEntity<>(resultMap, httpStatus);
     }
 
-    @GetMapping("/content/{memberName}/{ContentRecId}")
+    @GetMapping("/content/rec/{memberName}/{ContentRecId}")
     public ResponseEntity<?> getContentRec(@PathVariable("memberName") String memberName, @PathVariable("ContentRecId") Long contentRecId) {
 
         Map<String, Object> resultMap = new HashMap<>();
