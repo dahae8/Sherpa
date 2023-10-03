@@ -29,6 +29,9 @@ const APPLICATION_SPRING_SERVER_URL =
 
 export const OutdoorRecommendation = () => {
   const navigate = useNavigate();
+  const name = useSelector((state) => state.user.name);
+  const targetCheck = useSelector((state) => state.result.target);
+  console.log("전역 target", targetCheck);
   const { kakao } = window;
   const respones = useSelector((state) => state.result.target);
   console.log(respones);
@@ -49,17 +52,27 @@ export const OutdoorRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
-  // const ages = [10, 20, 30, 40, 50, 60];
-  // const male = 50;
-  // const female = 50;
-  // const gender = false;
-  // const age = 30;
-  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
-  // const mediaLabels = useSelector((state) => state.result.media);
-  const mainDatas = [23, 19, 13, 5]; // state
-  // const mainDatas = useSelector((state) => state.result.media);
-  const recommendedMedia = "옥외 광고"; // state
-  // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
+  const result = useSelector((state) => state.result.media);
+  console.log("고객이 입력한 정보", result);
+  const mediaList = useSelector((state) => state.result.media.totalList);
+  const [mediaLabels, setMediaLabels] = useState([]);
+  const [mainDatas, setMainDatas] = useState([]);
+  useLayoutEffect(() => {
+    const mediaLabels = [];
+    const mainDatas = [];
+    for (let i = 0; i < mediaList.length; i++) {
+      if (mediaList[i]) {
+        mediaLabels.push(mediaList[i].name);
+        mainDatas.push(mediaList[i].value);
+      } else {
+        mediaLabels.push(0);
+        mainDatas.push(0);
+      }
+    }
+    setMediaLabels(mediaLabels);
+    setMainDatas(mainDatas);
+  }, [mediaList]);
+  const recommendedMedia = useSelector((state) => state.result.media.recommend);
   const subwayLabels = ["문화전당", "금난로 4가", "상무"]; // 지하철역 분석 API
   // const subwayLabels = [];
   // for (let i = 0; i < data.length; i++) {
@@ -112,6 +125,11 @@ export const OutdoorRecommendation = () => {
   const [regionDatas, setRegionDatas] = useState([]);
   const [busLabels, setBusLabels] = useState([]);
   const [busDatas, setBusDatas] = useState([]);
+  const item = useSelector((state) => state.user.productSmall);
+  const sido = useSelector((state) => state.result.selectedBigRegion);
+  const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
+  const selectedPrice = useSelector((state) => state.result.selectedPrice);
+  const onOff = useSelector((state) => state.result.selectedOnOffline);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -121,10 +139,10 @@ export const OutdoorRecommendation = () => {
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
-            productSmallId: 2,
-            sigunguId: 0,
-            gender: 0,
-            age: 20,
+            productSmallId: item,
+            sigunguId: sigunguId,
+            gender: gender,
+            age: age,
           }
         );
         console.log("추천 매체 가져오기", response);
@@ -155,7 +173,7 @@ export const OutdoorRecommendation = () => {
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/budget`,
           {
-            budget: 99999999999,
+            budget: selectedPrice,
           }
         );
         console.log("추천 가격 가져오기", response);
@@ -220,9 +238,9 @@ export const OutdoorRecommendation = () => {
           `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/area`,
           {
             listSize: 5,
-            gender: 0,
-            age: 10,
-            sigunguId: 169,
+            gender: gender,
+            age: age,
+            sigunguId: sigunguId,
           }
         );
         console.log("장소 분석 가져오기", response);
@@ -251,9 +269,9 @@ export const OutdoorRecommendation = () => {
           `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/bus`,
           {
             listSize: 5,
-            gender: 0,
-            age: 10,
-            sigunguId: 112,
+            gender: gender,
+            age: age,
+            sigunguId: sigunguId,
           }
         );
         console.log("버스 가져오기", response);
@@ -322,11 +340,11 @@ export const OutdoorRecommendation = () => {
       const response = await axios.post(
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
         {
-          memberName: "ssafy3",
-          productSmallId: 4,
-          budget: 100000,
-          inOnOff: 0,
-          sigunguId: 113,
+          memberName: name,
+          productSmallId: item,
+          budget: selectedPrice,
+          inOnOff: onOff,
+          sigunguId: sigunguId,
           mediaTypeId: 6,
         }
       );
