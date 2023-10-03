@@ -29,28 +29,28 @@ const APPLICATION_SPRING_SERVER_URL =
 
 export const NewsPaperRecommendation = () => {
   const navigate = useNavigate();
-  // const ageDatas = useSelector((state) => state.result.target.age);
-  // const [ages, setAges] = useState([]);
-  // useLayoutEffect(() => {
-  //   const newAges = [];
-  //   for (let i = 0; i < ageDatas.length; i++) {
-  //     if (ageDatas[i]) {
-  //       newAges.push(ageDatas[i].value);
-  //     } else {
-  //       newAges.push(0);
-  //     }
-  //   }
-  //   setAges(newAges);
-  // }, [ageDatas]);
-  // const male = useSelector((state) => state.result.target.gender[0].value);
-  // const female = useSelector((state) => state.result.target.gender[1].value);
-  // const gender = useSelector((state) => state.result.target.recommend.gender);
-  // const age = useSelector((state) => state.result.target.recommend.age);
-  const ages = [10, 20, 30, 40, 50, 60];
-  const male = 50;
-  const female = 50;
-  const gender = false;
-  const age = 30;
+  const ageDatas = useSelector((state) => state.result.target.age);
+  const [ages, setAges] = useState([]);
+  useLayoutEffect(() => {
+    const newAges = [];
+    for (let i = 0; i < ageDatas.length; i++) {
+      if (ageDatas[i]) {
+        newAges.push(ageDatas[i].value);
+      } else {
+        newAges.push(0);
+      }
+    }
+    setAges(newAges);
+  }, [ageDatas]);
+  const male = useSelector((state) => state.result.target.gender[0].value);
+  const female = useSelector((state) => state.result.target.gender[1].value);
+  const gender = useSelector((state) => state.result.target.recommend.gender);
+  const age = useSelector((state) => state.result.target.recommend.age);
+  // const ages = [10, 20, 30, 40, 50, 60];
+  // const male = 50;
+  // const female = 50;
+  // const gender = false;
+  // const age = 30;
   const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
   // const mediaLabels = useSelector((state) => state.result.media);
   const mainDatas = [23, 19, 13, 5]; // state
