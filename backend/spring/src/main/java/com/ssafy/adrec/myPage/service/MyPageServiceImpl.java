@@ -17,7 +17,6 @@ import com.ssafy.adrec.media.repository.MediaSubRepository;
 import com.ssafy.adrec.media.repository.MediaTypeRepository;
 import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.member.repository.MemberRepository;
-import com.ssafy.adrec.member.service.MemberServiceImpl;
 import com.ssafy.adrec.myPage.MediaRec;
 import com.ssafy.adrec.myPage.repository.MediaRecRepository;
 import com.ssafy.adrec.myPage.request.MediaRecReq;
@@ -27,11 +26,8 @@ import com.ssafy.adrec.myPage.response.*;
 import com.ssafy.adrec.product.ProductSmall;
 import com.ssafy.adrec.product.repository.ProductSmallRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -317,6 +313,33 @@ public class MyPageServiceImpl  implements MyPageService{
         }
 
         return list;
+    }
+
+    @Override
+    public void deleteContentRec(ContentRec contentRec) {
+
+        List<ContentLike> contentLikeList = contentLikeRepository.findAllByContentRec_Id(contentRec.getId());
+        for (ContentLike contentLike : contentLikeList){
+            deleteContentLike(contentLike);
+        }
+
+        List<ContentKeyword> contentKeywordList = contentKeywordRepository.findAllByContentRec_Id(contentRec.getId());
+        for (ContentKeyword contentKeyword : contentKeywordList){
+            deleteContentKeyword(contentKeyword);
+        }
+
+
+        contentRecRepository.delete(contentRec);
+    }
+
+    @Override
+    public void deleteContentKeyword(ContentKeyword contentKeyword) {
+        contentKeywordRepository.delete(contentKeyword);
+    }
+
+    @Override
+    public void deleteContentLike(ContentLike contentLike) {
+        contentLikeRepository.delete(contentLike);
     }
 
 }

@@ -101,5 +101,11 @@ public class ContentServiceImpl implements ContentService {
         return contentRec.orElse(null);
     }
 
+    @Override
+    public ContentLike getContentLike(Long contentLikeId) {
+        Optional<ContentLike> contentLike = contentLikeRepository.findById(contentLikeId);
+        return contentLike.orElse(null);
+    }
+
 
 }
