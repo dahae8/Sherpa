@@ -9,13 +9,13 @@ const Container = styled.div`
   margin-bottom: 25px;
 `;
 
-export default function FormPropsTextFields() {
+export default function FormPropsTextFields({label, defaultValue}) {
     return (
         <Container>
           <TextField
             id="standard-read-only-input"
-            label="email"
-            defaultValue="Hello World"
+            label={label}
+            defaultValue={defaultValue}
             InputProps={{
               readOnly: true,
             }}
