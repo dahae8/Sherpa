@@ -12,13 +12,14 @@ const initialState = {
   isLogin: false,
   isLoginError: false,
   userInfo: null,
-  isValidToken: false
+  isValidToken: false,
+  productSmallName: null
 };
 
 const persistConfig = {
   key: 'user',
   storage: storageSession,
-  whitelist: ['token', 'email', 'name', 'productSmall', 'productMedium', 'productLarge', 'isLogin']
+  whitelist: ['token', 'email', 'name', 'productSmall', 'productMedium', 'productLarge', 'isLogin', 'productSmallName']
 };
 
 const userSlice = createSlice({
@@ -55,6 +56,9 @@ const userSlice = createSlice({
     setUserInfo(state, action) {
       state.userInfo = action.payload;
     },
+    setProductSmallName(state, action){
+       state.productSmallName = action.payload; 
+    },
     logoutUser(state) {
       return initialState;
     }
@@ -72,6 +76,7 @@ export const {
   setIsLoginError,
   setIsValidToken,
   setUserInfo,
+  setProductSmallName,
   logoutUser
 } = userSlice.actions;
 
