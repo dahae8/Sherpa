@@ -48,8 +48,10 @@ const ChartItem = styled.div`
 function MakeReccommendTarget({ age, datas, target, male, female }) {
   const labels = ["10대", "20대", "30대", "40대", "50대", "60대이상"];
   const tags = [
-    useSelector((state) => state.result.selectedPrice),
-    useSelector((state) => state.result.selectedOnOffline),
+    useSelector((state) => " 광고 예산 : " + state.result.selectedPrice + "원"),
+    useSelector(
+      (state) => "선택한 매체 : " + state.result.selectedOnOffline + "매체"
+    ),
     useSelector((state) => state.result.selectedBigRegion),
     useSelector((state) => state.result.selectedSmallRegion),
   ];

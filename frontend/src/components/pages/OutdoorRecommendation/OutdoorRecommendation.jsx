@@ -45,8 +45,8 @@ export const OutdoorRecommendation = () => {
     }
     setAges(newAges);
   }, [ageDatas]);
-  const male = useSelector((state) => state.result.target.gender[0].value);
-  const female = useSelector((state) => state.result.target.gender[1].value);
+  const male = useSelector((state) => state.result.target.gender[1].value);
+  const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
   // const ages = [10, 20, 30, 40, 50, 60];
