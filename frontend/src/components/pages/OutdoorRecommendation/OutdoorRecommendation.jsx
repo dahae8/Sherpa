@@ -16,10 +16,15 @@ import {
 import Button from "../../atoms/Button";
 import { useNavigate } from "react-router-dom";
 
-const APPLICATION_SERVER_URL =
+const APPLICATION_FAST_SERVER_URL =
   process.env.NODE_ENV === "production"
     ? "https://j9c107.p.ssafy.io"
     : "http://j9c107.p.ssafy.io:8000";
+
+const APPLICATION_SPRING_SERVER_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8080";
 
 export const OutdoorRecommendation = () => {
   const navigate = useNavigate();
@@ -100,12 +105,6 @@ export const OutdoorRecommendation = () => {
   // const bigRegion = useSelector((state) => state.result.selectedBigRegion);
   const smallRegion = "광산구"; //state
   // const smallRegion = useSelector((state) => state.result.selectedSmallRegion);
-  const producerCardDatas = [
-    { img: "url", title: "대한민국 명산 도전", url: "url" },
-    { img: "url", title: "램블러", url: "url" },
-    { img: "url", title: "놀자", url: "url" },
-    { img: "url", title: "길잡이", url: "url" },
-  ]; // 광고 제작사 리스트 받아오기 API
   const addresses = ["무진대로211번길 28", "월계로 109", "하남산단6번로 107"]; // 현수막 장소 분석 API
   // const addresses = [];
   // for (let i = 0; i < data.length; i++) {
@@ -127,14 +126,18 @@ export const OutdoorRecommendation = () => {
   const [subDatas, setSubDatas] = useState([]);
   const [priceLabels, setPriceLabels] = useState([]);
   const [prices, setPrices] = useState([]);
+  const [producerCardDatas, setProducerCardDatas] = useState({});
+  const [producerCardDatas2, setProducerCardDatas2] = useState({});
+  const [producerCardDatas3, setProducerCardDatas3] = useState({});
+  const [showProducer, setShowProducer] = useState(false);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
-    console.log(APPLICATION_SERVER_URL);
+    console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/offline/product`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
             productSmallId: 2,
             sigunguId: 0,
@@ -168,7 +171,7 @@ export const OutdoorRecommendation = () => {
     const recommendPrice = async () => {
       try {
         const response = await axios.post(
-          `${APPLICATION_SERVER_URL}/fastapi/offline/budget`,
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/budget`,
           {
             budget: 99999999999,
           }
@@ -196,8 +199,44 @@ export const OutdoorRecommendation = () => {
         console.error("추천 매체 가져오기 오류:", error);
       }
     };
+    const linkproducer = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/media/company/6?mediaSubId=1`
+        );
+        console.log("제작사", response);
+        setProducerCardDatas(response.data.data);
+      } catch (error) {
+        console.log("제작사 오류", error);
+      }
+    };
+    const linkproducer2 = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/media/company/6?mediaSubId=2`
+        );
+        console.log("제작사", response);
+        setProducerCardDatas2(response.data.data);
+      } catch (error) {
+        console.log("제작사 오류", error);
+      }
+    };
+    const linkproducer3 = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/media/company/6?mediaSubId=3`
+        );
+        console.log("제작사", response);
+        setProducerCardDatas3(response.data.data);
+      } catch (error) {
+        console.log("제작사 오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
+    linkproducer();
+    linkproducer2();
+    linkproducer3();
   }, []);
 
   useEffect(() => {
@@ -224,6 +263,13 @@ export const OutdoorRecommendation = () => {
         }
       });
     });
+  }, []);
+
+  useEffect(() => {
+    const delayProducerRender = setTimeout(() => {
+      setShowProducer(true);
+    }, 2000);
+    return () => clearTimeout(delayProducerRender);
   }, []);
 
   return (
@@ -289,18 +335,20 @@ export const OutdoorRecommendation = () => {
       </Box>
       <Hr />
       <Box>
-        <ProducerTitleItem>
-          버스 정류장 / 지하철 역 옥외 광고 제작사
-        </ProducerTitleItem>
-        <ProducerRecommendation
-          cardDatas={producerCardDatas}
-        ></ProducerRecommendation>
+        <ProducerTitleItem>버스 정류장 옥외 광고 제작사</ProducerTitleItem>
+        {showProducer && (
+          <ProducerRecommendation cardDatas={producerCardDatas} />
+        )}
       </Box>
       <Box>
+        <ProducerTitleItem>지하철 역 옥외 광고 제작사</ProducerTitleItem>
+        {showProducer && (
+          <ProducerRecommendation cardDatas={producerCardDatas2} />
+        )}
         <ProducerTitleItem>현수막 옥외 광고 제작사</ProducerTitleItem>
-        <ProducerRecommendation
-          cardDatas={producerCardDatas}
-        ></ProducerRecommendation>
+        {showProducer && (
+          <ProducerRecommendation cardDatas={producerCardDatas3} />
+        )}
       </Box>
       <ButtonBox>
         <SaveBox>
