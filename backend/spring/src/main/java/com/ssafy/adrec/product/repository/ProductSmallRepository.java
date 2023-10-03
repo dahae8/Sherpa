@@ -13,7 +13,7 @@ public interface ProductSmallRepository extends JpaRepository<ProductSmall, Long
     Optional<ProductSmall> findById(Long id);
     List<ProductSmall> findAllByProductMedium_Id(Long ProductMedium_Id);
 
-    @Query("SELECT s FROM ProductSmall s " +
+    @Query("SELECT s.id FROM ProductSmall s " +
             "JOIN ProductMedium m ON s.productMedium.id = m.id " +
             "JOIN ProductLarge l ON m.productLarge.id = l.id " +
             "WHERE l.id = " +
