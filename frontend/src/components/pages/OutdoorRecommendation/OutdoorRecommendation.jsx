@@ -317,6 +317,25 @@ export const OutdoorRecommendation = () => {
     return () => clearTimeout(delayProducerRender);
   }, []);
 
+  const save = async () => {
+    try {
+      const response = await axios.post(
+        `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
+        {
+          memberName: "ssafy3",
+          productSmallId: 4,
+          budget: 100000,
+          inOnOff: 0,
+          sigunguId: 113,
+          mediaTypeId: 6,
+        }
+      );
+      console.log("저장 성공", response);
+    } catch (error) {
+      console.log("저장 오류", error);
+    }
+  };
+
   return (
     <Container>
       <TargetBox>
@@ -405,6 +424,7 @@ export const OutdoorRecommendation = () => {
             textColor="#3C486B"
             fontSize="24px"
             onClick={() => {
+              save();
               navigate("/mypage");
             }}
           >
