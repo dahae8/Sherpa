@@ -19,4 +19,6 @@ public interface ContentService {
     ContentLike saveContentLike(ContentRec contentRec, List<ContentRecListReq> contentList);
 
     ContentRec getContentRec(Long contentRecId);
+
+    ContentLike getContentLike(Long contentLikeId);
 }
