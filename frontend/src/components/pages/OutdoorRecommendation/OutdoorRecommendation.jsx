@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
@@ -53,8 +53,6 @@ export const OutdoorRecommendation = () => {
   // const mainDatas = useSelector((state) => state.result.media);
   const recommendedMedia = "옥외 광고"; // state
   // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
-  const recommendedRegion = "장덕동"; //API 광고 장소 분석
-  // const recommendedRegion = data[0].type
   const regionLabels = ["장덕동", "첨단 1동", "수완동", "하남동", "송정 1동"]; //API 광고 장소 분석
   // const regionLabels = [];
   // for (let i = 0; i < data.length; i++) {
@@ -138,6 +136,7 @@ export const OutdoorRecommendation = () => {
   const [producerCardDatas2, setProducerCardDatas2] = useState({});
   const [producerCardDatas3, setProducerCardDatas3] = useState({});
   const [showProducer, setShowProducer] = useState(false);
+  const [recommendedRegion, setRecommendedRegion] = useState("");
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -240,11 +239,28 @@ export const OutdoorRecommendation = () => {
         console.log("제작사 오류", error);
       }
     };
+    const recommendRegion = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/area`,
+          {
+            listSize: 5,
+            gender: 0,
+            age: 10,
+            sigunguId: 169,
+          }
+        );
+        console.log("장소 분석 가져오기", response);
+      } catch (error) {
+        console.log("장소 분석 오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
     linkproducer();
     linkproducer2();
     linkproducer3();
+    recommendRegion();
   }, []);
 
   useEffect(() => {
