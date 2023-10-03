@@ -19,6 +19,7 @@ const Container = styled.div`
   flex-direction: column;
   flex-wrap: wrap;
   align-content: center;
+  justify-content: center;
 `;
 const Paragraph = styled.p`
   text-align: start;
@@ -251,7 +252,7 @@ export const ContentRecommendPage = () => {
           textColor="white"
           fontSize="24px"
           onClick={() => {
-            getRecommend(media, keywords, category, setPhrase, setScenario);
+            
           }}
         >
           추가
@@ -264,6 +265,18 @@ export const ContentRecommendPage = () => {
           // onDelete={handleDelete}
         />
       </Bundle>
+      <Button
+        backgroundColor="#3C486B"
+        width="400px"
+        height="50px"
+        textColor="white"
+        fontSize="24px"
+        onClick={() => {
+          getRecommend(media, keywords, category, setPhrase, setScenario);
+        }}
+      >
+        추천 결과 보기 
+      </Button>
       <div>
         <h2>광고 문구</h2>
         {phrase.map((p, index) => (
