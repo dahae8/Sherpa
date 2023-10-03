@@ -17,10 +17,9 @@ import {
   setSelectedBigRegion,
   setSelectedSmallRegion,
   setbigRegionName,
-  setsmallRegionName,
-  setProductSmall,
+  setsmallRegionName
 } from '../../../slices/resultSlice';
-import {setProductSmallName} from '../../../slices/userSlice';
+import { setProductSmallName, setProductSmall } from '../../../slices/userSlice';
 
 const APPLICATION_SPRING_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
@@ -111,7 +110,6 @@ export const MediaRecommendPage = () => {
     const productName = targetProductData ? targetProductData.product : null;
     dispatch(setProductSmallName(productName));
     console.log('품목명', productName);
-
   }
   function getResult() {
     getNames();

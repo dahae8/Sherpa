@@ -71,6 +71,9 @@ export const ContentRecommendPage = () => {
   const [dataM, setDataM] = useState([]);
   const [dataS, setDataS] = useState([]);
 
+  // 매체 리스트
+  const [mediaList, setMediaList] = useState([]);
+
   const [media, setMedia] = useState('TV');
   const [keywords, setKeywords] = useState(['이탈리안', '재료']);
   const [category, setCategory] = useState({
@@ -115,11 +118,11 @@ export const ContentRecommendPage = () => {
         });
 
         console.log(scenarioResponse.choices[0].message.content);
-         // "제목:"이라는 문자열을 기준으로 시나리오들을 분리
+        // "제목:"이라는 문자열을 기준으로 시나리오들을 분리
         const scenarioStrings = scenarioResponse.choices[0].message.content.split('제목:').slice(1);
 
         // 각 시나리오 문자열을 처리하여 원하는 객체 형태로 변형
-        const scenarios = scenarioStrings.map(s => {
+        const scenarios = scenarioStrings.map((s) => {
           const lines = s.trim().split('\n');
           const title = lines[0].replace(/["]/g, '').trim();
           const content = lines.slice(1).join('\n').replace('시나리오:\n', '').trim();
@@ -176,13 +179,24 @@ export const ContentRecommendPage = () => {
     };
     const getMedia = async () => {
       try {
-        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/media/type/{type}/{id}`)
-      } catch (error) {
+        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/media/type/largeMedium/0`);
+        if (response.data.success) {
+          console.log(response.data);
+          const swappedMediaList = response.data.data.map(item => {
+            return { id: item.id, large: item.medium, medium: item.large };
+        });
+          console.log('수정된 리스트', swappedMediaList);
 
+          // 수정된 데이터를 상태로 설정합니다.
+          setMediaList(swappedMediaList);
+        }
+      } catch (error) {
+        console.log('getTargetError!!', error.response ? error.response.data : error);
       }
-    }
+    };
 
     getDataL();
+    getMedia();
   }, []);
   useEffect(() => {
     const selectedL = selectDataL !== null ? selectDataL : defaultSelectL;
@@ -220,7 +234,7 @@ export const ContentRecommendPage = () => {
     <Container>
       <h1>광고 매체를 선택해주세요</h1>
       <Box>
-        <Select width="700px"></Select>
+        <Select data={mediaList} onSelect={media} width="700px"></Select>
       </Box>
       <h1>광고 품목을 선택해 주세요</h1>
       <MediaSelectOption
@@ -256,9 +270,7 @@ export const ContentRecommendPage = () => {
           height="50px"
           textColor="white"
           fontSize="24px"
-          onClick={() => {
-            
-          }}
+          onClick={() => {}}
         >
           추가
         </Button>
@@ -280,7 +292,7 @@ export const ContentRecommendPage = () => {
           getRecommend(media, keywords, category, setPhrase, setScenario);
         }}
       >
-        추천 결과 보기 
+        추천 결과 보기
       </Button>
       <div>
         <h2>광고 문구</h2>
