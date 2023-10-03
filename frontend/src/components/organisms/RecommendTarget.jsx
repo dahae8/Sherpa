@@ -52,8 +52,8 @@ function MakeReccommendTarget({ age, datas, target, male, female }) {
     useSelector(
       (state) => "선택한 매체 : " + state.result.selectedOnOffline + "매체"
     ),
-    useSelector((state) => state.result.selectedBigRegion),
-    useSelector((state) => state.result.selectedSmallRegion),
+    useSelector((state) => state.result.bigRegionName),
+    useSelector((state) => state.result.smallRegionName),
   ];
   const item = useSelector((state) => state.user.productSmallName);
 

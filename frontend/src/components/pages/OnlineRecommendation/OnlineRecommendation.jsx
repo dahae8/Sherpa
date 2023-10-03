@@ -50,27 +50,19 @@ export const OnlineRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
-  const blogCardDatas = [
-    { img: "url", title: "대한민국 명산 도전", url: "url" },
-    { img: "url", title: "램블러", url: "url" },
-    { img: "url", title: "놀자", url: "url" },
-    { img: "url", title: "길잡이", url: "url" },
-  ]; // 커뮤니티 주제별 추천 API
-  const selectedItem = "등산화"; // state
-  // const selectedItem = useSelector((state) => state.user.productSmall);
+  const selectedItem = useSelector((state) => state.user.productSmallName);
   const description = `${selectedItem}에 알맞는 블로그 목록`;
   let target = "성별";
-
   if (gender === 1) {
     target = "남성";
   } else {
     target = "여성";
   }
-
   const [recommendedCommunity, setRecommendedCommunity] = useState("");
   const [firstCommunityLabels, setFirstCommunityLabels] = useState([]);
   const [coummunityfirstDatas, setCoummunityfirstDatas] = useState([]);
   const [coummunitysecondDatas, setCoummunitysecondDatas] = useState([]);
+  const [blogCardDatas, setBlogCardDatas] = useState([]);
   const [recommendedSns, setRecommendedSns] = useState("");
   const [snsLabels, setSnsLabels] = useState([]);
   const [snsFirstDatas, setSnsFirstDatas] = useState([]);
@@ -143,6 +135,21 @@ export const OnlineRecommendation = () => {
         setCoummunitysecondDatas(coummunitysecondDatas);
       } catch (error) {
         console.log("추천 커뮤니티 오류", error);
+      }
+    };
+    const detailCommunity = async () => {
+      console.log("세부 커뮤니티 item", item);
+      try {
+        const response = await axios.post(
+          `${APPLICATION_FAST_SERVER_URL}/fastapi/online/community/sub`,
+          {
+            productSmallId: item,
+          }
+        );
+        console.log("세부 커뮤니티 가져오기", response);
+        setBlogCardDatas(response.data.data);
+      } catch (error) {
+        console.log("세부 커뮤니티 오류", error);
       }
     };
     const recommendSns = async () => {
@@ -222,6 +229,7 @@ export const OnlineRecommendation = () => {
       }
     };
     recommendCommunity();
+    detailCommunity();
     recommendSns();
     linkproducer();
     linkproducer2();
