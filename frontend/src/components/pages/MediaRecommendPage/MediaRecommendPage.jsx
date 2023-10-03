@@ -67,7 +67,6 @@ const Choosedong = styled.div`
 `;
 
 export const MediaRecommendPage = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -102,12 +101,12 @@ export const MediaRecommendPage = () => {
     console.log(gender);
     console.log(age);
     console.log(selectedButton);
-    if ( gender !== null && age !== null && selectedButton === 'online') {
+    if (gender !== null && age !== null && selectedButton === 'online') {
       navigate('/mediaResult/online');
     } else if (gender !== null && age !== null && selectedButton === 'offline') {
-      console.log("여기까지 와요 오프라인");
+      console.log('여기까지 와요 오프라인');
       navigate('/mediaResult/online');
-    };
+    }
   }
 
   // 대분류, 중분류, 소분류 관련 effect들
@@ -197,13 +196,13 @@ export const MediaRecommendPage = () => {
 
   // 광고 타겟층 분석 effect
   useEffect(() => {
-    console.log("여기 잘나와요 ???")
+    console.log('여기 잘나와요 ???');
     // console.log(selectDataL);
     // console.log(selectDataM);
     // console.log(selectDataS);
     const getTarget = async () => {
       try {
-        console.log("여기 잘나와요 !!!")
+        console.log('여기 잘나와요 !!!');
         const response = await axios.post(
           `${APPLICATION_SPRING_SERVER_URL}/api/target`,
           {
@@ -225,11 +224,10 @@ export const MediaRecommendPage = () => {
           } else {
             setGender(1);
           }
-          console.log("추천값", response.data.data.recommend);
-          console.log(gender)
+          console.log('추천값', response.data.data.recommend);
+          console.log(gender);
           setAge(response.data.data.recommend.age);
-          console.log(age)
-          
+          console.log(age);
         }
       } catch (error) {
         console.log('getTargetError!!', error);
@@ -237,7 +235,7 @@ export const MediaRecommendPage = () => {
     };
 
     const getOffline = async () => {
-      console.log(type())
+      console.log(gender);
       try {
         const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`, {
           productSmallId: selectDataS,
@@ -247,7 +245,7 @@ export const MediaRecommendPage = () => {
           budget: selectedBudget
         });
         if (response.data.success) {
-          console.log('getOffline',response.data);
+          console.log('getOffline', response.data);
           dispatch(setMedia(response.data.data));
         }
       } catch (error) {
@@ -255,11 +253,9 @@ export const MediaRecommendPage = () => {
       }
     };
 
-    
     getTarget();
     console.log('getTarget 실행');
     getOffline();
-    
   }, [selectDataS, selectDataSigungu]);
   return (
     <Container>
