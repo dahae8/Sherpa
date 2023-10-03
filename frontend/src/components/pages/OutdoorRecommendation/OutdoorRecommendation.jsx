@@ -52,6 +52,8 @@ export const OutdoorRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
+  console.log("age", age);
+  console.log("gender", gender);
   const result = useSelector((state) => state.result.media);
   console.log("고객이 입력한 정보", result);
   const mediaList = useSelector((state) => state.result.media.totalList);
@@ -105,13 +107,11 @@ export const OutdoorRecommendation = () => {
   //   }
   // }
   let target = "성별";
-
-  if (gender === 1) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";
   }
-
   const [subMediaLabels, setSubMediaLabels] = useState([]);
   const [subDatas, setSubDatas] = useState([]);
   const [priceLabels, setPriceLabels] = useState([]);
@@ -238,7 +238,7 @@ export const OutdoorRecommendation = () => {
           `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/area`,
           {
             listSize: 5,
-            gender: gender,
+            gender: Number(gender),
             age: age,
             sigunguId: sigunguId,
           }
@@ -269,7 +269,7 @@ export const OutdoorRecommendation = () => {
           `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/bus`,
           {
             listSize: 5,
-            gender: gender,
+            gender: Number(gender),
             age: age,
             sigunguId: sigunguId,
           }
