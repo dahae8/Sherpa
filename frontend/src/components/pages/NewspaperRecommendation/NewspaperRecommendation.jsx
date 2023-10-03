@@ -47,12 +47,27 @@ export const NewsPaperRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
-  const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
-  // const mediaLabels = useSelector((state) => state.result.media);
-  const mainDatas = [23, 19, 13, 5]; // state
-  // const mainDatas = useSelector((state) => state.result.media);
-  const recommendedMedia = "신문 광고"; // state
-  // const recommendedMedia = useSelector((state) => state.result.recommendedMedia);
+  const result = useSelector((state) => state.result.media);
+  console.log("고객이 입력한 정보", result);
+  const mediaList = useSelector((state) => state.result.media.totalList);
+  const [mediaLabels, setMediaLabels] = useState([]);
+  const [mainDatas, setMainDatas] = useState([]);
+  useLayoutEffect(() => {
+    const mediaLabels = [];
+    const mainDatas = [];
+    for (let i = 0; i < mediaList.length; i++) {
+      if (mediaList[i]) {
+        mediaLabels.push(mediaList[i].name);
+        mainDatas.push(mediaList[i].value);
+      } else {
+        mediaLabels.push(0);
+        mainDatas.push(0);
+      }
+    }
+    setMediaLabels(mediaLabels);
+    setMainDatas(mainDatas);
+  }, [mediaList]);
+  const recommendedMedia = useSelector((state) => state.result.media.recommend);
   let target = "성별";
   if (gender === false) {
     target = "남성";
