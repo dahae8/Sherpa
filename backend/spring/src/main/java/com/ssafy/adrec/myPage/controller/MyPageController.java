@@ -49,7 +49,7 @@ public class MyPageController {
     private final ContentService contentService;
 
     @GetMapping("/keyword/{memberName}")
-    public ResponseEntity<?> getKeywordRecList(@PathVariable("memberName") String memberName){
+    public ResponseEntity<?> getKeywordRecList(@PathVariable("memberName") String memberName) {
         List<KeywordRecRes> list = new ArrayList<>();
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -59,7 +59,7 @@ public class MyPageController {
         Member member = memberService.checkName(memberName);
         if (member == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",memberName));
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", memberName));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
@@ -91,7 +91,7 @@ public class MyPageController {
         KeywordRec keywordRec = keywordService.getKeywordRec(keywordRecId);
         if (keywordRec == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 보관함ID입니다.",keywordRecId));
+            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 보관함ID입니다.", keywordRecId));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
@@ -135,7 +135,7 @@ public class MyPageController {
         KeywordLike keywordLike = keywordService.getKeywordLike(keywordLikeId);
         if (keywordLike == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 좋아요 키워드ID입니다.",keywordLikeId));
+            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 좋아요 키워드ID입니다.", keywordLikeId));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
@@ -143,7 +143,7 @@ public class MyPageController {
         myPageService.deleteKeywordLike(keywordLike);
 
         resultMap.put("success", true);
-        resultMap.put("data", String.format("[%s]키워드를 삭제하였습니다.",keywordLike.getKeyword()));
+        resultMap.put("data", String.format("[%s]키워드를 삭제하였습니다.", keywordLike.getKeyword()));
         resultMap.put("count", 1);
         httpStatus = HttpStatus.OK;
 
@@ -171,7 +171,7 @@ public class MyPageController {
         KeywordRec keywordRec = keywordService.getKeywordRec(keywordRecId);
         if (keywordRec == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 보관함ID입니다.",keywordRecId));
+            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 보관함ID입니다.", keywordRecId));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
@@ -179,7 +179,7 @@ public class MyPageController {
         myPageService.deleteKeywordRec(keywordRec);
 
         resultMap.put("success", true);
-        resultMap.put("data", String.format("[%d]보관함을 삭제하였습니다.",keywordRecId));
+        resultMap.put("data", String.format("[%d]보관함을 삭제하였습니다.", keywordRecId));
         resultMap.put("count", 1);
         httpStatus = HttpStatus.OK;
 
@@ -249,13 +249,13 @@ public class MyPageController {
     }
 
     @PostMapping("/save/mediaRec")
-    public ResponseEntity<?> saveMediaRec (@RequestBody MediaRecReq mediaRecReq) {
+    public ResponseEntity<?> saveMediaRec(@RequestBody MediaRecReq mediaRecReq) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
 
         if ((mediaRecReq.getInOnOff() != 0 && mediaRecReq.getInOnOff() != 1)) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[inOnOff]의 값으로 [%d]은/는 잘못된 요청입니다. 온라인 여부는 0(온라인)또는 1(오프라인)로 전달해주세요.",mediaRecReq.getInOnOff()));
+            resultMap.put("msg", String.format("[inOnOff]의 값으로 [%d]은/는 잘못된 요청입니다. 온라인 여부는 0(온라인)또는 1(오프라인)로 전달해주세요.", mediaRecReq.getInOnOff()));
             httpStatus = HttpStatus.BAD_REQUEST;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
 
@@ -264,16 +264,16 @@ public class MyPageController {
         Member member = memberService.checkName(mediaRecReq.getMemberName());
         if (member == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",mediaRecReq.getMemberName()));
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", mediaRecReq.getMemberName()));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
 
         }
 
-        ProductSmall productSmall =productService.getProductSmall(mediaRecReq.getProductSmallId());
+        ProductSmall productSmall = productService.getProductSmall(mediaRecReq.getProductSmallId());
         if (productSmall == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 유요한 품목 코드가 아닙니다.",mediaRecReq.getProductSmallId()));
+            resultMap.put("msg", String.format("[%d]은/는 유요한 품목 코드가 아닙니다.", mediaRecReq.getProductSmallId()));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
@@ -281,7 +281,7 @@ public class MyPageController {
         Sigungu sigungu = areaService.getSigungu(mediaRecReq.getSigunguId());
         if (productSmall == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 유요한 시군구 코드가 아닙니다.",mediaRecReq.getSigunguId()));
+            resultMap.put("msg", String.format("[%d]은/는 유요한 시군구 코드가 아닙니다.", mediaRecReq.getSigunguId()));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
@@ -289,13 +289,13 @@ public class MyPageController {
         MediaType mediaType = myPageService.getMediaType(mediaRecReq.getMediaTypeId());
         if (mediaType == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 유요한 MediaType 코드가 아닙니다.",mediaRecReq.getMediaTypeId()));
+            resultMap.put("msg", String.format("[%d]은/는 유요한 MediaType 코드가 아닙니다.", mediaRecReq.getMediaTypeId()));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
 
 
-        MediaRec mediaRec = myPageService.saveMediaRec(mediaRecReq,productSmall, sigungu, member,mediaType);
+        MediaRec mediaRec = myPageService.saveMediaRec(mediaRecReq, productSmall, sigungu, member, mediaType);
 
         if (mediaRec == null) {
             resultMap.put("success", false);
@@ -307,13 +307,13 @@ public class MyPageController {
             httpStatus = HttpStatus.OK;
         }
 
-        
+
         return new ResponseEntity<>(resultMap, httpStatus);
 
     }
 
     @GetMapping("/mediaRec/{memberName}")
-    public ResponseEntity<?> getMediaRecList(@PathVariable("memberName") String memberName){
+    public ResponseEntity<?> getMediaRecList(@PathVariable("memberName") String memberName) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
         resultMap.put("msg", "매체 추천 목록 조회");
@@ -321,7 +321,7 @@ public class MyPageController {
         Member member = memberService.checkName(memberName);
         if (member == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",memberName));
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", memberName));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
@@ -343,7 +343,7 @@ public class MyPageController {
     }
 
     @GetMapping("/mediaRec/{memberName}/{id}")
-    public ResponseEntity<?> getMediaRec(@PathVariable("memberName") String memberName,@PathVariable("id") Long id){
+    public ResponseEntity<?> getMediaRec(@PathVariable("memberName") String memberName, @PathVariable("id") Long id) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
         resultMap.put("msg", "매체 추천 목록 조회");
@@ -351,7 +351,7 @@ public class MyPageController {
         Member member = memberService.checkName(memberName);
         if (member == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",memberName));
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", memberName));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
 
@@ -361,12 +361,10 @@ public class MyPageController {
 
         if (mediaRec == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 잘못된 매체 추천 결과 id 입니다.",id));
+            resultMap.put("msg", String.format("[%d]은/는 잘못된 매체 추천 결과 id 입니다.", id));
             httpStatus = HttpStatus.NOT_FOUND;
 
-        }
-
-        else if(mediaRec.getMember().getName().equals(memberName)){
+        } else if (mediaRec.getMember().getName().equals(memberName)) {
             MediaRecRes mediaRecRes = MediaRecRes.builder()
                     .id(mediaRec.getId())
                     .recDate(mediaRec.getRecDate())
@@ -382,10 +380,9 @@ public class MyPageController {
             resultMap.put("count", 1);
             httpStatus = HttpStatus.OK;
 
-        }
-        else {
+        } else {
             resultMap.put("success", false);
-            resultMap.put("msg",  String.format("[%d]은/는 [%s]유저의 매체추천 결과가 아닙니다.",id,memberName));
+            resultMap.put("msg", String.format("[%d]은/는 [%s]유저의 매체추천 결과가 아닙니다.", id, memberName));
             httpStatus = HttpStatus.BAD_REQUEST;
         }
 
@@ -394,14 +391,14 @@ public class MyPageController {
     }
 
     @DeleteMapping("/mediaRec/{memberName}/{id}")
-    public ResponseEntity<?> deleteMediaRec(@PathVariable("memberName") String memberName,@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteMediaRec(@PathVariable("memberName") String memberName, @PathVariable("id") Long id) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
 
         Member member = memberService.checkName(memberName);
         if (member == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",memberName));
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", memberName));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
 
@@ -411,22 +408,19 @@ public class MyPageController {
 
         if (mediaRec == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 잘못된 매체 추천 결과 id 입니다.",id));
+            resultMap.put("msg", String.format("[%d]은/는 잘못된 매체 추천 결과 id 입니다.", id));
             httpStatus = HttpStatus.NOT_FOUND;
 
-        }
-
-        else if(mediaRec.getMember().getName().equals(memberName)){
+        } else if (mediaRec.getMember().getName().equals(memberName)) {
             myPageService.deleteMediaRec(mediaRec);
 
             resultMap.put("success", true);
             resultMap.put("msg", String.format("[%d]id에 해당하는 매체추천 결과를 삭제하였습니다.", id));
             httpStatus = HttpStatus.OK;
 
-        }
-        else {
+        } else {
             resultMap.put("success", false);
-            resultMap.put("msg",  String.format("[%d]은/는 [%s]유저의 매체추천 결과가 아닙니다.",id,memberName));
+            resultMap.put("msg", String.format("[%d]은/는 [%s]유저의 매체추천 결과가 아닙니다.", id, memberName));
             httpStatus = HttpStatus.BAD_REQUEST;
         }
 
@@ -434,7 +428,7 @@ public class MyPageController {
     }
 
     @GetMapping("/content/{memberName}")
-    public ResponseEntity<?> getContentRecList(@PathVariable("memberName") String memberName){
+    public ResponseEntity<?> getContentRecList(@PathVariable("memberName") String memberName) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
@@ -443,7 +437,7 @@ public class MyPageController {
         Member member = memberService.checkName(memberName);
         if (member == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",memberName));
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", memberName));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(resultMap, httpStatus);
 
@@ -466,8 +460,8 @@ public class MyPageController {
         return new ResponseEntity<>(resultMap, httpStatus);
     }
 
-    @GetMapping("/content/{memberName}/{ContentRecId}")
-    public ResponseEntity<?> getContentRec(@PathVariable("memberName") String memberName, @PathVariable("ContentRecId") Long contentRecId){
+    @GetMapping("/content/rec/{memberName}/{ContentRecId}")
+    public ResponseEntity<?> getContentRec(@PathVariable("memberName") String memberName, @PathVariable("ContentRecId") Long contentRecId) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
@@ -484,7 +478,7 @@ public class MyPageController {
         ContentRec contentRec = contentService.getContentRec(contentRecId);
         if (contentRec == null) {
             resultMap.put("success", false);
-            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 보관함ID입니다.",contentRecId));
+            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 보관함ID입니다.", contentRecId));
             httpStatus = HttpStatus.NOT_FOUND;
             return new ResponseEntity<>(resultMap, httpStatus);
         }
@@ -506,4 +500,85 @@ public class MyPageController {
         return new ResponseEntity<>(resultMap, httpStatus);
 
     }
+
+    @DeleteMapping("/content/rec/{memberName}/{ContentRecId}")
+    public ResponseEntity<?> deleteContentRec(@PathVariable("memberName") String memberName, @PathVariable("ContentRecId") Long contentRecId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+        resultMap.put("msg", "좋아요한 컨텐츠 목록 삭제");
+
+        Member member = memberService.checkName(memberName);
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", memberName));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(resultMap, httpStatus);
+
+        }
+
+        ContentRec contentRec = contentService.getContentRec(contentRecId);
+
+        if (contentRec == null) {
+
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%d]은/는 잘못된 컨텐츠 추천 결과 id 입니다.", contentRecId));
+            httpStatus = HttpStatus.NOT_FOUND;
+
+        } else if (contentRec.getMember().getName().equals(memberName)) {
+
+            myPageService.deleteContentRec(contentRec);
+
+            resultMap.put("success", true);
+            httpStatus = HttpStatus.OK;
+
+        } else {
+
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%d]은/는 [%s]유저의 컨텐츠 추천 결과가 아닙니다.", contentRecId, memberName));
+            httpStatus = HttpStatus.BAD_REQUEST;
+
+        }
+
+        resultMap.put("success", true);
+        resultMap.put("data", String.format("[%d]보관함을 삭제하였습니다.", contentRecId));
+        resultMap.put("count", 1);
+        httpStatus = HttpStatus.OK;
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
+    @DeleteMapping("/content/like/{memberName}/{ContentLikeId}")
+    public ResponseEntity<?> deleteContentLike(@PathVariable("memberName") String memberName, @PathVariable("ContentLikeId") Long contentLikeId) {
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+        resultMap.put("msg", "좋아요한 컨텐츠(문구/시나리오) 삭제");
+
+        Member member = memberService.checkName(memberName);
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", memberName));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(resultMap, httpStatus);
+        }
+
+        ContentLike contentLike = contentService.getContentLike(contentLikeId);
+        if (contentLike == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 컨텐츠 ID입니다.", contentLikeId));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(resultMap, httpStatus);
+        }
+
+        myPageService.deleteContentLike(contentLike);
+
+        resultMap.put("success", true);
+        resultMap.put("data", String.format("[%s] 컨텐츠를 삭제하였습니다.", contentLike.getTitle()));
+        resultMap.put("count", 1);
+        httpStatus = HttpStatus.OK;
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+    }
+
+
 }
