@@ -2,6 +2,7 @@ package com.ssafy.adrec.myPage.service;
 
 import com.ssafy.adrec.area.Sigungu;
 import com.ssafy.adrec.content.ContentKeyword;
+import com.ssafy.adrec.content.ContentLike;
 import com.ssafy.adrec.content.ContentRec;
 import com.ssafy.adrec.content.repository.ContentKeywordRepository;
 import com.ssafy.adrec.content.repository.ContentLikeRepository;
@@ -265,6 +266,54 @@ public class MyPageServiceImpl  implements MyPageService{
                     .build();
 
             list.add(contentRecRes);
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<ContentDetailRes> getContentDetailResList(Long id, Long contentRecId) {
+
+        List<ContentDetailRes> list = new ArrayList<>();
+
+        Optional<ContentRec> contentRecList = contentRecRepository.findByMember_IdAndId(id, contentRecId);
+        if (contentRecList.isPresent()) {
+
+            ContentRec contentRec = contentRecList.get();
+            List<ContentKeywordRes> keywordList = new ArrayList<>();
+            List<ContentKeyword> contentKeywordResList = contentKeywordRepository.findAllByContentRec_Id(contentRec.getId());
+            for (ContentKeyword contentKeyword: contentKeywordResList){
+                ContentKeywordRes contentKeywordRes = ContentKeywordRes.builder()
+                        .id(contentKeyword.getId())
+                        .keyword(contentKeyword.getKeyword())
+                        .build();
+
+                keywordList.add(contentKeywordRes);
+            }
+
+            List<ContentLikeRes> likeList = new ArrayList<>();
+            List<ContentLike> contentLikeResList = contentLikeRepository.findAllByContentRec_Id(contentRecId);
+            for (ContentLike contentLike : contentLikeResList){
+                ContentLikeRes contentLikeRes = ContentLikeRes.builder()
+                        .id(contentLike.getId())
+                        .title(contentLike.getTitle())
+                        .content(contentLike.getContent())
+                        .build();
+
+                likeList.add(contentLikeRes);
+            }
+
+            ContentDetailRes contentDetailRes = ContentDetailRes.builder()
+                    .id(contentRec.getId())
+                    .recDate(contentRec.getRecDate())
+                    .productSmallId(contentRec.getProductSmall().getSmall())
+                    .mediaTypeId(contentRec.getMediaType().getId())
+                    .keywordList(keywordList)
+                    .contentList(likeList)
+                    .build();
+
+            list.add(contentDetailRes);
+
         }
 
         return list;

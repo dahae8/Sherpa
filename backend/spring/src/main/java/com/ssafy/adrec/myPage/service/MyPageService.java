@@ -10,10 +10,7 @@ import com.ssafy.adrec.myPage.MediaRec;
 import com.ssafy.adrec.myPage.request.MediaRecReq;
 import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
-import com.ssafy.adrec.myPage.response.ContentRecRes;
-import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
-import com.ssafy.adrec.myPage.response.KeywordRecRes;
-import com.ssafy.adrec.myPage.response.MediaRecRes;
+import com.ssafy.adrec.myPage.response.*;
 import com.ssafy.adrec.product.ProductSmall;
 
 import java.util.List;
@@ -48,4 +45,6 @@ public interface MyPageService {
     List<String> getKeywordList(Member member, ProductSmall productSmall);
 
     List<ContentRecRes> getContentRecList(Long id);
+
+    List<ContentDetailRes> getContentDetailResList(Long id, Long contentRecId);
 }
