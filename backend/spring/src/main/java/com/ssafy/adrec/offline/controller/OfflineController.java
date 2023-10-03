@@ -1,6 +1,5 @@
 package com.ssafy.adrec.offline.controller;
 
-import com.ssafy.adrec.offline.outdoor.request.AreaReq;
 import com.ssafy.adrec.offline.outdoor.request.TargetReq;
 import com.ssafy.adrec.offline.outdoor.response.OutdoorRes;
 import com.ssafy.adrec.offline.outdoor.service.OutdoorService;
@@ -22,7 +21,7 @@ public class OfflineController {
     private final OutdoorService outdoorService;
 
     @PostMapping("/outdoor/area")
-    public ResponseEntity<?> getAreaList(@RequestBody AreaReq areaReq){
+    public ResponseEntity<?> getAreaList(@RequestBody TargetReq areaReq){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
         List<OutdoorRes> list = new ArrayList<>();
@@ -54,11 +53,25 @@ public class OfflineController {
             resultMap.put("success", false);
             resultMap.put("msg", "광주 지역만 정류장 정보가 제공됩니다.");
             httpStatus = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
         }
 
 
         List<OutdoorRes> list = new ArrayList<>();
         list = outdoorService.getBusList(targetReq);
+
+        resultMap.put("msg", "정류장 리스트 조회");
+
+        if (list.size() == 0) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "해당 데이터가 없습니다.");
+            httpStatus = HttpStatus.NOT_FOUND;
+        } else {
+            resultMap.put("success", true);
+            resultMap.put("data", list);
+            resultMap.put("count", list.size());
+            httpStatus = HttpStatus.OK;
+        }
 
 
         return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
