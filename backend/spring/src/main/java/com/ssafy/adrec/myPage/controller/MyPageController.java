@@ -1,16 +1,23 @@
 package com.ssafy.adrec.myPage.controller;
 
+import com.ssafy.adrec.area.Sigungu;
+import com.ssafy.adrec.area.service.AreaService;
 import com.ssafy.adrec.keyword.KeywordLike;
 import com.ssafy.adrec.keyword.KeywordRec;
+import com.ssafy.adrec.keyword.request.KeywordLikeReq;
 import com.ssafy.adrec.keyword.service.KeywordService;
 import com.ssafy.adrec.member.Member;
 import com.ssafy.adrec.member.controller.MemberController;
 import com.ssafy.adrec.member.service.MemberService;
+import com.ssafy.adrec.myPage.MediaRec;
+import com.ssafy.adrec.myPage.request.MediaRecReq;
 import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
 import com.ssafy.adrec.myPage.service.MyPageService;
+import com.ssafy.adrec.product.ProductSmall;
+import com.ssafy.adrec.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +40,8 @@ public class MyPageController {
     private final MyPageService myPageService;
     private final MemberService memberService;
     private final KeywordService keywordService;
+    private final ProductService productService;
+    private final AreaService areaService;
 
     @GetMapping("/keyword/{memberName}")
     public ResponseEntity<?> getKeywordRecList(@PathVariable("memberName") String memberName){
@@ -233,5 +242,63 @@ public class MyPageController {
 
         return new ResponseEntity<>(resultMap, httpStatus);
     }
+
+    @PostMapping("/save/mediaRec")
+    public ResponseEntity<?> saveMediaRec (@RequestBody MediaRecReq mediaRecReq) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        System.out.println(mediaRecReq.toString());
+
+        if ((mediaRecReq.getInOnOff() != 0 && mediaRecReq.getInOnOff() != 1)) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[inOnOff]의 값으로 [%d]은/는 잘못된 요청입니다. 온라인 여부는 0(온라인)또는 1(오프라인)로 전달해주세요.",mediaRecReq.getInOnOff()));
+            httpStatus = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
+
+        }
+
+        Member member = memberService.checkName(mediaRecReq.getMemberName());
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.",mediaRecReq.getMemberName()));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
+
+        }
+
+        ProductSmall productSmall =productService.getProductSmall(mediaRecReq.getProductSmallId());
+        if (productSmall == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%d]은/는 유요한 품목 코드가 아닙니다.",mediaRecReq.getProductSmallId()));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
+        }
+
+        Sigungu sigungu = areaService.getSigungu(mediaRecReq.getSigunguId());
+        if (productSmall == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%d]은/는 유요한 시군구 코드가 아닙니다.",mediaRecReq.getSigunguId()));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
+        }
+
+        MediaRec mediaRec = myPageService.saveMediaRec(mediaRecReq,productSmall, sigungu, member);
+
+        if (mediaRec == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "미디어추천 결과 저장 실패");
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+        } else {
+            resultMap.put("success", true);
+            resultMap.put("msg", "미디어추천 결과 저장 성공");
+            httpStatus = HttpStatus.OK;
+        }
+
+        
+        return new ResponseEntity<>(resultMap, httpStatus);
+
+    }
+
 
 }
