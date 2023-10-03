@@ -45,5 +45,7 @@ public interface MyPageService {
     MediaType getMediaType(Long id);
     MediaSub getMediaSub(Long id);
 
+    List<String> getKeywordList(Member member, ProductSmall productSmall);
+
     List<ContentRecRes> getContentRecList(Long id);
 }

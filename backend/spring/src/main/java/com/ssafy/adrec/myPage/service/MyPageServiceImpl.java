@@ -53,7 +53,6 @@ public class MyPageServiceImpl  implements MyPageService{
 
     @Override
     public List<KeywordRecRes> getKeywordRecList(Long memberId){
-        System.out.println(memberId);
         List<KeywordRecRes> list = new ArrayList<>();
 
         List<KeywordRec> keywordRecList = keywordRecRepository.findAllBymember_Id(memberId);
@@ -218,6 +217,26 @@ public class MyPageServiceImpl  implements MyPageService{
         return mediaSub.get();
 
     }
+
+    @Override
+    public List<String> getKeywordList(Member member, ProductSmall productSmall){
+        List<String> list = new ArrayList<>();
+
+        List<KeywordRec> keywordRecList = keywordRecRepository.findAllByMember_IdAndProductSmallId(member.getId(), productSmall.getId());
+
+
+        for (KeywordRec keywordRec : keywordRecList){
+            List<KeywordIdKeyword> keywordIdKeywordList = getKeywordIdKeywordList(keywordRec.getId());
+
+            for(KeywordIdKeyword keywordIdKeyword: keywordIdKeywordList){
+                list.add(keywordIdKeyword.getKeyword());
+            }
+
+        }
+
+        return list;
+    }
+
 
     @Override
     public List<ContentRecRes> getContentRecList(Long id) {
