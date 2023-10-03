@@ -73,31 +73,41 @@ export const ContentRecommendPage = () => {
 
   // 매체 리스트
   const [mediaList, setMediaList] = useState([]);
-
-  const [media, setMedia] = useState('');
-  const [keywords, setKeywords] = useState(['이탈리안', '재료']);
+  const [mediaText, setMediaText] = useState([]);
+  const [media, setMedia] = useState(null);
+  const [keywords, setKeywords] = useState(['에듀윌', '공무원시험', '합격']);
   const [category, setCategory] = useState({
-    major: '식생활',
-    middle: '일반음식점',
-    minor: '양식'
+    major: 'selectDataL',
+    middle: 'selectDataM',
+    minor: 'selectDataS'
   });
   const [phrase, setPhrase] = useState([]);
-  const [scenario, setScenario] = useState({
-    title: '',
-    content: ''
-  });
+  const [scenario, setScenario] = useState([
+    {
+      title: '',
+      content: ''
+    }
+  ]);
 
+  function getMediaText() {
+    const targetMediaData = mediaList.find((data) => data.id === media);
+    const mediaText = targetMediaData ? targetMediaData.area : null;
+    console.log('매체명', mediaText);
+    console.log(mediaList);
+    console.log(media);
+  }
   async function getRecommend(media, keywords, category, setPhrase, setScenario) {
     const API_KEY = process.env.REACT_APP_API_KEY;
     const openai = new OpenAI({
       apiKey: API_KEY,
       dangerouslyAllowBrowser: true
     });
+    getMediaText();
     try {
       // media가 TV, 라디오인 경우
       if (['TV', '라디오'].includes(media)) {
         console.log('시나리오 추천받는 중');
-        const scenarioMessage = `나는 ${media} 매체에서 광고하려고 합니다. 주요 키워드는 ${keywords.join(
+        const scenarioMessage = `나는 ${mediaText} 매체에서 광고하려고 합니다. 주요 키워드는 ${keywords.join(
           ', '
         )}입니다. 광고의 업종은 ${category.major} > ${category.middle} > ${
           category.minor
@@ -184,12 +194,14 @@ export const ContentRecommendPage = () => {
         if (mediumResponse.data.success && smallResponse.data.success) {
           console.log(mediumResponse.data);
           console.log(smallResponse.data);
-          const mediumMediaList = mediumResponse.data.data.map(item => {
-            return { id: item.id, medium: item.medium};
-          }).slice(0, -1); // 옥외 제거
+          const mediumMediaList = mediumResponse.data.data
+            .map((item) => {
+              return { id: item.id, medium: item.medium };
+            })
+            .slice(0, -1); // 옥외 제거
 
           // smallResponse에서 "type"을 "medium"으로 이름 변경
-          const smallMediaList = smallResponse.data.data.map(item => {
+          const smallMediaList = smallResponse.data.data.map((item) => {
             return { medium: item.type };
           });
 
@@ -198,7 +210,7 @@ export const ContentRecommendPage = () => {
 
           // 새로운 ID 부여
           const swappedMediaList = combinedMediaList.map((item, index) => {
-              return { id: index + 1, medium: item.medium };
+            return { id: index + 1, medium: item.medium };
           });
 
           // console.log('수정된 리스트', swappedMediaList);
@@ -286,7 +298,7 @@ export const ContentRecommendPage = () => {
           height="50px"
           textColor="white"
           fontSize="24px"
-          onClick={() => {}}
+          onClick={() => { getMediaText() }}
         >
           추가
         </Button>
@@ -315,12 +327,14 @@ export const ContentRecommendPage = () => {
         {phrase.map((p, index) => (
           <p key={index}>{p}</p>
         ))}
-
         <h2>시나리오</h2>
-        {/* {scenario.map((index) => (
-          <h3 key={index}>{title}</h3>
-          <p key={index}>{content}</p>
-        ))}; */}
+        {scenario.map((item, index) => (
+          <div key={index}>
+            <h3>{item.title}</h3>
+            <p>{item.content}</p>
+          </div>
+        ))}
+        ;
       </div>
     </Container>
   );
