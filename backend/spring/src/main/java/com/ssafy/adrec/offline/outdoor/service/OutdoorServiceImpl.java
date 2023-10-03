@@ -1,16 +1,26 @@
 package com.ssafy.adrec.offline.outdoor.service;
 
+import com.ssafy.adrec.area.Dong;
+import com.ssafy.adrec.area.Sigungu;
+import com.ssafy.adrec.area.repository.DongRepository;
+import com.ssafy.adrec.area.repository.SigunguRepository;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
+import com.ssafy.adrec.offline.outdoor.Bus;
+import com.ssafy.adrec.offline.outdoor.Residence;
 import com.ssafy.adrec.offline.outdoor.repository.BusRepository;
-import com.ssafy.adrec.offline.outdoor.request.BusReq;
-import com.ssafy.adrec.offline.outdoor.response.BusRes;
+import com.ssafy.adrec.offline.outdoor.repository.ResidenceRepository;
+import com.ssafy.adrec.offline.outdoor.request.AreaReq;
+import com.ssafy.adrec.offline.outdoor.request.TargetReq;
+import com.ssafy.adrec.offline.outdoor.response.OutdoorRes;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,13 +29,95 @@ public class OutdoorServiceImpl implements OutdoorService {
     public static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
 
     private final BusRepository busRepository;
+    private final SigunguRepository sigunguRepository;
+    private final ResidenceRepository residenceRepository;
+    private final DongRepository dongRepository;
 
     @Override
-    public List<BusRes> getBusList(BusReq busReq){
-        List<BusRes> list = new ArrayList<>();
+    public List<OutdoorRes> getAreaList(AreaReq areaReq){
+        List<OutdoorRes> list = new ArrayList<>();
+
+        int gender = areaReq.getGender();
+        int age = areaReq.getAge();
+        Long sigunguId = areaReq.getSigunguId();
+
+
+        List<Residence> residenceList = residenceRepository.findAllByAgeAndGenderAndDong_Sigungu_Id(age,gender,sigunguId);
+
+        int allTotar = residenceList.stream()
+                .mapToInt(Residence::getTotal)
+                .sum();
+
+        residenceList.sort(Comparator.comparingInt(Residence::getTotal).reversed());
+
+        List<Residence> toplist = new ArrayList<>();
+        int listSize = areaReq.getListSize();
+        if (residenceList.size() <= listSize) {
+            toplist = residenceList;
+        }
+        else{
+            toplist = residenceList.subList(0, Math.min(listSize, residenceList.size()));
+        }
+
+        for(Residence residence : toplist){
+            double d =(double)residence.getTotal()/allTotar;
+            double ratio = d*100;
+
+            OutdoorRes outdoorResDto = OutdoorRes.builder()
+                    .type(residence.getDong().getName())
+                    .total(residence.getTotal())
+                    .ratio(Math.round(ratio * 100.0) / 100.0)
+                    .build();
+            list.add(outdoorResDto);
+        }
 
         return list;
     }
+
+    @Override
+    public List<OutdoorRes> getBusList(TargetReq targetReq){
+        List<OutdoorRes> list = new ArrayList<>();
+
+        int gender = targetReq.getGender();
+        int age = targetReq.getAge();
+        Long sigunguId = targetReq.getSigunguId();
+
+        List<Residence> residenceList = residenceRepository.findAllByAgeAndGenderAndDong_Sigungu_Id(age,gender,sigunguId);
+
+        Optional<Residence> residenceWithMaxTotal = residenceList.stream()
+                .max(Comparator.comparingInt(Residence::getTotal));
+
+        Dong dong = new Dong();
+        if (residenceWithMaxTotal.isPresent()) {
+            Residence residence = residenceWithMaxTotal.get();
+            dong = residence.getDong();
+
+        } else {
+            return list;
+        }
+
+        List<Bus> busList = busRepository.findAllByDong(dong);
+
+
+        return list;
+    }
+
+    @Override
+    public boolean isGwangju(Long sigunguId){
+        boolean result = true;
+
+        Optional<Sigungu> sigungu = sigunguRepository.findById(sigunguId);
+
+        if (sigungu.isEmpty()){
+            return result;
+        }
+        if (sigungu.get().getSido().getName().equals("광주")){
+            result = false;
+        }
+        return result;
+    }
+
+
 
 
 }

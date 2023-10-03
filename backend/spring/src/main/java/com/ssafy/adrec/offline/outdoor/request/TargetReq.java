@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class BusReq {
+public class TargetReq {
     int gender;
     int age;
     Long sigunguId;
 
     @Builder
-    public BusReq(int gender, int age, Long sigunguId) {
+    public TargetReq(int gender, int age, Long sigunguId) {
         this.gender = gender;
         this.age = age;
         this.sigunguId = sigunguId;
