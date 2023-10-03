@@ -2,6 +2,7 @@ package com.ssafy.adrec.myPage.controller;
 
 import com.ssafy.adrec.area.Sigungu;
 import com.ssafy.adrec.area.service.AreaService;
+import com.ssafy.adrec.content.ContentLike;
 import com.ssafy.adrec.content.ContentRec;
 import com.ssafy.adrec.content.service.ContentService;
 import com.ssafy.adrec.keyword.KeywordLike;
@@ -17,10 +18,7 @@ import com.ssafy.adrec.myPage.MediaRec;
 import com.ssafy.adrec.myPage.request.MediaRecReq;
 import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
-import com.ssafy.adrec.myPage.response.ContentRecRes;
-import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
-import com.ssafy.adrec.myPage.response.KeywordRecRes;
-import com.ssafy.adrec.myPage.response.MediaRecRes;
+import com.ssafy.adrec.myPage.response.*;
 import com.ssafy.adrec.myPage.service.MyPageService;
 import com.ssafy.adrec.product.ProductSmall;
 import com.ssafy.adrec.product.service.ProductService;
@@ -468,4 +466,44 @@ public class MyPageController {
         return new ResponseEntity<>(resultMap, httpStatus);
     }
 
+    @GetMapping("/content/{memberName}/{ContentRecId}")
+    public ResponseEntity<?> getContentRec(@PathVariable("memberName") String memberName, @PathVariable("ContentRecId") Long contentRecId){
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+        resultMap.put("msg", "좋아요한 컨텐츠 문구/시나리오 목록 상세 보기 ");
+
+        Member member = memberService.checkName(memberName);
+        if (member == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%s]은/는 회원가입된 유저ID가 아닙니다.", memberName));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(resultMap, httpStatus);
+        }
+
+        ContentRec contentRec = contentService.getContentRec(contentRecId);
+        if (contentRec == null) {
+            resultMap.put("success", false);
+            resultMap.put("msg", String.format("[%d]은/는 유효하지 않는 보관함ID입니다.",contentRecId));
+            httpStatus = HttpStatus.NOT_FOUND;
+            return new ResponseEntity<>(resultMap, httpStatus);
+        }
+
+        List<ContentDetailRes> contentDetailResList = myPageService.getContentDetailResList(member.getId(), contentRecId);
+
+        if (contentDetailResList.size() == 0) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "해당 데이터가 없습니다.");
+            httpStatus = HttpStatus.NOT_FOUND;
+        } else {
+            resultMap.put("success", true);
+            resultMap.put("data", contentDetailResList);
+            resultMap.put("count", contentDetailResList.size());
+            httpStatus = HttpStatus.OK;
+        }
+
+
+        return new ResponseEntity<>(resultMap, httpStatus);
+
+    }
 }
