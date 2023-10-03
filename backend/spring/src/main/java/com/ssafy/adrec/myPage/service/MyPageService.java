@@ -1,6 +1,9 @@
 package com.ssafy.adrec.myPage.service;
 
 import com.ssafy.adrec.area.Sigungu;
+import com.ssafy.adrec.content.ContentKeyword;
+import com.ssafy.adrec.content.ContentLike;
+import com.ssafy.adrec.content.ContentRec;
 import com.ssafy.adrec.keyword.KeywordLike;
 import com.ssafy.adrec.keyword.KeywordRec;
 import com.ssafy.adrec.media.MediaSub;
@@ -47,4 +50,10 @@ public interface MyPageService {
     List<ContentRecRes> getContentRecList(Long id);
 
     List<ContentDetailRes> getContentDetailResList(Long id, Long contentRecId);
+
+    void deleteContentRec(ContentRec contentRec);
+
+    void deleteContentKeyword(ContentKeyword contentKeyword);
+
+    void deleteContentLike(ContentLike contentLike);
 }
