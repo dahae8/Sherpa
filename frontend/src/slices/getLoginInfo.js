@@ -6,6 +6,8 @@ import {
   setEmail,
   setName,
   setProductSmall,
+  setProductMedium,
+  setProductLarge
 } from './userSlice';
 
 import axios from 'axios';
@@ -45,27 +47,18 @@ export const userLogin = (user) => async (dispatch) => {
 
 
 
-// export const getUserInfo = (Email) => async (dispatch) => {
-//   try {
-//     const response = await axios.get(APPLICATION_SERVER_URL + `/api/info/${Email}`);
-//     dispatch(setNickname(response.data.userInfo.userNickname));
-//     dispatch(setTodayBium(response.data.userInfo.todayBium));
-//     dispatch(setTotalBium(response.data.userInfo.totalBium));
-//     dispatch(setRank(response.data.userInfo.userRank));
+export const getUserInfo = (name) => async (dispatch) => {
+  try {
+    const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
+    const response = await axios.get(APPLICATION_SERVER_URL + `/api/mypage/profile/${name}`);
+    dispatch(setEmail(response.data.data.email));
+    dispatch(setProductSmall(response.data.data.productSmall.id));
+    dispatch(setProductMedium(response.data.data.productSmall.productMedium.id));
+    dispatch(setProductLarge(response.data.data.productSmall.productMedium.productLarge.id));
 
-//     if (response.data.imgInfo !== "none") {
-//       dispatch(setProfileImage(response.data.imgInfo));
-
-//       const saveFolder = response.data.imgInfo.saveFolder;
-//       const imageType = response.data.imgInfo.imgType;
-//       const originalFile = response.data.imgInfo.originalFile;
-//       const saveFile = response.data.imgInfo.saveFile;
-
-//       await profileImageInfo(saveFolder, imageType, originalFile, saveFile, dispatch);
-//     }
-//     return ;
-//   } catch (error) {
-//     dispatch(setIsValidToken(false));
-//     return error;
-//   }
-// };
+    return ;
+  } catch (error) {
+    dispatch(setIsValidToken(false));
+    return error;
+  }
+};
