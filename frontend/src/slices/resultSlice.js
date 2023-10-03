@@ -10,6 +10,8 @@ const initialState = {
   selectedOnOffline: null,
   selectedBigRegion: null,
   selectedSmallRegion: null,
+  bigRegionName : null,
+  smallRegionName : null,
 };
 
 const persistConfig = {
@@ -23,6 +25,8 @@ const persistConfig = {
     "selectedOnOffline",
     "selectedBigRegion",
     "selectedSmallRegion",
+    "bigRegionName",
+    "smallRegionName",
   ],
 };
 
@@ -51,6 +55,12 @@ const resultSlice = createSlice({
     setSelectedSmallRegion(state, action) {
       state.selectedSmallRegion = action.payload;
     },
+    setbigRegionName(state, action) {
+      state.bigRegionName = action.payload;
+    },
+    setsmallRegionName(state, action) {
+      state.smallRegionName = action.payload;
+    },
   },
 });
 
@@ -62,6 +72,8 @@ export const {
   setSelectedOnOffline,
   setSelectedBigRegion,
   setSelectedSmallRegion,
+  setbigRegionName,
+  setsmallRegionName,
 } = resultSlice.actions;
 
 const persistedReducer = persistReducer(persistConfig, resultSlice.reducer);

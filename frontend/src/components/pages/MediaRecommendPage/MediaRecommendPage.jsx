@@ -9,14 +9,17 @@ import { TextField } from '@mui/material';
 import Button from '../../atoms/Button';
 import Select from '../../atoms/SelectOption';
 import {
+  setTarget,
   setMedia,
   setRecommendedMedia,
-  setSelectedBigRegion,
-  setSelectedOnOffline,
   setSelectedPrice,
+  setSelectedOnOffline,
+  setSelectedBigRegion,
   setSelectedSmallRegion,
-  setTarget
+  setbigRegionName,
+  setsmallRegionName
 } from '../../../slices/resultSlice';
+import {setProductSmallName} from '../../../slices/userSlice';
 
 const APPLICATION_SPRING_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
@@ -94,14 +97,27 @@ export const MediaRecommendPage = () => {
   const [gender, setGender] = useState(null);
   const [age, setAge] = useState(null);
 
+  function getNames() {
+    const targetSidoData = dataSido.find((data) => data.id === selectDataSido);
+    const sidoName = targetSidoData ? targetSidoData.area : null;
+    dispatch(setbigRegionName(sidoName));
+    console.log('시도명', sidoName);
+    const targetSigunguData = dataSigungu.find((data) => data.id === selectDataSigungu);
+    const sigunguName = targetSigunguData ? targetSigunguData.area : null;
+    dispatch(setsmallRegionName(sigunguName));
+    console.log('시군구명', sigunguName);
+    const targetProductData = dataS.find((data) => data.id === selectDataS);
+    const productName = targetProductData ? targetProductData.product : null;
+    dispatch(setProductSmallName(productName));
+    console.log('품목명', productName);
+
+  }
   function getResult() {
+    getNames();
     dispatch(setSelectedPrice(selectedBudget));
     dispatch(setSelectedOnOffline(selectedButton));
     dispatch(setSelectedBigRegion(selectDataSido));
     dispatch(setSelectedSmallRegion(selectDataSigungu));
-    console.log(gender);
-    console.log(age);
-    console.log(selectedButton);
 
     if (gender !== null && age !== null && selectedButton === 'online') {
       navigate('/mediaResult/online');
@@ -138,7 +154,6 @@ export const MediaRecommendPage = () => {
         }
       };
       getOffline();
-      console.log('여기까지 와요 오프라인');
     }
   }
 
