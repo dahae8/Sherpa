@@ -281,7 +281,7 @@ export const TvRecommendation = () => {
           productSmallId: item,
           budget: selectedPrice,
           inOnOff: onOff,
-          sigunguId: 113,
+          sigunguId: sigunguId,
           mediaTypeId: 3,
         }
       );
