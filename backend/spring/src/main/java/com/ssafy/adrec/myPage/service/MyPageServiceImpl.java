@@ -259,7 +259,7 @@ public class MyPageServiceImpl  implements MyPageService{
             ContentRecRes contentRecRes = ContentRecRes.builder()
                     .id(contentRec.getId())
                     .recDate(contentRec.getRecDate())
-                    .productSmallId(contentRec.getProductSmall().getId())
+                    .productSmallId(contentRec.getProductSmall().getSmall())
                     .mediaTypeId(contentRec.getMediaType().getId())
                     .keywordList(keywordList)
                     .build();
