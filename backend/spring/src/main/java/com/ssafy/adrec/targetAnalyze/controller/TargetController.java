@@ -56,9 +56,9 @@ public class TargetController {
             TargetGenderGetRes maxGender = sortedGenderList.get(0);
 
             if ( maxGender.getGender().equals("0") ){
-                recommendMap.put("gender", true); // 여성
+                recommendMap.put("gender", false); // 여성
             }else{
-                recommendMap.put("gender", false); // 남성
+                recommendMap.put("gender", true); // 남성
             }
 
         }
