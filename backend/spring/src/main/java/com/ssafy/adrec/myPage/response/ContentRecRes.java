@@ -13,7 +13,7 @@ public class ContentRecRes {
 
     Long id;
     LocalDateTime recDate;
-    Long productSmallId;
+    String productSmallId;
     Long mediaTypeId;
 
     List<ContentKeywordRes> keywordList;
