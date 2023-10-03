@@ -72,7 +72,7 @@ export const RadioRecommendation = () => {
   }, [mediaList]);
   const recommendedMedia = useSelector((state) => state.result.media.recommend);
   let target = "성별";
-  if (gender === 1) {
+  if (gender === false) {
     target = "남성";
   } else {
     target = "여성";
