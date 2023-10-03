@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import RecommendTarget from "../../organisms/RecommendTarget";
 import OfflineMediaRecommendation from "../../organisms/OfflineMediaRecommendation";
@@ -29,16 +30,23 @@ const APPLICATION_SPRING_SERVER_URL =
 export const OutdoorRecommendation = () => {
   const navigate = useNavigate();
   const { kakao } = window;
-  const ages = [80, 60, 45, 42, 32, 29]; // state
-  // const ages = useSelector((state) => state.result.target);
-  const male = 75; // state
-  // const male = useSelector((state) => state.result.target);
-  const female = 25; // state
-  // const female = useSelector((state) => state.result.target);
-  const gender = 1; // state
-  // const gender = useSelector((state) => state.result.target);
-  const age = 30; // state
-  // const age = useSelector((state) => state.result.target);
+  const ageDatas = useSelector((state) => state.result.target.age);
+  const [ages, setAges] = useState([]);
+  useLayoutEffect(() => {
+    const newAges = [];
+    for (let i = 0; i < ageDatas.length; i++) {
+      if (ageDatas[i]) {
+        newAges.push(ageDatas[i].value);
+      } else {
+        newAges.push(0);
+      }
+    }
+    setAges(newAges);
+  }, [ageDatas]);
+  const male = useSelector((state) => state.result.target.gender[0].value);
+  const female = useSelector((state) => state.result.target.gender[1].value);
+  const gender = useSelector((state) => state.result.target.recommend.gender);
+  const age = useSelector((state) => state.result.target.recommend.age);
   const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
   // const mediaLabels = useSelector((state) => state.result.media);
   const mainDatas = [23, 19, 13, 5]; // state
@@ -189,14 +197,14 @@ export const OutdoorRecommendation = () => {
         const prices = [];
         for (let i = 0; i < response.data.data.budgetList.length; i++) {
           if (response.data.data.budgetList[i]) {
-            prices.push(response.data.data.budgetList[i].value);
+            prices.push(response.data.data.budgetList[i].value * 0.0001);
           } else {
             prices.push(0);
           }
           setPrices(prices);
         }
       } catch (error) {
-        console.error("추천 매체 가져오기 오류:", error);
+        console.error("추천 가격 가져오기 오류:", error);
       }
     };
     const linkproducer = async () => {
