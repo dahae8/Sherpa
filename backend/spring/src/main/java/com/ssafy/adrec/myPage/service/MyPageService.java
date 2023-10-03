@@ -1,12 +1,20 @@
 package com.ssafy.adrec.myPage.service;
 
+import com.ssafy.adrec.area.Sigungu;
 import com.ssafy.adrec.keyword.KeywordLike;
 import com.ssafy.adrec.keyword.KeywordRec;
+import com.ssafy.adrec.media.MediaSub;
+import com.ssafy.adrec.media.MediaType;
 import com.ssafy.adrec.member.Member;
+import com.ssafy.adrec.myPage.MediaRec;
+import com.ssafy.adrec.myPage.request.MediaRecReq;
 import com.ssafy.adrec.myPage.request.MyPageModifyPutReq;
 import com.ssafy.adrec.myPage.request.MyProductModifyPutReq;
+import com.ssafy.adrec.myPage.response.ContentRecRes;
 import com.ssafy.adrec.myPage.response.KeywordIdKeyword;
 import com.ssafy.adrec.myPage.response.KeywordRecRes;
+import com.ssafy.adrec.myPage.response.MediaRecRes;
+import com.ssafy.adrec.product.ProductSmall;
 
 import java.util.List;
 
@@ -25,5 +33,19 @@ public interface MyPageService {
 
     // 품목 정보 수정
     Member modifyProduct(MyProductModifyPutReq myProductModifyPutReq);
-    
+
+    MediaRec saveMediaRec(MediaRecReq mediaRecReq, ProductSmall productSmall, Sigungu sigungu, Member member, MediaType mediaType);
+
+    List<MediaRecRes> getMediaRecList(Long id);
+
+    MediaRec getMediaRec(Long id);
+
+    void deleteMediaRec(MediaRec mediaRec);
+
+    MediaType getMediaType(Long id);
+    MediaSub getMediaSub(Long id);
+
+    List<String> getKeywordList(Member member, ProductSmall productSmall);
+
+    List<ContentRecRes> getContentRecList(Long id);
 }

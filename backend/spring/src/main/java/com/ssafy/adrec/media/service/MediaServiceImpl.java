@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -75,4 +76,21 @@ public class MediaServiceImpl implements MediaService{
 
         return list;
     }
+
+    @Override
+    public MediaType getMediaType(Long id){
+
+        Optional<MediaType> mediaType = mediaTypeRepository.findById(id);
+        return mediaType.orElse(null);
+
+    }
+
+    @Override
+    public MediaSub getMediaSub(Long id){
+
+        Optional<MediaSub> mediaSub = mediaSubRepository.findById(id);
+        return mediaSub.orElse(null);
+
+    }
+
 }
