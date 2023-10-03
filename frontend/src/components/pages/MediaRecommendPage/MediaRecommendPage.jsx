@@ -107,13 +107,6 @@ export const MediaRecommendPage = () => {
       navigate('/mediaResult/online');
     } else if (gender !== null && age !== null && selectedButton === 'offline') {
       const getOffline = async () => {
-        // console.log('getoffline 데이터 타입');
-        // console.log(typeof selectDataS);
-        // console.log(typeof selectDataSigungu);
-        // console.log(typeof gender);
-        // console.log(typeof age);
-        // console.log(typeof selectedBudget);
-
         try {
           const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`, {
             productSmallId: selectDataS,
@@ -133,11 +126,11 @@ export const MediaRecommendPage = () => {
             if (recommendMedia === 'TV') {
               navigate('/mediaResult/tv');
             } else if (recommendMedia === '라디오') {
-              navigate('//mediaResult/radio');
+              navigate('/mediaResult/radio');
             } else if (recommendMedia === '인쇄') {
-              navigate('//mediaResult/newspaper');
+              navigate('/mediaResult/newspaper');
             } else if (recommendMedia === '버스' || recommendMedia === '현수막' || recommendMedia === '지하철') {
-              navigate('//mediaResult/outdoor');
+              navigate('/mediaResult/outdoor');
             }
           }
         } catch (error) {
