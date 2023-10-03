@@ -42,8 +42,8 @@ export const NewsPaperRecommendation = () => {
     }
     setAges(newAges);
   }, [ageDatas]);
-  const male = useSelector((state) => state.result.target.gender[0].value);
-  const female = useSelector((state) => state.result.target.gender[1].value);
+  const male = useSelector((state) => state.result.target.gender[1].value);
+  const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
   const mediaLabels = ["TV 광고", "라디오 광고", "신문 광고", "옥외광고"]; // state
@@ -238,6 +238,25 @@ export const NewsPaperRecommendation = () => {
     return () => clearTimeout(delayProducerRender);
   }, []);
 
+  const save = async () => {
+    try {
+      const response = await axios.post(
+        `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
+        {
+          memberName: "ssafy3",
+          productSmallId: 4,
+          budget: 100000,
+          inOnOff: 0,
+          sigunguId: 113,
+          mediaTypeId: 6,
+        }
+      );
+      console.log("저장 성공", response);
+    } catch (error) {
+      console.log("저장 오류", error);
+    }
+  };
+
   return (
     <Container>
       <TargetBox>
@@ -295,6 +314,7 @@ export const NewsPaperRecommendation = () => {
             textColor="#3C486B"
             fontSize="24px"
             onClick={() => {
+              save();
               navigate("/mypage");
             }}
           >
