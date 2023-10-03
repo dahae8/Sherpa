@@ -92,21 +92,15 @@ function MakeNavBar() {
         </LeftBox>
       </Link>
       <MiddleBox>
-        {isLogin && (
-          <ButtonFrame>
-            <MediaItem to="/mediaRecommend">매체 추천</MediaItem>
-          </ButtonFrame>
-        )}
-        {isLogin && (
-          <ButtonFrame>
-            <KeywordItem to="/keywordRecommend">키워드 추천</KeywordItem>
-          </ButtonFrame>
-        )}
-        {isLogin && (
-          <ButtonFrame>
-            <ContentItem to="/contentRecommend">컨텐츠 추천</ContentItem>
-          </ButtonFrame>
-        )}
+        <ButtonFrame>
+          <MediaItem to="/mediaRecommend">매체 추천</MediaItem>
+        </ButtonFrame>
+        <ButtonFrame>
+          <KeywordItem to="/keywordRecommend">키워드 추천</KeywordItem>
+        </ButtonFrame>
+        <ButtonFrame>
+          <ContentItem to="/contentRecommend">컨텐츠 추천</ContentItem>
+        </ButtonFrame>
       </MiddleBox>
       <RightBox>
         {isLogin ? (
