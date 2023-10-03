@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { userLogin } from '../../slices/getLoginInfo';
+import { userLogin, getUserInfo } from '../../slices/getLoginInfo';
 
 function SignIn() {
   const [name, setName] = useState('');
@@ -19,6 +19,7 @@ function SignIn() {
     console.log(1)
     dispatch(userLogin(user))
       .then(() => {
+        dispatch(getUserInfo(name));
         navigate('/');
       })
       .catch((error) => {});
