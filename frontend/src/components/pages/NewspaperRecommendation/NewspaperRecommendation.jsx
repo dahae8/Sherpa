@@ -29,6 +29,7 @@ const APPLICATION_SPRING_SERVER_URL =
 
 export const NewsPaperRecommendation = () => {
   const navigate = useNavigate();
+  const name = useSelector((state) => state.user.name);
   const ageDatas = useSelector((state) => state.result.target.age);
   const [ages, setAges] = useState([]);
   useLayoutEffect(() => {
@@ -243,7 +244,7 @@ export const NewsPaperRecommendation = () => {
       const response = await axios.post(
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
         {
-          memberName: "ssafy3",
+          memberName: name,
           productSmallId: 4,
           budget: 100000,
           inOnOff: 0,

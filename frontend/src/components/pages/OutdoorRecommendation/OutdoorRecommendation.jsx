@@ -29,6 +29,7 @@ const APPLICATION_SPRING_SERVER_URL =
 
 export const OutdoorRecommendation = () => {
   const navigate = useNavigate();
+  const name = useSelector((state) => state.user.name);
   const { kakao } = window;
   const respones = useSelector((state) => state.result.target);
   console.log(respones);
@@ -322,7 +323,7 @@ export const OutdoorRecommendation = () => {
       const response = await axios.post(
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
         {
-          memberName: "ssafy3",
+          memberName: name,
           productSmallId: 4,
           budget: 100000,
           inOnOff: 0,
