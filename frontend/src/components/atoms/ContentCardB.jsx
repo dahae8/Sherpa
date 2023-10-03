@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Chip from '@mui/material/Chip';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, Typography } from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
 import Button from './Button';
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -86,27 +88,90 @@ const style = {
 };
 
 
-function ContentCardB() {
+function ContentCardB({date, label, key2, keywordList, mediaTypeId}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const name = useSelector((state) => state.user.name);
+  const [scnList, setScnList] = useState([]);
+
+  const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
+
+  useEffect(() => {
+    const getScn = async () => {
+      try {
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/mypage/content/rec/${name}/${key2}`);
+        // if (response.data.success) {
+        //   console.log(response.data);
+        // // }
+        // console.log("데이터",response.data.data[0].contentList);
+        // console.log("데이터 행렬", response.data.data);
+        setScnList(response.data.data[0].contentList);
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
+    getScn();
+  }, [scnList]);
+
+  const deleteScn = (id) => async (e) => {
+    e.preventDefault();
+    // console.log(id)
+    const url = APPLICATION_SERVER_URL +"/api/mypage/content/like/" + name +  "/" + id;
+    try {
+      const response = await axios.delete(url);
+      // console.log("확인 결과 : ", response.data.success);
+      // setidConfirm(response.data.success);
+      // setIdHelper("사용가능한 닉네임 입니다");
+      // console.log(idConfirm);
+      // return "성공";
+      console.log("삭제 성공", response)
+      alert("삭제 성공하였습니다.")
+    } catch (error) {
+      console.error("에러메시지 :", error);
+      return "실패";
+    }
+  }
+
+  const deleteSCard = async (e) => {
+    e.preventDefault();
+    // console.log(key2)
+    const url = APPLICATION_SERVER_URL +"/api/mypage/content/rec/" + name +  "/" + key2;
+    try {
+      const response = await axios.delete(url);
+      // console.log("확인 결과 : ", response.data.success);
+      // setidConfirm(response.data.success);
+      // setIdHelper("사용가능한 닉네임 입니다");
+      // console.log(idConfirm);
+      // return "성공";
+      console.log("삭제 성공", response)
+      alert("삭제 성공하였습니다.")
+    } catch (error) {
+      console.error("에러메시지 :", error);
+      return "실패";
+    }
+  }
 
   return (
     <Container>
       <IconContainer>
       <DateBox>
-        2023년 9월 10일
+        {date.substring(0,4) + "년 " + date.substring(5,7) + "월 " +date.substring(8,10) + "일"}
       </DateBox>
-      <ClearIcon></ClearIcon>
+      <ClearIcon onClick={deleteSCard}></ClearIcon>
       </IconContainer>
       <TitleBox>
-        TV광고
+        {mediaTypeId === 3 ? "TV 광고" : "라디오 광고"}
         <br></br>
         시나리오 추천
       </TitleBox>
       <ChipBox>
-      <Chip label="#선크림" />
-      <Chip label="#햇빛" color="primary" />
+      <Chip label={`#${label}`} />
+      {keywordList.map(function(a,i){
+        return <Chip label={`#${a.keyword}`} color="primary" />
+      })}
+      {/* <Chip label="#햇빛" color="primary" /> */}
       </ChipBox>
       <UrlBox>
         <UrlItem onClick={handleOpen}>>> 시나리오 보기</UrlItem>
@@ -119,36 +184,38 @@ function ContentCardB() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} overflow="auto">
-          <Chip label="#선크림" />
-          <Chip label="#햇빛" color="primary" />
+        <Chip label={`#${label}`} />
+        {keywordList.map(function(a,i){
+          return <Chip label={`#${a.keyword}`} color="primary" />
+        })}
           <Typography fontSize={40} align="left">
             시나리오 추천
           </Typography>
           <FormBox>
-          <PhraseBox>
-            <Phrase>
-            <Typography fontSize={32}>제목: "햇빛 아래 빛나는 여정, 선크림과 함께"</Typography>
-            <br></br>
-            <Typography fontSize={24}>장면 1: 해변 풍경
-            화면에 아름다운 해변 풍경이 나타납니다. 
-            파도 소리와 해변가에서 즐거운 사람들의 웃음소리가 들립니다.
-            해변의 모래는 금빛으로 빛나고 있습니다.
-            해변에서 행복하게 웃고 노는 가족과 친구들이 화면에 나타납니다.</Typography>
-            <br></br>
-            <Typography fontSize={24}>나레이션 (음성 오버):      
-             "해변에서의 빛나는 순간을 즐기세요. 
-              하지만 햇빛으로부터 당신의 피부를 지키세요."</Typography>
-            </Phrase>
-          </PhraseBox>
+            {scnList.map(function(a, i){
+              return (
+                <>
+                <PhraseBox>
+                  <Phrase>
+                    <Typography fontSize={32}>{a.title}</Typography>
+                    <br></br>
+                    <Typography fontSize={24}>{a.content}</Typography>
+                  </Phrase>
+                </PhraseBox>
+                
             <Button TextColor="white"
               width="70px"
               height="45px"
               border="1px solid #3C486B"
               backgroundColor="#3C486B"
               fontSize="16px"
+              onClick = {deleteScn(a.id)}
             >
               삭제
             </Button>
+            </> 
+            )
+            })}
           </FormBox>
         </Box>
       </Modal>

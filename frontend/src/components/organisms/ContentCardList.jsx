@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import MediaCard from "../atoms/MediaCard";
+import ContentCard from "../atoms/ContentCardA";
+import ContentCardB from "../atoms/ContentCardB";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -14,45 +15,48 @@ const CardGridBox = styled.div`
   margin: 3px;
 `;
 
-function MediaCardList() {
+function ContentCardList() {
 
   const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
 
   const name = useSelector((state) => state.user.name);
-  const [medList, setMedList] = useState([]);
+  const [contList, setContList] = useState([]);  
 
   useEffect(() => {
-    const getMedia = async () => {
+    const getCont = async () => {
       try {
-        const response = await axios.get(APPLICATION_SERVER_URL + `/api/mypage/mediaRec/${name}`);
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/mypage/content/${name}`);
         // if (response.data.success) {
         //   console.log(response.data);
         // // }
         // console.log("데이터",response.data.data);
         // console.log("데이터 행렬", response.data.data);
-        setMedList(response.data.data);
+        setContList(response.data.data);
       } catch (error) {
         console.log('Error!!', error);
       }
     };
-    getMedia();
-  }, [medList]);
+    getCont();
+  }, [contList]);
 
   return (
     <PageContainer>
       <div className="App">
         <CardGridBox>
-        {
-            medList.map(function(a,i){
-              return (<MediaCard
-                Date={a.recDate} key={i} key2={a.id} label={a.productSmall} isOnOff = {a.isOnOff} budget ={a.budget} sigungu = {a.sigungu}
-              ></MediaCard>)
+          {
+            contList.map(function(a, i){
+              if (a.mediaTypeId === 3 || a.mediaTypeId === 4)
+                return <ContentCardB 
+                    date={a.recDate} key={a.id} key2={a.id} label={a.productSmallId} keywordList = {a.keywordList} mediaTypeId={a.mediaTypeId}></ContentCardB>
+              else return <ContentCard date={a.recDate} key={a.id} key2={a.id} label={a.productSmallId} keywordList = {a.keywordList} mediaTypeId={a.mediaTypeId}></ContentCard>      
             })
           }
+          {/* <ContentCard></ContentCard>
+          <ContentCardB></ContentCardB> */}
         </CardGridBox>
       </div>
     </PageContainer>
   );
 }
 
-export default MediaCardList;
+export default ContentCardList;
