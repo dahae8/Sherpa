@@ -523,7 +523,7 @@ def offline(total_item: Total):
 
     total_sum = sum(item['value'] for item in filtered_list)
     for item in filtered_list:
-        item['value'] = (item['value'] / total_sum) * 100
+        item['value'] = round((item['value'] / total_sum) * 100)
 
     # 응답 데이터 생성
     response_data = Response(
