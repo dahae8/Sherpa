@@ -35,8 +35,7 @@ public class OutdoorServiceImpl implements OutdoorService {
     @Override
     public List<OutdoorRes> getAreaList(TargetReq targetReq){
         List<OutdoorRes> list = new ArrayList<>();
-
-        int gender = targetReq.getGender();
+        boolean gender = (targetReq.getGender()== 1) ? true : false;
         int age = targetReq.getAge();
         Long sigunguId = targetReq.getSigunguId();
 
@@ -77,7 +76,7 @@ public class OutdoorServiceImpl implements OutdoorService {
     public List<OutdoorRes> getBusList(TargetReq targetReq){
         List<OutdoorRes> list = new ArrayList<>();
 
-        int gender = targetReq.getGender();
+        boolean gender = (targetReq.getGender()== 1) ? true : false;
         int age = targetReq.getAge();
         Long sigunguId = targetReq.getSigunguId();
 

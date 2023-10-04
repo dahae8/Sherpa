@@ -29,7 +29,7 @@ public class MediaRec {
     private int budget;
 
     @Column(nullable = false, name = "is_on_off")
-    private int isOnOff;
+    private boolean isOnOff;
 
     @Column(nullable = false, name = "red_Date")
     private LocalDateTime recDate;
@@ -49,10 +49,6 @@ public class MediaRec {
     @ManyToOne
     @JoinColumn(name = "mediaType_id", referencedColumnName = "id")
     private MediaType mediaType;
-
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "mediaSub_id", referencedColumnName = "id")
-    private MediaSub mediaSub;
 
 
 }
