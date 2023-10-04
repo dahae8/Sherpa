@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ResidenceRepository extends JpaRepository<Residence, Long> {
 
-    List<Residence> findAllByAgeAndGenderAndDong_Sigungu_Id(int age, int gender, Long sigunguId);
+    List<Residence> findAllByAgeAndGenderAndDong_Sigungu_Id(int age, boolean gender, Long sigunguId);
 }
