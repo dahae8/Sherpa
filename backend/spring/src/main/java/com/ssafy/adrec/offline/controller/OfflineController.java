@@ -86,6 +86,8 @@ public class OfflineController {
         List<SubwayRes> list;
         list = outdoorService.getSubwayList();
 
+        resultMap.put("msg", "지하철역 Top5 조회");
+
         if (list.size() == 0) {
             resultMap.put("success", false);
             resultMap.put("msg", "해당 데이터가 없습니다.");
