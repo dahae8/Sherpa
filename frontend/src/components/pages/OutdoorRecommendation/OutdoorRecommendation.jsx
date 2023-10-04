@@ -136,10 +136,10 @@ export const OutdoorRecommendation = () => {
     console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
-        console.log("item", item);
-        console.log("sigunguId", sigunguId);
-        console.log("gender", gender);
-        console.log("age", age);
+        console.log("서브 추천 api item", item);
+        console.log("서브 추천 api sigunguId", sigunguId);
+        console.log("서브 추천 api gender", gender);
+        console.log("서브 추천 api age", age);
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
