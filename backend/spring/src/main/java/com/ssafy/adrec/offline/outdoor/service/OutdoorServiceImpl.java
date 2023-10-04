@@ -7,10 +7,13 @@ import com.ssafy.adrec.area.repository.SigunguRepository;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
 import com.ssafy.adrec.offline.outdoor.Bus;
 import com.ssafy.adrec.offline.outdoor.Residence;
+import com.ssafy.adrec.offline.outdoor.Subway;
 import com.ssafy.adrec.offline.outdoor.repository.BusRepository;
 import com.ssafy.adrec.offline.outdoor.repository.ResidenceRepository;
+import com.ssafy.adrec.offline.outdoor.repository.SubwayRepository;
 import com.ssafy.adrec.offline.outdoor.request.TargetReq;
 import com.ssafy.adrec.offline.outdoor.response.OutdoorRes;
+import com.ssafy.adrec.offline.outdoor.response.SubwayRes;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,7 @@ public class OutdoorServiceImpl implements OutdoorService {
     private final SigunguRepository sigunguRepository;
     private final ResidenceRepository residenceRepository;
     private final DongRepository dongRepository;
+    private final SubwayRepository subwayRepository;
 
     @Override
     public List<OutdoorRes> getAreaList(TargetReq targetReq){
@@ -125,6 +129,33 @@ public class OutdoorServiceImpl implements OutdoorService {
     }
 
     @Override
+    public List<SubwayRes> getSubwayList() {
+        Optional<List<Subway>> optionalSubwayAllList = subwayRepository.findAllBy();
+
+        int total = 0;
+        if (optionalSubwayAllList.isPresent()) {
+            List<Subway> list = optionalSubwayAllList.get();
+
+            for(Subway subway : list) {
+                total += subway.getTotal();
+            }
+        }
+
+        List<SubwayRes> subwayResList = new ArrayList<>();
+        Optional<List<Subway>> optionalSubwayList = subwayRepository.findTop5ByOrderByTotalDesc();
+        if (optionalSubwayList.isPresent()) {
+            List<Subway> list = optionalSubwayList.get();
+            for (int i = 0; i < list.size(); i++) {
+                Subway subway = list.get(i);
+                SubwayRes subwayRes = new SubwayRes(i + 1, subway.getName(), Math.round((long) subway.getTotal() * 100 / total));
+                subwayResList.add(subwayRes);
+            }
+        }
+
+        return subwayResList;
+    }
+
+    @Override
     public boolean isGwangju(Long sigunguId){
         boolean result = true;
 
@@ -138,8 +169,5 @@ public class OutdoorServiceImpl implements OutdoorService {
         }
         return result;
     }
-
-
-
 
 }
