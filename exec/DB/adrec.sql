@@ -32,7 +32,7 @@ CREATE TABLE `banner` (
 	`id` BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
 	`name`	VARCHAR(80)	NOT NULL,
 	`address`	VARCHAR(255)	NOT NULL,
-	`sigungu_id`	BIGINT	NOT NULL
+	`dong_id`	BIGINT	NOT NULL
 );
 
 DROP TABLE IF EXISTS `dong`;
@@ -476,10 +476,10 @@ REFERENCES `dong` (
 	`id`
 );
 
-ALTER TABLE `banner` ADD CONSTRAINT `FK_sigungu_TO_banner_1` FOREIGN KEY (
-	`sigungu_id`
+ALTER TABLE `banner` ADD CONSTRAINT `FK_dong_TO_banner_1` FOREIGN KEY (
+	`dong_id`
 )
-REFERENCES `sigungu` (
+REFERENCES `dong` (
 	`id`
 );
 

@@ -5,13 +5,16 @@ import com.ssafy.adrec.area.Sigungu;
 import com.ssafy.adrec.area.repository.DongRepository;
 import com.ssafy.adrec.area.repository.SigunguRepository;
 import com.ssafy.adrec.member.service.MemberServiceImpl;
+import com.ssafy.adrec.offline.outdoor.Banner;
 import com.ssafy.adrec.offline.outdoor.Bus;
 import com.ssafy.adrec.offline.outdoor.Residence;
 import com.ssafy.adrec.offline.outdoor.Subway;
+import com.ssafy.adrec.offline.outdoor.repository.BannerRepository;
 import com.ssafy.adrec.offline.outdoor.repository.BusRepository;
 import com.ssafy.adrec.offline.outdoor.repository.ResidenceRepository;
 import com.ssafy.adrec.offline.outdoor.repository.SubwayRepository;
 import com.ssafy.adrec.offline.outdoor.request.TargetReq;
+import com.ssafy.adrec.offline.outdoor.response.BannerRes;
 import com.ssafy.adrec.offline.outdoor.response.OutdoorRes;
 import com.ssafy.adrec.offline.outdoor.response.SubwayRes;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +38,7 @@ public class OutdoorServiceImpl implements OutdoorService {
     private final ResidenceRepository residenceRepository;
     private final DongRepository dongRepository;
     private final SubwayRepository subwayRepository;
+    private final BannerRepository bannerRepository;
 
     @Override
     public List<OutdoorRes> getAreaList(TargetReq targetReq){
@@ -153,6 +157,35 @@ public class OutdoorServiceImpl implements OutdoorService {
         }
 
         return subwayResList;
+    }
+
+    @Override
+    public List<BannerRes> getBannerList(TargetReq targetReq) {
+        boolean gender = (targetReq.getGender()== 1) ? true : false;
+        int age = targetReq.getAge();
+        Long sigunguId = targetReq.getSigunguId();
+
+        List<Residence> residenceList = residenceRepository.findAllByAgeAndGenderAndDong_Sigungu_Id(age,gender,sigunguId);
+        Optional<Residence> residenceWithMaxTotal = residenceList.stream()
+                .max(Comparator.comparingInt(Residence::getTotal));
+
+        Dong dong = residenceWithMaxTotal.get().getDong();
+        logger.debug("동 이름={}", residenceWithMaxTotal.get().getDong().getName());
+
+        List<Banner> bannerList = bannerRepository.findAllByDong(dong);
+        List<BannerRes> bannerResList = new ArrayList<>();
+        for (int i = 0; i < bannerList.size(); i++) {
+            Banner banner = bannerList.get(i);
+            BannerRes bannerRes = BannerRes.builder()
+                    .no(i + 1)
+                    .address(banner.getAddress())
+                    .name(banner.getName())
+                    .build();
+
+            bannerResList.add(bannerRes);
+        }
+
+        return bannerResList;
     }
 
     @Override
