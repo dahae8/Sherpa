@@ -377,6 +377,7 @@ public class MyPageController {
                     .sidoId(sigungu.getSido().getId())
                     .sido(sigungu.getSido().getName())
                     .productSmall(mediaRec.getProductSmall().getSmall())
+                    .productSmallId(mediaRec.getProductSmall().getId())
                     .mediaTypeId(mediaRec.getMediaType().getId())
                     .build();
 
