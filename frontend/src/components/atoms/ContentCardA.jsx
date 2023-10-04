@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Chip from '@mui/material/Chip';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Box, Modal, Typography } from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -87,29 +89,91 @@ const style = {
   p: 4,
   padding: 7,
 };
+ 
 
-
-function ContentCard() {
+function ContentCard({date, label, key2, keywordList, mediaTypeId}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const name = useSelector((state) => state.user.name);
+  const [senList, setSenList] = useState([]);
+
+  const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
+
+  useEffect(() => {
+    const getSen = async () => {
+      try {
+        const response = await axios.get(APPLICATION_SERVER_URL + `/api/mypage/content/rec/${name}/${key2}`);
+        // if (response.data.success) {
+        //   console.log(response.data);
+        // // }
+        // console.log("데이터",response.data.data[0].contentList);
+        // console.log("데이터 행렬", response.data.data);
+        setSenList(response.data.data[0].contentList);
+      } catch (error) {
+        console.log('Error!!', error);
+      }
+    };
+    getSen();
+  }, [senList]);
+
+  const deleteSen = (id) => async (e) => {
+    e.preventDefault();
+    // console.log(id)
+    const url = APPLICATION_SERVER_URL +"/api/mypage/content/like/" + name +  "/" + id;
+    try {
+      const response = await axios.delete(url);
+      // console.log("확인 결과 : ", response.data.success);
+      // setidConfirm(response.data.success);
+      // setIdHelper("사용가능한 닉네임 입니다");
+      // console.log(idConfirm);
+      // return "성공";
+      console.log("삭제 성공", response)
+      alert("삭제 성공하였습니다.")
+    } catch (error) {
+      console.error("에러메시지 :", error);
+      return "실패";
+    }
+  }
+
+  const deleteS2Card = async (e) => {
+    e.preventDefault();
+    // console.log(key2)
+    const url = APPLICATION_SERVER_URL +"/api/mypage/content/rec/" + name +  "/" + key2;
+    try {
+      const response = await axios.delete(url);
+      // console.log("확인 결과 : ", response.data.success);
+      // setidConfirm(response.data.success);
+      // setIdHelper("사용가능한 닉네임 입니다");
+      // console.log(idConfirm);
+      // return "성공";
+      console.log("삭제 성공", response)
+      alert("삭제 성공하였습니다.")
+    } catch (error) {
+      console.error("에러메시지 :", error);
+      return "실패";
+    }
+  }
 
   return (
     <Container>
       <IconContainer>
       <DateBox>
-        2023년 9월 10일
+        {date.substring(0,4) + "년 " + date.substring(5,7) + "월 " +date.substring(8,10) + "일"}
       </DateBox>
-      <ClearIcon></ClearIcon>
+      <ClearIcon onClick={deleteS2Card}></ClearIcon>
       </IconContainer>
       <TitleBox>
-        옥외광고
+        {mediaTypeId === 1 ? "커뮤니티" : (mediaTypeId === 2 ? "SNS" : (mediaTypeId ===5 ? "인쇄" : "옥외"))} 광고
         <br></br>
         문구 추천
       </TitleBox>
       <ChipBox>
-      <Chip label="#라면" />
-      <Chip label="#맛" color="primary" />
+      <Chip label={`#${label}`} />
+      {keywordList.map(function(a,i){
+        return <Chip label={`#${a.keyword}`} color="primary" />
+      })}
       </ChipBox>
       <UrlBox>
         <UrlItem onClick={handleOpen}>>> 문구 보기</UrlItem>
@@ -122,28 +186,28 @@ function ContentCard() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} overflow="auto">
-          <Chip label="#라면" />
-          <Chip label="#맛" color="primary" />
+        <Chip label={`#${label}`} />
+        {keywordList.map(function(a,i){
+          return <Chip label={`#${a.keyword}`} color="primary" />
+        })}
           <Typography fontSize={40} align="left">
             문구 추천
           </Typography>
           <FormBox>
-          <PhraseBox>
-            <Phrase>
-            <Typography fontSize={32}>“내가 알던 라면이 아니다! 맛의 차원이 다르다!”</Typography>
-            </Phrase>
-            <CancelBox>
-            <CancelIcon color="disabled"></CancelIcon>
-            </CancelBox>
-          </PhraseBox>
-          <PhraseBox>
-            <Phrase>
-            <Typography fontSize={32}>“한국인의 정서가 어우러진 가장 맛있는 라면”</Typography>
-            </Phrase>
-            <CancelBox>
-            <CancelIcon color="disabled"></CancelIcon>
-            </CancelBox>
-          </PhraseBox>
+          {senList.map(function(a,i){
+            return (
+              <>
+              <PhraseBox>
+              <Phrase>
+                <Typography fontSize={32}>{a.title}</Typography>
+                </Phrase>
+                <CancelBox>
+                <CancelIcon onClick={deleteSen(a.id)}></CancelIcon>
+                </CancelBox>
+              </PhraseBox>
+              </>
+            )
+          })}
           </FormBox>
         </Box>
       </Modal>
