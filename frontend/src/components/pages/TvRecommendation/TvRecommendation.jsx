@@ -51,6 +51,8 @@ export const TvRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
+  const mainList = useSelector((state) => state.result.media);
+  console.log("메인 매체 결과", mainList);
   const mediaList = useSelector((state) => state.result.media.totalList);
   const [mediaLabels, setMediaLabels] = useState([]);
   const [mainDatas, setMainDatas] = useState([]);
@@ -71,7 +73,7 @@ export const TvRecommendation = () => {
   }, [mediaList]);
   const recommendedMedia = useSelector((state) => state.result.media.recommend);
   let target = "성별";
-  if (gender === 1) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";
@@ -99,6 +101,10 @@ export const TvRecommendation = () => {
     console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
+        console.log("item", item);
+        console.log("sigunguId", sigunguId);
+        console.log("gender", gender);
+        console.log("age", age);
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
@@ -280,7 +286,7 @@ export const TvRecommendation = () => {
           memberName: name,
           productSmallId: item,
           budget: selectedPrice,
-          inOnOff: onOff,
+          inOnOff: 1,
           sigunguId: sigunguId,
           mediaTypeId: 3,
         }

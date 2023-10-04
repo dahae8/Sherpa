@@ -19,7 +19,7 @@ public class Residence {
     private Long id;
 
     @Column(nullable = false)
-    private int gender;
+    private boolean gender;
 
 
     @Column(nullable = false)
@@ -34,7 +34,7 @@ public class Residence {
     private Dong dong;
 
     @Builder
-    public Residence(int gender, int age, int total, Dong dong) {
+    public Residence(boolean gender, int age, int total, Dong dong) {
         this.gender = gender;
         this.age = age;
         this.total = total;

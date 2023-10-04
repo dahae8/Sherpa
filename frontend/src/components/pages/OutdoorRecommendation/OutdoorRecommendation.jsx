@@ -52,6 +52,8 @@ export const OutdoorRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
+  console.log("age", age);
+  console.log("gender", gender);
   const result = useSelector((state) => state.result.media);
   console.log("고객이 입력한 정보", result);
   const mediaList = useSelector((state) => state.result.media.totalList);
@@ -105,13 +107,11 @@ export const OutdoorRecommendation = () => {
   //   }
   // }
   let target = "성별";
-
-  if (gender === 1) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";
   }
-
   const [subMediaLabels, setSubMediaLabels] = useState([]);
   const [subDatas, setSubDatas] = useState([]);
   const [priceLabels, setPriceLabels] = useState([]);
@@ -136,6 +136,10 @@ export const OutdoorRecommendation = () => {
     console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
+        console.log("item", item);
+        console.log("sigunguId", sigunguId);
+        console.log("gender", gender);
+        console.log("age", age);
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
@@ -145,7 +149,7 @@ export const OutdoorRecommendation = () => {
             age: age,
           }
         );
-        console.log("추천 매체 가져오기", response);
+        console.log("서브 추천 매체 가져오기", response);
         const subMediaLabels = [];
         for (let i = 0; i < response.data.data.mediaList.length; i++) {
           if (response.data.data.mediaList[i]) {
@@ -165,7 +169,7 @@ export const OutdoorRecommendation = () => {
           setSubDatas(subDatas);
         }
       } catch (error) {
-        console.error("추천 매체 가져오기 오류:", error);
+        console.error("서브 추천 매체 가져오기 오류:", error);
       }
     };
     const recommendPrice = async () => {
@@ -238,7 +242,7 @@ export const OutdoorRecommendation = () => {
           `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/area`,
           {
             listSize: 5,
-            gender: gender,
+            gender: Number(gender),
             age: age,
             sigunguId: sigunguId,
           }
@@ -269,7 +273,7 @@ export const OutdoorRecommendation = () => {
           `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/bus`,
           {
             listSize: 5,
-            gender: gender,
+            gender: Number(gender),
             age: age,
             sigunguId: sigunguId,
           }
@@ -336,6 +340,11 @@ export const OutdoorRecommendation = () => {
   }, []);
 
   const save = async () => {
+    console.log("저장api name", name);
+    console.log("저장api item", item);
+    console.log("저장api selectedPrice", selectedPrice);
+    console.log("저장api onOff", onOff);
+    console.log("저장api sigunguId", sigunguId);
     try {
       const response = await axios.post(
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
@@ -343,7 +352,7 @@ export const OutdoorRecommendation = () => {
           memberName: name,
           productSmallId: item,
           budget: selectedPrice,
-          inOnOff: onOff,
+          inOnOff: 1,
           sigunguId: sigunguId,
           mediaTypeId: 6,
         }
@@ -397,12 +406,14 @@ export const OutdoorRecommendation = () => {
       </Box>
       <Hr />
       <Box>
-        <ChannelRecommendation
-          title="지하철 옥외 광고"
-          datas={subwayDatas}
-          labels={subwayLabels}
-          description={`${bigRegion}에 있는 지하철 역 승하차량 통계`}
-        ></ChannelRecommendation>
+        {subwayLabels.length > 0 && (
+          <ChannelRecommendation
+            title="지하철 옥외 광고"
+            datas={subwayDatas}
+            labels={subwayLabels}
+            description={`${bigRegion}에 있는 지하철 역 승하차량 통계`}
+          ></ChannelRecommendation>
+        )}
       </Box>
       <Hr />
       <Box>

@@ -50,7 +50,7 @@ export const NewsPaperRecommendation = () => {
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
   const result = useSelector((state) => state.result.media);
-  console.log("고객이 입력한 정보", result);
+  console.log("메인 매체 추천", result);
   const mediaList = useSelector((state) => state.result.media.totalList);
   const [mediaLabels, setMediaLabels] = useState([]);
   const [mainDatas, setMainDatas] = useState([]);
@@ -71,7 +71,7 @@ export const NewsPaperRecommendation = () => {
   }, [mediaList]);
   const recommendedMedia = useSelector((state) => state.result.media.recommend);
   let target = "성별";
-  if (gender === false) {
+  if (gender === true) {
     target = "남성";
   } else {
     target = "여성";
@@ -108,7 +108,7 @@ export const NewsPaperRecommendation = () => {
             age: age,
           }
         );
-        console.log("추천 매체 가져오기", response);
+        console.log("호감도 매체 가져오기", response);
         const subMediaLabels = [];
         const subDatas = [];
 
@@ -269,7 +269,7 @@ export const NewsPaperRecommendation = () => {
           memberName: name,
           productSmallId: item,
           budget: selectedPrice,
-          inOnOff: onOff,
+          inOnOff: 1,
           sigunguId: sigunguId,
           mediaTypeId: 5,
         }
