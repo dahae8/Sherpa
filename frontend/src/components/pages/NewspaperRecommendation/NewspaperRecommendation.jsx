@@ -92,7 +92,6 @@ export const NewsPaperRecommendation = () => {
   const sido = useSelector((state) => state.result.selectedBigRegion);
   const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
   const selectedPrice = useSelector((state) => state.result.selectedPrice);
-  const onOff = useSelector((state) => state.result.selectedOnOffline);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);

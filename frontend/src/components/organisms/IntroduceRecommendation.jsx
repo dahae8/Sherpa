@@ -1,4 +1,6 @@
+import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   margin-top: 200px;
@@ -38,7 +40,8 @@ const Button = styled.button`
   font-size: 32px;
 `;
 
-function makeIntroduceRecommendation() {
+function MakeIntroduceRecommendation() {
+  const navigate = useNavigate();
   return (
     <Container>
       <TitleBox>대표 추천 기능</TitleBox>
@@ -48,24 +51,42 @@ function makeIntroduceRecommendation() {
             <Description>광고 대상 추천받기</Description>
             <Description>& 광고 매체 추천받기</Description>
           </DescroptionFrame>
-          <Button>바로가기</Button>
+          <Button
+            onClick={() => {
+              navigate("/mediaRecommend");
+            }}
+          >
+            바로가기
+          </Button>
         </CardItem>
         <CardItem>
           <DescroptionFrame>
             <Description>광고 키워드 추천받기</Description>
             <Description>& 트랜드 키워드 추천</Description>
           </DescroptionFrame>
-          <Button>바로가기</Button>
+          <Button
+            onClick={() => {
+              navigate("/keywordRecommend");
+            }}
+          >
+            바로가기
+          </Button>
         </CardItem>
         <CardItem>
           <DescroptionFrame>
             <Description>광고 문구 추천받기</Description>
             <Description>& 광고 콘텐츠 추천받기</Description>
           </DescroptionFrame>
-          <Button>바로가기</Button>
+          <Button
+            onClick={() => {
+              navigate("/contentRecommend");
+            }}
+          >
+            바로가기
+          </Button>
         </CardItem>
       </CardGridBox>
     </Container>
   );
 }
-export default makeIntroduceRecommendation;
+export default MakeIntroduceRecommendation;
