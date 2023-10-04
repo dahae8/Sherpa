@@ -129,8 +129,7 @@ public class TargetServiceImpl implements TargetService{
                     Map<Integer, Long> ageTotalMap = new HashMap<>();
 
                     for (Integer age : ages) {
-                        Optional<Long> sumAgeTotalOptional = targetRepository.sumTotalByDongIdInAndProductSmallIdAndAge(targetReq.getSigunguId(), targetReq.getProductSmallId(), age);
-
+                        Optional<Long> sumAgeTotalOptional = targetRepository.sumTotalByDongIdInAndProductSmallIdAndAge(targetReq.getSigunguId(), productSmallId, age);
                         Long sumAgeTotal = sumAgeTotalOptional.orElse(0L);
                         ageTotalMap.put(age, sumAgeTotal);
                     }
