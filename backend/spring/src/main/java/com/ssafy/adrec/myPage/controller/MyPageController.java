@@ -346,7 +346,7 @@ public class MyPageController {
     public ResponseEntity<?> getMediaRec(@PathVariable("memberName") String memberName, @PathVariable("id") Long id) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus httpStatus = null;
-        resultMap.put("msg", "매체 추천 목록 조회");
+        resultMap.put("msg", "매체 추천 목록 상세 조회");
 
         Member member = memberService.checkName(memberName);
         if (member == null) {
@@ -365,12 +365,17 @@ public class MyPageController {
             httpStatus = HttpStatus.NOT_FOUND;
 
         } else if (mediaRec.getMember().getName().equals(memberName)) {
+            int onOff = (mediaRec.isOnOff()) ? 1 : 0;
+            Sigungu sigungu= mediaRec.getSigungu();
             MediaRecRes mediaRecRes = MediaRecRes.builder()
                     .id(mediaRec.getId())
                     .recDate(mediaRec.getRecDate())
-                    .isOnOff(mediaRec.getIsOnOff())
+                    .isOnOff(onOff)
                     .budget(mediaRec.getBudget())
-                    .sigungu(mediaRec.getSigungu().getName())
+                    .sigungu(sigungu.getName())
+                    .sigunguId(sigungu.getId())
+                    .sidoId(sigungu.getSido().getId())
+                    .sido(sigungu.getSido().getName())
                     .productSmall(mediaRec.getProductSmall().getSmall())
                     .mediaTypeId(mediaRec.getMediaType().getId())
                     .build();
