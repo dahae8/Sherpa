@@ -136,6 +136,10 @@ export const OutdoorRecommendation = () => {
     console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
+        console.log("item", item);
+        console.log("sigunguId", sigunguId);
+        console.log("gender", gender);
+        console.log("age", age);
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
@@ -145,7 +149,7 @@ export const OutdoorRecommendation = () => {
             age: age,
           }
         );
-        console.log("추천 매체 가져오기", response);
+        console.log("서브 추천 매체 가져오기", response);
         const subMediaLabels = [];
         for (let i = 0; i < response.data.data.mediaList.length; i++) {
           if (response.data.data.mediaList[i]) {
@@ -165,7 +169,7 @@ export const OutdoorRecommendation = () => {
           setSubDatas(subDatas);
         }
       } catch (error) {
-        console.error("추천 매체 가져오기 오류:", error);
+        console.error("서브 추천 매체 가져오기 오류:", error);
       }
     };
     const recommendPrice = async () => {
@@ -336,6 +340,11 @@ export const OutdoorRecommendation = () => {
   }, []);
 
   const save = async () => {
+    console.log("저장api name", name);
+    console.log("저장api item", item);
+    console.log("저장api selectedPrice", selectedPrice);
+    console.log("저장api onOff", onOff);
+    console.log("저장api sigunguId", sigunguId);
     try {
       const response = await axios.post(
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
@@ -343,7 +352,7 @@ export const OutdoorRecommendation = () => {
           memberName: name,
           productSmallId: item,
           budget: selectedPrice,
-          inOnOff: onOff,
+          inOnOff: 1,
           sigunguId: sigunguId,
           mediaTypeId: 6,
         }

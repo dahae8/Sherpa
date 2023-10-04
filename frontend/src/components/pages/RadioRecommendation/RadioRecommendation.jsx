@@ -285,7 +285,7 @@ export const RadioRecommendation = () => {
           memberName: name,
           productSmallId: item,
           budget: selectedPrice,
-          inOnOff: onOff,
+          inOnOff: 1,
           sigunguId: sigunguId,
           mediaTypeId: 4,
         }

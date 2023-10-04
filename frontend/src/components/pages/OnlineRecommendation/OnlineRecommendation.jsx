@@ -243,6 +243,11 @@ export const OnlineRecommendation = () => {
   }, []);
 
   const save = async () => {
+    console.log("저장api name", name);
+    console.log("저장api item", item);
+    console.log("저장api selectedPrice", selectedPrice);
+    console.log("저장api onOff", onOff);
+    console.log("저장api sigunguId", sigunguId);
     try {
       const response = await axios.post(
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
@@ -250,7 +255,7 @@ export const OnlineRecommendation = () => {
           memberName: name,
           productSmallId: item,
           budget: selectedPrice,
-          inOnOff: onOff,
+          inOnOff: 0,
           sigunguId: sigunguId,
           mediaTypeId: 1,
         }
