@@ -182,6 +182,7 @@ public class MyPageServiceImpl  implements MyPageService{
                     .sidoId(sigungu.getSido().getId())
                     .sido(sigungu.getSido().getName())
                     .productSmall(mediaRec.getProductSmall().getSmall())
+                    .productSmallId(mediaRec.getProductSmall().getId())
                     .mediaTypeId(mediaRec.getMediaType().getId())
                     .build();
             list.add(mediaRecRes);
