@@ -10,6 +10,7 @@ import NewspaperRecommendation from '../components/pages/NewspaperRecommendation
 import OutdoorRecommendation from '../components/pages/OutdoorRecommendation/OutdoorRecommendation.jsx';
 import Login from '../components/pages/Auth/Login';
 import SignPage from '../components/pages/Auth/SignPage';
+import PrivateRoute from './PrivateRoute';
 
 function RouteLink(props) {
   return (
@@ -18,15 +19,17 @@ function RouteLink(props) {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mediaRecommend" element={<MediaRecommendPage />} />
-        <Route path="/mediaResult/online" element={<OnlineRecommendation />} />
-        <Route path="/mediaResult/tv" element={<TvRecommendation />} />
-        <Route path="/mediaResult/radio" element={<RadioRecommendation />} />
-        <Route path="/mediaResult/newspaper" element={<NewspaperRecommendation />} />
-        <Route path="/mediaResult/outdoor" element={<OutdoorRecommendation />} />
-        {/* <Route path="/keywordRecommend" element={<MyPage />} /> */}
-        <Route path="/contentRecommend" element={<ContentRecommendPage />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mediaRecommend" element={<MediaRecommendPage />} />
+          <Route path="/mediaResult/online" element={<OnlineRecommendation />} />
+          <Route path="/mediaResult/tv" element={<TvRecommendation />} />
+          <Route path="/mediaResult/radio" element={<RadioRecommendation />} />
+          <Route path="/mediaResult/newspaper" element={<NewspaperRecommendation />} />
+          <Route path="/mediaResult/outdoor" element={<OutdoorRecommendation />} />
+          {/* <Route path="/keywordRecommend" element={<MyPage />} /> */}
+          <Route path="/contentRecommend" element={<ContentRecommendPage />} />
+        </Route>
       </Routes>
     </div>
   );
