@@ -152,11 +152,12 @@ public class MyPageServiceImpl  implements MyPageService{
 
     @Override
     public MediaRec saveMediaRec(MediaRecReq mediaRecReq, ProductSmall productSmall, Sigungu sigungu, Member member, MediaType mediaType){
+        boolean onOff = (mediaRecReq.getInOnOff() == 1) ? true : false;
         MediaRec mediaRec = MediaRec.builder()
                 .budget(mediaRecReq.getBudget())
                 .recDate(LocalDateTime.now())
                 .sigungu(sigungu)
-                .isOnOff(mediaRecReq.getInOnOff())
+                .isOnOff(onOff)
                 .member(member)
                 .productSmall(productSmall)
                 .mediaType(mediaType)
@@ -169,12 +170,17 @@ public class MyPageServiceImpl  implements MyPageService{
         List<MediaRecRes> list = new ArrayList<>();
         List<MediaRec> mediaRecList = mediaRecRepository.findAllByMember_Id(id);
         for(MediaRec mediaRec: mediaRecList){
+            int onOff = (mediaRec.isOnOff()) ? 1 : 0;
+            Sigungu sigungu= mediaRec.getSigungu();
             MediaRecRes mediaRecRes = MediaRecRes.builder()
                     .id(mediaRec.getId())
                     .recDate(mediaRec.getRecDate())
-                    .isOnOff(mediaRec.getIsOnOff())
+                    .isOnOff(onOff)
                     .budget(mediaRec.getBudget())
-                    .sigungu(mediaRec.getSigungu().getName())
+                    .sigungu(sigungu.getName())
+                    .sigunguId(sigungu.getId())
+                    .sidoId(sigungu.getSido().getId())
+                    .sido(sigungu.getSido().getName())
                     .productSmall(mediaRec.getProductSmall().getSmall())
                     .mediaTypeId(mediaRec.getMediaType().getId())
                     .build();
