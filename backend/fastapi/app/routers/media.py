@@ -84,11 +84,12 @@ def offline(item: Product):
             name = media_name[(item['mediaType_id'], item['mediaSub_id'])]
             if item['total_like_per'] == max_value:
                 recommend = name
-            item = {
-                "name": name,
-                "value": int(round(item['total_like_per']))
-            }
-            media_list.append(item)
+            if int(round(item['total_like_per'])) != 0:
+                item = {
+                    "name": name,
+                    "value": int(round(item['total_like_per']))
+                }
+                media_list.append(item)
         # count = len(media_list)
         # 응답 데이터 생성
         response_data = Response(
@@ -211,11 +212,12 @@ def offline(item: Product):
                 total_per_rounded = int(round(item['total_per']))
             else:
                 total_per_rounded = None
-            item = {
-                "name": name,
-                "value": total_per_rounded
-            }
-            media_list.append(item)
+            if total_per_rounded != 0:
+                item = {
+                    "name": name,
+                    "value": total_per_rounded
+                }
+                media_list.append(item)
 
         # 응답 데이터 생성
         response_data = Response(
@@ -347,11 +349,13 @@ def offline(total_item: Total):
             name = media_name[(item['mediaType_id'], item['mediaSub_id'])]
             if item['total_like_per'] == max_value:
                 recommend = name
-            item = {
-                "name": name,
-                "value": int(round(item['total_like_per']))
-            }
-            media_list.append(item)
+            if int(round(item['total_like_per'])) != 0:
+                item = {
+                    "name": name,
+                    "value": int(round(item['total_like_per']))
+                }
+                media_list.append(item)
+
     else:
         # 품목 코드 없음
         insert_query = "INSERT INTO productMedia (total, mediaType_id, productSmall_id, like_per) VALUES (%s, %s, %s, %s)"
@@ -464,11 +468,12 @@ def offline(total_item: Total):
                 total_per_rounded = int(round(item['total_per']))
             else:
                 total_per_rounded = None
-            item = {
-                "name": name,
-                "value": total_per_rounded
-            }
-            media_list.append(item)
+            if total_per_rounded != 0:
+                item = {
+                    "name": name,
+                    "value": total_per_rounded
+                }
+                media_list.append(item)
 
     # 2. 예산 결과
     user_budget = total_item.budget
