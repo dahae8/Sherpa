@@ -1,34 +1,11 @@
 import pandas as pd
 import mysql.connector
 
-def db_insert(data):
-    # 동 아이디 연결
-    for row_num, row in data.iterrows():
-        gu = row['구']
-        dong = row['동']
-        data['id'] = address_data[gu][dong]
-
-    print(data)
-
-    # 테이블에 데이터 삽입
-    for _, item in data.iterrows():
-        insert_query = "INSERT INTO banner (dong_id, name, address) VALUES (%s, %s, %s)"
-        cursor.execute(insert_query, (item['id'], item['게시대명'], item['주소']))
-
-    conn.commit();
-
 banner_east = pd.read_csv('./csv/동구.csv', encoding='cp949', low_memory=False)
 banner_west = pd.read_csv('./csv/서구.csv', encoding='cp949', low_memory=False)
 banner_south = pd.read_csv('./csv/남구.csv', encoding='cp949', low_memory=False)
 banner_north = pd.read_csv('./csv/북구.csv', encoding='cp949', low_memory=False)
 banner_gwangsan = pd.read_csv('./csv/광산구.csv', encoding='cp949', low_memory=False)
-
-banner_list = []
-banner_list.append(banner_east)
-banner_list.append(banner_west)
-banner_list.append(banner_south)
-banner_list.append(banner_north)
-banner_list.append(banner_gwangsan)
 
 # server db 연결
 # MySQL 연결 정보 설정
@@ -62,5 +39,23 @@ for row in address:
         address_data[row[2]] = {}
         address_data[row[2]][row[1]] = row[0]
 
-for banner_data in banner_list:
-    db_insert(banner_data)
+
+# 동 아이디 연결
+
+dong_id = []
+for row_num, row in banner_north.iterrows():
+    gu = row['구']
+    dong = row['동']
+    dong_id.append(address_data[gu][dong])
+
+dong_id_df = pd.DataFrame(dong_id)
+
+result = pd.concat([banner_north, dong_id_df], axis=1, ignore_index=True)
+result.columns=['name', 'address', 'dong', 'gu', 'id']
+
+# 테이블에 데이터 삽입
+for _, item in result.iterrows():
+    insert_query = "INSERT INTO banner (dong_id, name, address) VALUES (%s, %s, %s)"
+    cursor.execute(insert_query, (item['id'], item['name'], item['address']))
+
+conn.commit();
