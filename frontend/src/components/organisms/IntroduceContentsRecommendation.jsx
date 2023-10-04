@@ -5,11 +5,16 @@ import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   margin-top: 200px;
+  text-align: center;
 `;
 const TitleBox = styled.div`
   font-size: 64px;
 `;
-const ContentBox = styled.div``;
+const ContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const ImgItem = styled.div`
   margin-top: 100px;
   display: flex;
@@ -40,19 +45,25 @@ const TalkBubble = styled.div`
   }
 `;
 const DescriptionItem = styled.div`
-  font-size: 48px;
+  font-size: 40px;
   margin-top: 50px;
+  border: 1px solid #3c486b;
+  border-radius: 10px;
+  width: 1000px;
+  padding: 50px;
 `;
 const Description = styled.div`
   margin-top: 10px;
 `;
 const Button = styled.button`
-  width: 550px;
+  width: 450px;
   height: 100px;
   font-size: 32px;
   margin-top: 100px;
   background-color: #3c486b;
   color: white;
+  border-radius: 10px;
+  padding: 0px 10px 0px 10px;
 `;
 
 function MakeIntroduceContentsRecommendation() {
@@ -67,10 +78,8 @@ function MakeIntroduceContentsRecommendation() {
         </ImgItem>
         <DescriptionItem>
           <Description>광고 하고싶은 물품이나 서비스에 맞추어</Description>
-          <Description>
-            광고에 사용하면 효과적인 광고 문구를 AI 기술을 통해
-          </Description>
-          <Description>추천해 드립니다.</Description>
+          <Description>광고에 사용하면 효과적인 광고 문구를</Description>
+          <Description>AI 기술을 통해 추천해 드립니다.</Description>
         </DescriptionItem>
         <DescriptionItem>
           <Description>또한, 시나리오가 필요한 광고 매체의 경우</Description>

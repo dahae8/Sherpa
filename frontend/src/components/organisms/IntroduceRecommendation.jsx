@@ -56,6 +56,8 @@ const Button = styled.button`
   color: white;
   background-color: #3c486b;
   font-size: 32px;
+  border-radius: 10px;
+  padding-bottom: 15px;
 `;
 
 function MakeIntroduceRecommendation() {

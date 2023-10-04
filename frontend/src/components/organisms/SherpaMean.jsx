@@ -16,7 +16,7 @@ const DescriptionItem = styled.div`
 `;
 const Description = styled.div`
   font-size: 32px;
-  margin-top: 50px;
+  margin-top: 30px;
   text-align: start;
 `;
 const FirstDescription = styled.div`

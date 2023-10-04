@@ -9,7 +9,11 @@ const Container = styled.div`
 const TitleBox = styled.div`
   font-size: 64px;
 `;
-const ContentBox = styled.div``;
+const ContentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const ImgItem = styled.div`
   margin-top: 100px;
   display: flex;
@@ -40,19 +44,25 @@ const TalkBubble = styled.div`
   }
 `;
 const DescriptionItem = styled.div`
-  font-size: 48px;
+  font-size: 40px;
   margin-top: 50px;
+  border: 1px solid #3c486b;
+  border-radius: 10px;
+  width: 1000px;
+  padding: 50px;
 `;
 const Description = styled.div`
   margin-top: 10px;
 `;
 const Button = styled.button`
-  width: 550px;
+  width: 450px;
   height: 100px;
   font-size: 32px;
   margin-top: 100px;
   background-color: #3c486b;
   color: white;
+  border-radius: 10px;
+  padding: 0px 10px 0px 10px;
 `;
 
 function MakeIntroduceKeywordRecommendation() {
