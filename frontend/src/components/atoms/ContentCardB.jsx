@@ -73,6 +73,10 @@ const Phrase = styled.div`
   padding: 30px;
 `
 
+const CancelBox = styled.div`
+  padding-right: 15px;
+`
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -194,26 +198,38 @@ function ContentCardB({date, label, key2, keywordList, mediaTypeId}) {
           <FormBox>
             {scnList.map(function(a, i){
               return (
-                <>
-                <PhraseBox>
-                  <Phrase>
-                    <Typography fontSize={32}>{a.title}</Typography>
-                    <br></br>
-                    <Typography fontSize={24}>{a.content}</Typography>
-                  </Phrase>
-                </PhraseBox>
+            //     <>
+            //     <PhraseBox>
+            //       <Phrase>
+            //         <Typography fontSize={32}>{a.title}</Typography>
+            //         <br></br>
+            //         <Typography fontSize={24}>{a.content}</Typography>
+            //       </Phrase>
+            //     </PhraseBox>
                 
-            <Button TextColor="white"
-              width="70px"
-              height="45px"
-              border="1px solid #3C486B"
-              backgroundColor="#3C486B"
-              fontSize="16px"
-              onClick = {deleteScn(a.id)}
-            >
-              삭제
-            </Button>
-            </> 
+            // <Button TextColor="white"
+            //   width="70px"
+            //   height="45px"
+            //   border="1px solid #3C486B"
+            //   backgroundColor="#3C486B"
+            //   fontSize="16px"
+            //   onClick = {deleteScn(a.id)}
+            // >
+            //   삭제
+            // </Button>
+            // </> 
+            <>
+              <PhraseBox>
+              <Phrase>
+                <Typography fontSize={32}>{a.title}</Typography>
+                <br></br>
+                <Typography fontSize={24}>{a.content}</Typography>
+               </Phrase>
+                <CancelBox>
+                <CancelIcon onClick={deleteScn(a.id)}></CancelIcon>
+                </CancelBox>
+              </PhraseBox>
+              </>
             )
             })}
           </FormBox>

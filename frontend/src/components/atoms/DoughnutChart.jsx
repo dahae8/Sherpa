@@ -9,7 +9,7 @@ export function makeDoughnutChart({ labels, datas, width, fontSize }) {
     labels: labels,
     datasets: [
       {
-        label: "# of Votes",
+        label: "비율 ",
         data: datas,
         backgroundColor: [
           "#D33B4D",
