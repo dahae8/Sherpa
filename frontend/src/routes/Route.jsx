@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import MainPage from '../components/pages/MainPage/MainPage';
 import MediaRecommendPage from '../components/pages/MediaRecommendPage/MediaRecommendPage';
 import ContentRecommendPage from '../components/pages/ContentRecommendPage/ContentRecommendPage';
+import KeywordRecommendPage from '../components/pages/KeywordRecommendPage/KeywordRecommendPage';
 import OnlineRecommendation from '../components/pages/OnlineRecommendation/OnlineRecommendation.jsx';
 import MyPage from '../components/pages/MyPage/MyPage';
 import TvRecommendation from '../components/pages/TvRecommendation/TvRecommendation.jsx';
@@ -27,7 +28,7 @@ function RouteLink(props) {
           <Route path="/mediaResult/radio" element={<RadioRecommendation />} />
           <Route path="/mediaResult/newspaper" element={<NewspaperRecommendation />} />
           <Route path="/mediaResult/outdoor" element={<OutdoorRecommendation />} />
-          {/* <Route path="/keywordRecommend" element={<MyPage />} /> */}
+          <Route path="/keywordRecommend" element={<KeywordRecommendPage />} />
           <Route path="/contentRecommend" element={<ContentRecommendPage />} />
         </Route>
       </Routes>

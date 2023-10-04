@@ -31,8 +31,8 @@ const Container = styled.div`
   margin: 0 320px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
+  align-items: center;
+  justify-content: center;
 `;
 const Box = styled.div`
   margin: 150px 0px 150px 0px;
@@ -335,7 +335,7 @@ export const MediaRecommendPage = () => {
       <Box>
         <Button
           backgroundColor="#3C486B"
-          width="30%"
+          width="300px"
           height="50px"
           textColor="white"
           fontSize="24px"
