@@ -67,7 +67,7 @@ function makeSingleChart({ labels, datas, text, width, height }) {
     labels,
     datasets: [
       {
-        label: "2021년",
+        label: "비율 ",
         data: datas,
         borderColor: backgroundColors,
         backgroundColor: backgroundColors,
