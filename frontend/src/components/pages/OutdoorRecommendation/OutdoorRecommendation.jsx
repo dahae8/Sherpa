@@ -75,28 +75,8 @@ export const OutdoorRecommendation = () => {
     setMainDatas(mainDatas);
   }, [mediaList]);
   const recommendedMedia = useSelector((state) => state.result.media.recommend);
-  const subwayLabels = ["문화전당", "금난로 4가", "상무"]; // 지하철역 분석 API
-  // const subwayLabels = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     subwayLabels.push(data[i].station);
-  //   } else {
-  //     subwayLabels.push(0);
-  //   }
-  // }
-  const subwayDatas = [80, 60, 45, 42, 32, 29, 19, 5]; // 지하철역 분석 API
-  // const subwayDatas = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     subwayDatas.push(data[i].ratio);
-  //   } else {
-  //     subwayDatas.push(0);
-  //   }
-  // }
-  const bigRegion = "광주 광역시"; //state
-  // const bigRegion = useSelector((state) => state.result.selectedBigRegion);
-  const smallRegion = "광산구"; //state
-  // const smallRegion = useSelector((state) => state.result.selectedSmallRegion);
+  const bigRegion = useSelector((state) => state.result.bigRegionName);
+  const smallRegion = useSelector((state) => state.result.smallRegionName);
   const addresses = ["무진대로211번길 28", "월계로 109", "하남산단6번로 107"]; // 현수막 장소 분석 API
   // const addresses = [];
   // for (let i = 0; i < data.length; i++) {
@@ -125,6 +105,8 @@ export const OutdoorRecommendation = () => {
   const [regionDatas, setRegionDatas] = useState([]);
   const [busLabels, setBusLabels] = useState([]);
   const [busDatas, setBusDatas] = useState([]);
+  const [subwayLabels, setSubwayLabels] = useState([]);
+  const [subwayDatas, setSubwayDatas] = useState([]);
   const item = useSelector((state) => state.user.productSmall);
   const sido = useSelector((state) => state.result.selectedBigRegion);
   const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
@@ -297,6 +279,30 @@ export const OutdoorRecommendation = () => {
         console.log("버스 오류", error);
       }
     };
+    const recommendSubway = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/subway`
+        );
+        console.log("지하철 역 가져오기", response);
+        const subwayLabels = [];
+        const subwayDatas = [];
+
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i]) {
+            subwayLabels.push(response.data.data[i].station);
+            subwayDatas.push(response.data.data[i].ratio);
+          } else {
+            subwayLabels.push(0);
+            subwayDatas.push(0);
+          }
+        }
+        setSubwayLabels(subwayLabels);
+        setSubwayDatas(subwayDatas);
+      } catch (error) {
+        console.log("지하철 역 오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
     linkproducer();
@@ -304,6 +310,7 @@ export const OutdoorRecommendation = () => {
     linkproducer3();
     recommendRegion();
     recommendBus();
+    recommendSubway();
   }, []);
 
   useEffect(() => {
