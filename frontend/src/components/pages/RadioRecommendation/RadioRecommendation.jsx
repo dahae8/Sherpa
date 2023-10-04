@@ -99,6 +99,10 @@ export const RadioRecommendation = () => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
     console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
+      console.log("item", item);
+      console.log("sigunguId", sigunguId);
+      console.log("gender", gender);
+      console.log("age", age);
       try {
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,

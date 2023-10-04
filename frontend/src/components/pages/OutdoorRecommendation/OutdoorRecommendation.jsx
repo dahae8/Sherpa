@@ -397,12 +397,14 @@ export const OutdoorRecommendation = () => {
       </Box>
       <Hr />
       <Box>
-        <ChannelRecommendation
-          title="지하철 옥외 광고"
-          datas={subwayDatas}
-          labels={subwayLabels}
-          description={`${bigRegion}에 있는 지하철 역 승하차량 통계`}
-        ></ChannelRecommendation>
+        {subwayLabels.length > 0 && (
+          <ChannelRecommendation
+            title="지하철 옥외 광고"
+            datas={subwayDatas}
+            labels={subwayLabels}
+            description={`${bigRegion}에 있는 지하철 역 승하차량 통계`}
+          ></ChannelRecommendation>
+        )}
       </Box>
       <Hr />
       <Box>
