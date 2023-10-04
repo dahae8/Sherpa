@@ -2,6 +2,7 @@ package com.ssafy.adrec.offline.controller;
 
 import com.ssafy.adrec.offline.outdoor.Subway;
 import com.ssafy.adrec.offline.outdoor.request.TargetReq;
+import com.ssafy.adrec.offline.outdoor.response.BannerRes;
 import com.ssafy.adrec.offline.outdoor.response.OutdoorRes;
 import com.ssafy.adrec.offline.outdoor.response.SubwayRes;
 import com.ssafy.adrec.offline.outdoor.service.OutdoorService;
@@ -87,6 +88,29 @@ public class OfflineController {
         list = outdoorService.getSubwayList();
 
         resultMap.put("msg", "지하철역 Top5 조회");
+
+        if (list.size() == 0) {
+            resultMap.put("success", false);
+            resultMap.put("msg", "해당 데이터가 없습니다.");
+            httpStatus = HttpStatus.NOT_FOUND;
+        } else {
+            resultMap.put("success", true);
+            resultMap.put("data", list);
+            resultMap.put("count", list.size());
+            httpStatus = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, httpStatus);
+    }
+
+    @PostMapping("/outdoor/banner")
+    public ResponseEntity<?> getBannerList(@RequestBody TargetReq targetReq) {
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus httpStatus = null;
+
+        List<BannerRes> list = outdoorService.getBannerList(targetReq);
+
+        resultMap.put("msg", "현수막 장소 조회");
 
         if (list.size() == 0) {
             resultMap.put("success", false);
