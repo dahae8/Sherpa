@@ -25,6 +25,24 @@ const CardItem = styled.div`
   height: 380px;
   text-align: left;
   text-align: center;
+  transition: border-color 0.3s ease-in-out;
+
+  &:hover {
+    border-color: #3c486b;
+    animation: border-flash 5s;
+  }
+
+  @keyframes border-flash {
+    0% {
+      border-color: #3c486b;
+    }
+    50% {
+      border-color: transparent;
+    }
+    100% {
+      border-color: #3c486b;
+    }
+  }
 `;
 const DescroptionFrame = styled.div`
   margin: 130px 0px 80px 0px;
@@ -38,6 +56,8 @@ const Button = styled.button`
   color: white;
   background-color: #3c486b;
   font-size: 32px;
+  border-radius: 10px;
+  padding-bottom: 15px;
 `;
 
 function MakeIntroduceRecommendation() {

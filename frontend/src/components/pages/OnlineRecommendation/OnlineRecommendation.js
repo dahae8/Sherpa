@@ -22,4 +22,6 @@ export const SaveBox = styled.div`
 `;
 export const ButtonBox = styled.div`
   margin-bottom: 200px;
+  display: flex;
+  justify-content: space-evenly;
 `;

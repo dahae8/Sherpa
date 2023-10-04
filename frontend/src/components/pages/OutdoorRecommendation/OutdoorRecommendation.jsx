@@ -11,7 +11,6 @@ import {
   Box,
   Hr,
   ProducerTitleItem,
-  SaveBox,
   ButtonBox,
 } from "./OutdoorRecommendation";
 import Button from "../../atoms/Button";
@@ -30,11 +29,7 @@ const APPLICATION_SPRING_SERVER_URL =
 export const OutdoorRecommendation = () => {
   const navigate = useNavigate();
   const name = useSelector((state) => state.user.name);
-  const targetCheck = useSelector((state) => state.result.target);
-  console.log("전역 target", targetCheck);
   const { kakao } = window;
-  const respones = useSelector((state) => state.result.target);
-  console.log(respones);
   const ageDatas = useSelector((state) => state.result.target.age);
   const [ages, setAges] = useState([]);
   useLayoutEffect(() => {
@@ -52,10 +47,6 @@ export const OutdoorRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
-  console.log("age", age);
-  console.log("gender", gender);
-  const result = useSelector((state) => state.result.media);
-  console.log("고객이 입력한 정보", result);
   const mediaList = useSelector((state) => state.result.media.totalList);
   const [mediaLabels, setMediaLabels] = useState([]);
   const [mainDatas, setMainDatas] = useState([]);
@@ -108,10 +99,8 @@ export const OutdoorRecommendation = () => {
   const [subwayLabels, setSubwayLabels] = useState([]);
   const [subwayDatas, setSubwayDatas] = useState([]);
   const item = useSelector((state) => state.user.productSmall);
-  const sido = useSelector((state) => state.result.selectedBigRegion);
   const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
   const selectedPrice = useSelector((state) => state.result.selectedPrice);
-  const onOff = useSelector((state) => state.result.selectedOnOffline);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -347,11 +336,6 @@ export const OutdoorRecommendation = () => {
   }, []);
 
   const save = async () => {
-    console.log("저장api name", name);
-    console.log("저장api item", item);
-    console.log("저장api selectedPrice", selectedPrice);
-    console.log("저장api onOff", onOff);
-    console.log("저장api sigunguId", sigunguId);
     try {
       const response = await axios.post(
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
@@ -451,35 +435,23 @@ export const OutdoorRecommendation = () => {
         )}
       </Box>
       <ButtonBox>
-        <SaveBox>
-          <Button
-            backgroundColor="white"
-            width="350px"
-            height="80px"
-            border="1px solid #3C486B"
-            textColor="#3C486B"
-            fontSize="24px"
-            onClick={() => {
-              save();
-              navigate("/mypage");
-            }}
-          >
-            보관함에 추가
-          </Button>
-          <Button
-            backgroundColor="white"
-            width="350px"
-            height="80px"
-            border="1px solid #3C486B"
-            textColor="#3C486B"
-            fontSize="24px"
-          >
-            PDF로 저장
-          </Button>
-        </SaveBox>
         <Button
           backgroundColor="#3C486B"
-          width="890px"
+          width="350px"
+          height="80px"
+          border="1px solid #3C486B"
+          textColor="white"
+          fontSize="24px"
+          onClick={() => {
+            save();
+            navigate("/mypage");
+          }}
+        >
+          보관함에 추가
+        </Button>
+        <Button
+          backgroundColor="#3C486B"
+          width="350px"
           height="80px"
           textColor="white"
           fontSize="24px"
