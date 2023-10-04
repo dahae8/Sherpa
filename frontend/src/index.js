@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { store } from './store/store';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ScrollToTop from './components/atoms/ScrollToTop';
 
 const theme = createTheme({
   palette: {
@@ -28,6 +29,7 @@ root.render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
+        <ScrollToTop />
           <App />
         </Provider>
       </ThemeProvider>

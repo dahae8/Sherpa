@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import MediaCard from "../atoms/MediaCard";
+import MediaCard2 from "../atoms/MediaCard2";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -44,9 +44,9 @@ function MediaCardList() {
         <CardGridBox>
         {
             medList.map(function(a,i){
-              return (<MediaCard
+              return (<MediaCard2
                 Date={a.recDate} key={i} key2={a.id} label={a.productSmall} isOnOff = {a.isOnOff} budget ={a.budget} sigungu = {a.sigungu}
-              ></MediaCard>)
+              ></MediaCard2>)
             })
           }
         </CardGridBox>
