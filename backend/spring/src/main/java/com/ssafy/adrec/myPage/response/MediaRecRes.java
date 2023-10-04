@@ -13,7 +13,9 @@ public class MediaRecRes {
     int isOnOff;
     int budget;
 
+    Long productSmallId;
     String productSmall;
+
     Long mediaTypeId;
 
     String sigungu;
