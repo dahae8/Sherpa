@@ -10,8 +10,8 @@ const initialState = {
   selectedOnOffline: null,
   selectedBigRegion: null,
   selectedSmallRegion: null,
-  bigRegionName : null,
-  smallRegionName : null,
+  bigRegionName: null,
+  smallRegionName: null,
 };
 
 const persistConfig = {
@@ -39,6 +39,7 @@ const resultSlice = createSlice({
     },
     setMedia(state, action) {
       state.media = action.payload;
+      console.log(state.media);
     },
     setRecommendedMedia(state, action) {
       state.recommendedMedia = action.payload;

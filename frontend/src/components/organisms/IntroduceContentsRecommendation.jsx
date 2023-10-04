@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import person from "../../assets/img/person.png";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   margin-top: 200px;
@@ -53,7 +55,8 @@ const Button = styled.button`
   color: white;
 `;
 
-function makeIntroduceContentsRecommendation() {
+function MakeIntroduceContentsRecommendation() {
+  const navigate = useNavigate();
   return (
     <Container>
       <TitleBox>광고 콘텐츠 추천 받기</TitleBox>
@@ -79,8 +82,14 @@ function makeIntroduceContentsRecommendation() {
           </Description>
         </DescriptionItem>
       </ContentBox>
-      <Button>광고 콘테츠 추천 바로가기</Button>
+      <Button
+        onClick={() => {
+          navigate("/contentRecommend");
+        }}
+      >
+        광고 콘테츠 추천 바로가기
+      </Button>
     </Container>
   );
 }
-export default makeIntroduceContentsRecommendation;
+export default MakeIntroduceContentsRecommendation;
