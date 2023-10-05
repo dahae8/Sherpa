@@ -79,12 +79,12 @@ rec_date = ["2023-10-01", "2023-9-30", "2023-9-29", "2023-9-28", "2023-9-27", "2
 keywordRec_data = {}
 # keywordRec SELECT 쿼리 실행
 
-productSmall_id_value = 187
+productSmall_id_value = 25
 # SELECT 쿼리로 productSmall_id를 플레이스홀더로 대체
-# keywordRec_selsect_query = "SELECT * FROM keywordRec WHERE productSmall_id = %s;"
-# cursor.execute(keywordRec_selsect_query, (productSmall_id_value,))
-keywordRec_selsect_query = "SELECT * FROM keywordRec WHERE productSmall_id = 187 and member_id = 53;"
-cursor.execute(keywordRec_selsect_query)
+keywordRec_selsect_query = "SELECT * FROM keywordRec WHERE productSmall_id = %s;"
+cursor.execute(keywordRec_selsect_query, (productSmall_id_value,))
+# keywordRec_selsect_query = "SELECT * FROM keywordRec WHERE productSmall_id = 187 and member_id = 53;"
+# cursor.execute(keywordRec_selsect_query)
 # 결과 가져오기
 keywordRec_sql_data = cursor.fetchall()
 for row in keywordRec_sql_data:
