@@ -11,7 +11,6 @@ import {
   Box,
   Hr,
   ProducerTitleItem,
-  SaveBox,
   ButtonBox,
 } from "./OutdoorRecommendation";
 import Button from "../../atoms/Button";
@@ -30,11 +29,7 @@ const APPLICATION_SPRING_SERVER_URL =
 export const OutdoorRecommendation = () => {
   const navigate = useNavigate();
   const name = useSelector((state) => state.user.name);
-  const targetCheck = useSelector((state) => state.result.target);
-  console.log("전역 target", targetCheck);
   const { kakao } = window;
-  const respones = useSelector((state) => state.result.target);
-  console.log(respones);
   const ageDatas = useSelector((state) => state.result.target.age);
   const [ages, setAges] = useState([]);
   useLayoutEffect(() => {
@@ -52,10 +47,6 @@ export const OutdoorRecommendation = () => {
   const female = useSelector((state) => state.result.target.gender[0].value);
   const gender = useSelector((state) => state.result.target.recommend.gender);
   const age = useSelector((state) => state.result.target.recommend.age);
-  console.log("age", age);
-  console.log("gender", gender);
-  const result = useSelector((state) => state.result.media);
-  console.log("고객이 입력한 정보", result);
   const mediaList = useSelector((state) => state.result.media.totalList);
   const [mediaLabels, setMediaLabels] = useState([]);
   const [mainDatas, setMainDatas] = useState([]);
@@ -75,37 +66,8 @@ export const OutdoorRecommendation = () => {
     setMainDatas(mainDatas);
   }, [mediaList]);
   const recommendedMedia = useSelector((state) => state.result.media.recommend);
-  const subwayLabels = ["문화전당", "금난로 4가", "상무"]; // 지하철역 분석 API
-  // const subwayLabels = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     subwayLabels.push(data[i].station);
-  //   } else {
-  //     subwayLabels.push(0);
-  //   }
-  // }
-  const subwayDatas = [80, 60, 45, 42, 32, 29, 19, 5]; // 지하철역 분석 API
-  // const subwayDatas = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     subwayDatas.push(data[i].ratio);
-  //   } else {
-  //     subwayDatas.push(0);
-  //   }
-  // }
-  const bigRegion = "광주 광역시"; //state
-  // const bigRegion = useSelector((state) => state.result.selectedBigRegion);
-  const smallRegion = "광산구"; //state
-  // const smallRegion = useSelector((state) => state.result.selectedSmallRegion);
-  const addresses = ["무진대로211번길 28", "월계로 109", "하남산단6번로 107"]; // 현수막 장소 분석 API
-  // const addresses = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     addresses.push(data[i].address);
-  //   } else {
-  //     addresses.push(0);
-  //   }
-  // }
+  const bigRegion = useSelector((state) => state.result.bigRegionName);
+  const smallRegion = useSelector((state) => state.result.smallRegionName);
   let target = "성별";
   if (gender === true) {
     target = "남성";
@@ -125,21 +87,22 @@ export const OutdoorRecommendation = () => {
   const [regionDatas, setRegionDatas] = useState([]);
   const [busLabels, setBusLabels] = useState([]);
   const [busDatas, setBusDatas] = useState([]);
+  const [subwayLabels, setSubwayLabels] = useState([]);
+  const [subwayDatas, setSubwayDatas] = useState([]);
+  const [addresses, setAddresses] = useState([]);
   const item = useSelector((state) => state.user.productSmall);
-  const sido = useSelector((state) => state.result.selectedBigRegion);
   const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
   const selectedPrice = useSelector((state) => state.result.selectedPrice);
-  const onOff = useSelector((state) => state.result.selectedOnOffline);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
     console.log(APPLICATION_FAST_SERVER_URL);
     const recommendMedia = async () => {
       try {
-        console.log("item", item);
-        console.log("sigunguId", sigunguId);
-        console.log("gender", gender);
-        console.log("age", age);
+        console.log("서브 추천 api item", item);
+        console.log("서브 추천 api sigunguId", sigunguId);
+        console.log("서브 추천 api gender", gender);
+        console.log("서브 추천 api age", age);
         const response = await axios.post(
           `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/product`,
           {
@@ -297,6 +260,57 @@ export const OutdoorRecommendation = () => {
         console.log("버스 오류", error);
       }
     };
+    const recommendSubway = async () => {
+      try {
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/subway`
+        );
+        console.log("지하철 역 가져오기", response);
+        const subwayLabels = [];
+        const subwayDatas = [];
+
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i]) {
+            subwayLabels.push(response.data.data[i].station);
+            subwayDatas.push(response.data.data[i].ratio);
+          } else {
+            subwayLabels.push(0);
+            subwayDatas.push(0);
+          }
+        }
+        setSubwayLabels(subwayLabels);
+        setSubwayDatas(subwayDatas);
+      } catch (error) {
+        console.log("지하철 역 오류", error);
+      }
+    };
+    const recommendOutdoor = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/banner`,
+          {
+            listSize: 5,
+            gender: Number(gender),
+            age: age,
+            sigunguId: sigunguId,
+          }
+        );
+        console.log("현수막 가져오기", response);
+        const addresses = [];
+
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i]) {
+            addresses.push(response.data.data[i].address);
+          } else {
+            addresses.push(0);
+          }
+        }
+        setAddresses(addresses);
+        console.log("주소 리스트", addresses);
+      } catch (error) {
+        console.log("현수막 오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
     linkproducer();
@@ -304,6 +318,8 @@ export const OutdoorRecommendation = () => {
     linkproducer3();
     recommendRegion();
     recommendBus();
+    recommendSubway();
+    recommendOutdoor();
   }, []);
 
   useEffect(() => {
@@ -330,7 +346,7 @@ export const OutdoorRecommendation = () => {
         }
       });
     });
-  }, []);
+  }, [addresses]);
 
   useEffect(() => {
     const delayProducerRender = setTimeout(() => {
@@ -340,11 +356,6 @@ export const OutdoorRecommendation = () => {
   }, []);
 
   const save = async () => {
-    console.log("저장api name", name);
-    console.log("저장api item", item);
-    console.log("저장api selectedPrice", selectedPrice);
-    console.log("저장api onOff", onOff);
-    console.log("저장api sigunguId", sigunguId);
     try {
       const response = await axios.post(
         `${APPLICATION_SPRING_SERVER_URL}/api/mypage/save/mediaRec`,
@@ -444,35 +455,23 @@ export const OutdoorRecommendation = () => {
         )}
       </Box>
       <ButtonBox>
-        <SaveBox>
-          <Button
-            backgroundColor="white"
-            width="350px"
-            height="80px"
-            border="1px solid #3C486B"
-            textColor="#3C486B"
-            fontSize="24px"
-            onClick={() => {
-              save();
-              navigate("/mypage");
-            }}
-          >
-            보관함에 추가
-          </Button>
-          <Button
-            backgroundColor="white"
-            width="350px"
-            height="80px"
-            border="1px solid #3C486B"
-            textColor="#3C486B"
-            fontSize="24px"
-          >
-            PDF로 저장
-          </Button>
-        </SaveBox>
         <Button
           backgroundColor="#3C486B"
-          width="890px"
+          width="350px"
+          height="80px"
+          border="1px solid #3C486B"
+          textColor="white"
+          fontSize="24px"
+          onClick={() => {
+            save();
+            navigate("/mypage");
+          }}
+        >
+          보관함에 추가
+        </Button>
+        <Button
+          backgroundColor="#3C486B"
+          width="350px"
           height="80px"
           textColor="white"
           fontSize="24px"

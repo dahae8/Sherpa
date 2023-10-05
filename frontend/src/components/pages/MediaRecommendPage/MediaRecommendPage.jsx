@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-import styled from 'styled-components';
-import MediaSelectOption from '../../organisms/MediaSelectOption';
-import { TextField } from '@mui/material';
-import Button from '../../atoms/Button';
-import Select from '../../atoms/SelectOption';
+import styled from "styled-components";
+import MediaSelectOption from "../../organisms/MediaSelectOption";
+import { TextField } from "@mui/material";
+import Button from "../../atoms/Button";
+import Select from "../../atoms/SelectOption";
 import {
   setTarget,
   setMedia,
@@ -17,22 +17,29 @@ import {
   setSelectedBigRegion,
   setSelectedSmallRegion,
   setbigRegionName,
-  setsmallRegionName
-} from '../../../slices/resultSlice';
-import { setProductSmallName, setProductSmall } from '../../../slices/userSlice';
+  setsmallRegionName,
+} from "../../../slices/resultSlice";
+import {
+  setProductSmallName,
+  setProductSmall,
+} from "../../../slices/userSlice";
 
 const APPLICATION_SPRING_SERVER_URL =
-  process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8080";
 
 const APPLICATION_FAST_SERVER_URL =
-  process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8000';
+  process.env.NODE_ENV === "production"
+    ? "https://j9c107.p.ssafy.io"
+    : "http://j9c107.p.ssafy.io:8000";
 
 const Container = styled.div`
   margin: 0 320px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
+  align-items: center;
+  justify-content: center;
 `;
 const Box = styled.div`
   margin: 150px 0px 150px 0px;
@@ -93,7 +100,7 @@ export const MediaRecommendPage = () => {
 
   // 예산 및 온/오프라인
   const [selectedBudget, setSelectedBudget] = useState(0);
-  const [selectedButton, setSelectedButton] = useState('online');
+  const [selectedButton, setSelectedButton] = useState("online");
   const [gender, setGender] = useState(null);
   const [age, setAge] = useState(null);
 
@@ -101,15 +108,17 @@ export const MediaRecommendPage = () => {
     const targetSidoData = dataSido.find((data) => data.id === selectDataSido);
     const sidoName = targetSidoData ? targetSidoData.area : null;
     dispatch(setbigRegionName(sidoName));
-    console.log('시도명', sidoName);
-    const targetSigunguData = dataSigungu.find((data) => data.id === selectDataSigungu);
+    console.log("시도명", sidoName);
+    const targetSigunguData = dataSigungu.find(
+      (data) => data.id === selectDataSigungu
+    );
     const sigunguName = targetSigunguData ? targetSigunguData.area : null;
     dispatch(setsmallRegionName(sigunguName));
-    console.log('시군구명', sigunguName);
+    console.log("시군구명", sigunguName);
     const targetProductData = dataS.find((data) => data.id === selectDataS);
     const productName = targetProductData ? targetProductData.product : null;
     dispatch(setProductSmallName(productName));
-    console.log('품목명', productName);
+    console.log("품목명", productName);
   }
   function getResult() {
     getNames();
@@ -119,38 +128,57 @@ export const MediaRecommendPage = () => {
     dispatch(setSelectedSmallRegion(selectDataSigungu));
     dispatch(setProductSmall(selectDataS));
 
-    if (gender !== null && age !== null && selectedButton === 'online') {
-      navigate('/mediaResult/online');
-    } else if (gender !== null && age !== null && selectedButton === 'offline') {
+    if (gender !== null && age !== null && selectedButton === "online") {
+      navigate("/mediaResult/online");
+    } else if (
+      gender !== null &&
+      age !== null &&
+      selectedButton === "offline"
+    ) {
       const getOffline = async () => {
+        console.log("정찬이형 파트 request selectDataS", selectDataS);
+        console.log(
+          "정찬이형 파트 request selectDataSigungu",
+          selectDataSigungu
+        );
+        console.log("정찬이형 파트 request gender", gender);
+        console.log("정찬이형 파트 request age", age);
+        console.log("정찬이형 파트 request selectedBudget", selectedBudget);
         try {
-          const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`, {
-            productSmallId: selectDataS,
-            sigunguId: selectDataSigungu,
-            gender: gender,
-            age: age,
-            budget: selectedBudget
-          });
+          const response = await axios.post(
+            `${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`,
+            {
+              productSmallId: selectDataS,
+              sigunguId: selectDataSigungu,
+              gender: gender,
+              age: age,
+              budget: selectedBudget,
+            }
+          );
           if (response.data.success) {
-            console.log('getOffline', response.data);
+            console.log("getOffline", response.data);
             dispatch(setMedia(response.data.data));
 
             const recommendMedia = response.data.data.recommend;
             dispatch(setRecommendedMedia(recommendMedia));
-            console.log('추천매체', recommendMedia);
+            console.log("추천매체", recommendMedia);
 
-            if (recommendMedia === 'TV') {
-              navigate('/mediaResult/tv');
-            } else if (recommendMedia === '라디오') {
-              navigate('/mediaResult/radio');
-            } else if (recommendMedia === '인쇄') {
-              navigate('/mediaResult/newspaper');
-            } else if (recommendMedia === '버스' || recommendMedia === '현수막' || recommendMedia === '지하철') {
-              navigate('/mediaResult/outdoor');
+            if (recommendMedia === "TV") {
+              navigate("/mediaResult/tv");
+            } else if (recommendMedia === "라디오") {
+              navigate("/mediaResult/radio");
+            } else if (recommendMedia === "인쇄") {
+              navigate("/mediaResult/newspaper");
+            } else if (
+              recommendMedia === "버스" ||
+              recommendMedia === "현수막" ||
+              recommendMedia === "지하철"
+            ) {
+              navigate("/mediaResult/outdoor");
             }
           }
         } catch (error) {
-          console.log('getOfflineError!!', error);
+          console.log("getOfflineError!!", error);
         }
       };
       getOffline();
@@ -161,13 +189,15 @@ export const MediaRecommendPage = () => {
   useLayoutEffect(() => {
     const getDataL = async () => {
       try {
-        const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/L/0`);
+        const response = await axios.get(
+          APPLICATION_SPRING_SERVER_URL + `/api/product/L/0`
+        );
         if (response.data.success) {
           console.log(response.data.data);
           setDataL(response.data.data);
         }
       } catch (error) {
-        console.log('Error!!', error);
+        console.log("Error!!", error);
       }
     };
 
@@ -177,13 +207,15 @@ export const MediaRecommendPage = () => {
     const selectedL = selectDataL !== null ? selectDataL : defaultSelectL;
     const getDataM = async () => {
       try {
-        const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/M/${selectedL}`);
+        const response = await axios.get(
+          APPLICATION_SPRING_SERVER_URL + `/api/product/M/${selectedL}`
+        );
         if (response.data.success) {
           console.log(response.data.data);
           setDataM(response.data.data);
         }
       } catch (error) {
-        console.log('Error!!', error);
+        console.log("Error!!", error);
       }
     };
     getDataM();
@@ -192,13 +224,15 @@ export const MediaRecommendPage = () => {
     const selectedM = selectDataM !== null ? selectDataM : defaultSelectM;
     const getDataS = async () => {
       try {
-        const response = await axios.get(APPLICATION_SPRING_SERVER_URL + `/api/product/S/${selectedM}`);
+        const response = await axios.get(
+          APPLICATION_SPRING_SERVER_URL + `/api/product/S/${selectedM}`
+        );
         if (response.data.success) {
           console.log(response.data.data);
           setDataS(response.data.data);
         }
       } catch (error) {
-        console.log('Error!!', error);
+        console.log("Error!!", error);
       }
     };
 
@@ -209,13 +243,15 @@ export const MediaRecommendPage = () => {
   useLayoutEffect(() => {
     const getSido = async () => {
       try {
-        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/area/sido/0`);
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/area/sido/0`
+        );
         if (response.data.success) {
           // console.log(response.data.data);
           setDataSido(response.data.data);
         }
       } catch (error) {
-        console.error('Error fetching initial data:', error);
+        console.error("Error fetching initial data:", error);
       }
     };
 
@@ -224,13 +260,15 @@ export const MediaRecommendPage = () => {
   useEffect(() => {
     const getSigungu = async () => {
       try {
-        const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/area/sigungu/${selectDataSido}`);
+        const response = await axios.get(
+          `${APPLICATION_SPRING_SERVER_URL}/api/area/sigungu/${selectDataSido}`
+        );
         if (response.data.success) {
           console.log(response.data);
           setDataSigungu(response.data.data);
         }
       } catch (error) {
-        console.log('Error!!', error);
+        console.log("Error!!", error);
       }
     };
 
@@ -242,19 +280,23 @@ export const MediaRecommendPage = () => {
     const getTarget = async () => {
       const data = {
         productSmallId: selectDataS,
-        sigunguId: selectDataSigungu
+        sigunguId: selectDataSigungu,
       };
 
-      console.log('productSmallId', data.productSmallId);
+      console.log("productSmallId", data.productSmallId);
       console.log(typeof data.productSmallId);
-      console.log('sigunguId', data.sigunguId);
+      console.log("sigunguId", data.sigunguId);
       console.log(typeof data.sigunguId);
       try {
-        const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/target`, data, {
-          headers: {
-            'Content-Type': 'application/json'
+        const response = await axios.post(
+          `${APPLICATION_SPRING_SERVER_URL}/api/target`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
         if (response.data.success) {
           console.log(response.data.data);
           dispatch(setTarget(response.data.data));
@@ -263,13 +305,16 @@ export const MediaRecommendPage = () => {
           } else {
             setGender(0);
           }
-          console.log('추천값', response.data.data.recommend);
+          console.log("추천값", response.data.data.recommend);
           console.log(gender);
           setAge(response.data.data.recommend.age);
           console.log(age);
         }
       } catch (error) {
-        console.log('getTargetError!!', error.response ? error.response.data : error);
+        console.log(
+          "getTargetError!!",
+          error.response ? error.response.data : error
+        );
       }
     };
 
@@ -294,30 +339,36 @@ export const MediaRecommendPage = () => {
       <RecommendSelect>
         <BudgetAdvertisement>
           <Paragraph>내가 생각하는 광고 최대 예산</Paragraph>
-          <TextField onChange={(e) => setSelectedBudget(Number(e.target.value))}></TextField>
+          <TextField
+            onChange={(e) => setSelectedBudget(Number(e.target.value))}
+          ></TextField>
         </BudgetAdvertisement>
         <ChooseKindOfRecommend>
           <Paragraph>온/오프라인</Paragraph>
           <Buttons>
             <Button
-              onClick={() => setSelectedButton('online')}
-              backgroundColor={selectedButton === 'online' ? '#3C486B' : 'white'}
+              onClick={() => setSelectedButton("online")}
+              backgroundColor={
+                selectedButton === "online" ? "#3C486B" : "white"
+              }
               width="200px"
               height="50px"
-              textColor={selectedButton === 'online' ? 'white' : '#3C486B'}
+              textColor={selectedButton === "online" ? "white" : "#3C486B"}
               fontSize="24px"
-              border={selectedButton !== 'online' ? 'solid 1px' : 'none'}
+              border={selectedButton !== "online" ? "solid 1px" : "none"}
             >
               온라인
             </Button>
             <Button
-              onClick={() => setSelectedButton('offline')}
-              backgroundColor={selectedButton === 'offline' ? '#3C486B' : 'white'}
+              onClick={() => setSelectedButton("offline")}
+              backgroundColor={
+                selectedButton === "offline" ? "#3C486B" : "white"
+              }
               width="200px"
               height="50px"
-              textColor={selectedButton === 'offline' ? 'white' : '#3C486B'}
+              textColor={selectedButton === "offline" ? "white" : "#3C486B"}
               fontSize="24px"
-              border={selectedButton !== 'offline' ? 'solid 1px' : 'none'}
+              border={selectedButton !== "offline" ? "solid 1px" : "none"}
             >
               오프라인
             </Button>
@@ -325,17 +376,25 @@ export const MediaRecommendPage = () => {
         </ChooseKindOfRecommend>
         <Choosesido>
           <Paragraph>광고 지역 선택</Paragraph>
-          <Select data={dataSido} onSelect={setSelectDataSido} width="400px"></Select>
+          <Select
+            data={dataSido}
+            onSelect={setSelectDataSido}
+            width="400px"
+          ></Select>
         </Choosesido>
         <Choosedong>
           <Paragraph>광고 상세 지역 선택</Paragraph>
-          <Select data={dataSigungu} onSelect={setSelectDataSigungu} width="400px"></Select>
+          <Select
+            data={dataSigungu}
+            onSelect={setSelectDataSigungu}
+            width="400px"
+          ></Select>
         </Choosedong>
       </RecommendSelect>
       <Box>
         <Button
           backgroundColor="#3C486B"
-          width="30%"
+          width="300px"
           height="50px"
           textColor="white"
           fontSize="24px"
