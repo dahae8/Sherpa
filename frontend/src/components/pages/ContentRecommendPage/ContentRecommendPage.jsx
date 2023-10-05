@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import Select from '../../atoms/SelectOption';
 import MediaSelectOption from '../../organisms/MediaSelectOption';
 import Button from '../../atoms/Button';
-import { TextField } from '@mui/material';
+import { Box, Modal, Typography, TextField } from '@mui/material';
 import { Chip } from '@mui/material';
 
 const APPLICATION_SPRING_SERVER_URL =
@@ -21,23 +21,17 @@ const Container = styled.div`
   margin: 0 320px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
+  align-items: center;
+  justify-content: center;
 `;
 const Paragraph = styled.p`
-  text-align: start;
+  text-align: center;
+  font-size: 24px;
 `;
 const Title = styled.p`
   font-size: 32px;
   margin: 10px 20px 50px 0px;
   font-weight: 700;
-`;
-const Box = styled.div`
-  margin: 50px 0px 50px 0px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
 `;
 const Bunch = styled.div`
   margin: 100px 0px 20px 0px;
@@ -48,13 +42,35 @@ const Bunch = styled.div`
   justify-content: center;
 `;
 const Bundle = styled.div`
-  margin: 0px 0px 0px 0px;
+  margin: 0px 0px 30px 0px;
+  width: 60%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-content: center;
-  justify-content: center;
+  justify-content: space-evenly;
 `;
+const Clouds = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+`;
+const RecKeword = styled.div`
+  margin: 5px 10px 100px 10px;
+`;
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  height: 800,
+  bgcolor: 'background.paper',
+  border: '1px solid #fff',
+  borderRadius: 1,
+  p: 4,
+  padding: 7
+};
 
 export const ContentRecommendPage = () => {
   const dispatch = useDispatch();
@@ -70,17 +86,45 @@ export const ContentRecommendPage = () => {
   const [dataL, setDataL] = useState([]);
   const [dataM, setDataM] = useState([]);
   const [dataS, setDataS] = useState([]);
+  const myName = useSelector((state) => state.user.name);
+
+  // 좋아요한 키워드
+  const [myKeywords, setMyKeywords] = useState([]);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  // 키워드
+  const [keywords, setKeywords] = useState([]);
+  const [inputValue, setInputValue] = useState('');
 
   // 매체 리스트
   const [mediaList, setMediaList] = useState([]);
   const [mediaText, setMediaText] = useState([]);
+  let [mediaTypeMedium, setMediaTypeMedium] = useState(null);
+  let [mediaTypeSub, setMediaTypeSub] = useState(null);
   const [media, setMedia] = useState(null);
-  const [keywords, setKeywords] = useState(['에듀윌', '공무원시험', '합격']);
   const [category, setCategory] = useState({
-    major: 'selectDataL',
-    middle: 'selectDataM',
-    minor: 'selectDataS'
+    major: selectDataL,
+    middle: selectDataM,
+    minor: selectDataS
   });
+
+  // Handler for text field change
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value); // Update inputValue state with the text entered in the TextField
+  };
+
+  // Handler for button click
+  const handleButtonClick = () => {
+    if (inputValue.trim()) {
+      // If inputValue is not empty or only whitespaces
+      setKeywords([...keywords, inputValue]); // Add the inputValue to the keywords array
+      setInputValue(''); // Clear the TextField
+      console.log(keywords);
+    }
+  };
+
   const [phrase, setPhrase] = useState([]);
   const [scenario, setScenario] = useState([
     {
@@ -89,29 +133,101 @@ export const ContentRecommendPage = () => {
     }
   ]);
 
-  function getMediaText() {
-    const targetMediaData = mediaList.find((data) => data.id === media);
-    const mediaText = targetMediaData ? targetMediaData.area : null;
-    console.log('매체명', mediaText);
-    console.log(mediaList);
-    console.log(media);
-  }
+  useEffect(() => {
+    function getMediaText() {
+      const targetMediaData = mediaList.find((index) => index.id === media);
+      const mediaText = targetMediaData ? targetMediaData.medium : null;
+      setMediaText(mediaText);
+      console.log('매체명', mediaText);
+      console.log(mediaList);
+      console.log(media);
+      console.log(targetMediaData);
+    }
+    getMediaText();
+  }, [media]);
+
+  const saveAdRecommendation = async (scenarioToUse) => {
+    if (media <= 5) {
+      mediaTypeMedium = media;
+      mediaTypeSub = null;
+    } else if (media >= 6) {
+      mediaTypeMedium = 6;
+      mediaTypeSub = media - 5;
+    }
+    console.log('중분류', mediaTypeMedium);
+    console.log('소분류', mediaTypeSub);
+
+    console.log(scenarioToUse);
+
+    const data = {
+      memberName: myName,
+      productSmallId: selectDataS,
+      mediaTypeId: mediaTypeMedium,
+      mediaSubId: mediaTypeSub,
+      keywordList: keywords,
+      contentList: scenarioToUse
+    };
+    try {
+      const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/content/save`, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response.data.success) {
+        console.log(response.data.msg);
+      }
+    } catch (error) {
+      console.log('saveAdRecommendation!!', error.response ? error.response.data : error);
+    }
+  };
+
+  const getMyKeywords = async () => {
+    try {
+      const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/content/keyword/${myName}/${selectDataS}`);
+      if (response.data.success) {
+        console.log('좋아요한 키워드', response.data.data);
+        setMyKeywords(response.data.data);
+        handleOpen();
+      }
+    } catch (error) {
+      console.log('getMyKeywords!!', error.response ? error.response.data : error);
+    }
+  };
+
+  const changePhrase = () => {
+    if (phrase) {
+      const newScenario = phrase.map((p) => ({
+        title: p,
+        content: ''
+      }));
+      console.log(newScenario);
+      setScenario(newScenario);
+      console.log('phrase를 scenario에 넣었어요', scenario);
+      return newScenario;
+    }
+    return scenario;
+  };
+
   async function getRecommend(media, keywords, category, setPhrase, setScenario) {
     const API_KEY = process.env.REACT_APP_API_KEY;
     const openai = new OpenAI({
       apiKey: API_KEY,
       dangerouslyAllowBrowser: true
     });
-    getMediaText();
+    // getMediaText();
+    console.log(['TV', '라디오'].includes(mediaText));
+    console.log(mediaText);
+    setPhrase([]);
+    setScenario([]);
     try {
       // media가 TV, 라디오인 경우
-      if (['TV', '라디오'].includes(media)) {
+      if (['TV', '라디오'].includes(mediaText) === true) {
         console.log('시나리오 추천받는 중');
         const scenarioMessage = `나는 ${mediaText} 매체에서 광고하려고 합니다. 주요 키워드는 ${keywords.join(
           ', '
-        )}입니다. 광고의 업종은 ${category.major} > ${category.middle} > ${
-          category.minor
-        }입니다. 음악의 경우 저작권이 없는 ncm 혹은 클래식을 위주로 해주세요. 
+        )}입니다.
+        광고의 업종은 ${category.major} > ${category.middle} > ${category.minor}입니다.
+        음악의 경우 저작권이 없는 ncm 혹은 클래식을 위주로 해주세요. 
         예산의 경우 고려하지 않고 진행합니다. 
         광고 시나리오에는 반드시 각각 제목을 달고 '제목: 시나리오제목'의 형식으로 해주세요. 
         대사도 추가해서 작성해주세요.
@@ -261,9 +377,7 @@ export const ContentRecommendPage = () => {
   return (
     <Container>
       <h1>광고 매체를 선택해주세요</h1>
-      <Box>
-        <Select data={mediaList} onSelect={setMedia} width="700px"></Select>
-      </Box>
+      <Select data={mediaList} onSelect={setMedia} width="700px"></Select>
       <h1>광고 품목을 선택해 주세요</h1>
       <MediaSelectOption
         dataL={dataL}
@@ -279,36 +393,59 @@ export const ContentRecommendPage = () => {
       ></MediaSelectOption>
       <Bunch>
         <Title>키워드를 입력해주세요</Title>
-        <Button
+        {/* <Button
           backgroundColor="white"
           width="180px"
           height="50px"
           textColor="#3C486B"
           fontSize="16px"
           border="solid 1px"
+          onClick={() => {
+            getMyKeywords();
+          }}
         >
           좋아요한 키워드+
-        </Button>
+        </Button> */}
       </Bunch>
+      {/* {
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style} overflow="auto">
+            <Typography fontSize={40} align="center">
+              {myKeywords.map((index) => {
+                return <p>{index}</p>;
+              })}
+            </Typography>
+          </Box>
+        </Modal>
+      } */}
       <Bundle>
-        <Select width="600px"></Select>
+        <TextField size="middle" value={inputValue} onChange={handleInputChange}></TextField>
         <Button
           backgroundColor="#3C486B"
           width="150px"
           height="50px"
           textColor="white"
           fontSize="24px"
-          onClick={() => { getMediaText() }}
+          onClick={handleButtonClick}
         >
           추가
         </Button>
       </Bundle>
       <Bundle>
-        <Chip
-          label="Clickable Deletable"
-          // onClick={handleClick}
-          // onDelete={handleDelete}
-        />
+        <Clouds>
+          {keywords.map((index) => {
+            return (
+              <RecKeword>
+                <Chip label={`#${index}`} />
+              </RecKeword>
+            );
+          })}
+        </Clouds>
       </Bundle>
       <Button
         backgroundColor="#3C486B"
@@ -336,6 +473,20 @@ export const ContentRecommendPage = () => {
         ))}
         ;
       </div>
+      <Button
+        backgroundColor="#3C486B"
+        width="400px"
+        height="50px"
+        textColor="white"
+        fontSize="24px"
+        onClick={() => {
+          const newScenario = changePhrase();
+          saveAdRecommendation(newScenario);
+          navigate('/mypage');
+        }}
+      >
+        보관함에 추가
+      </Button>
     </Container>
   );
 };

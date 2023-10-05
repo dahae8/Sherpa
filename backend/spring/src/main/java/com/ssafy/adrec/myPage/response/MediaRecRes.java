@@ -12,7 +12,14 @@ public class MediaRecRes {
     LocalDateTime recDate;
     int isOnOff;
     int budget;
-    String sigungu;
+
+    Long productSmallId;
     String productSmall;
+
     Long mediaTypeId;
+
+    String sigungu;
+    Long sigunguId;
+    String sido;
+    Long sidoId;
 }

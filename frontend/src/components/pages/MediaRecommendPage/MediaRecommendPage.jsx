@@ -19,7 +19,7 @@ import {
   setbigRegionName,
   setsmallRegionName
 } from '../../../slices/resultSlice';
-import { setProductSmallName, setProductSmall } from '../../../slices/userSlice';
+import { setProductSmallName, setProductSmall, setProductMedium, setProductLarge } from '../../../slices/userSlice';
 
 const APPLICATION_SPRING_SERVER_URL =
   process.env.NODE_ENV === 'production' ? 'https://j9c107.p.ssafy.io' : 'http://j9c107.p.ssafy.io:8080';
@@ -31,8 +31,8 @@ const Container = styled.div`
   margin: 0 320px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
+  align-items: center;
+  justify-content: center;
 `;
 const Box = styled.div`
   margin: 150px 0px 150px 0px;
@@ -118,11 +118,18 @@ export const MediaRecommendPage = () => {
     dispatch(setSelectedBigRegion(selectDataSido));
     dispatch(setSelectedSmallRegion(selectDataSigungu));
     dispatch(setProductSmall(selectDataS));
+    dispatch(setProductMedium(selectDataM));
+    dispatch(setProductLarge(selectDataL));
 
     if (gender !== null && age !== null && selectedButton === 'online') {
       navigate('/mediaResult/online');
     } else if (gender !== null && age !== null && selectedButton === 'offline') {
       const getOffline = async () => {
+        console.log('정찬이형 파트 request selectDataS', selectDataS);
+        console.log('정찬이형 파트 request selectDataSigungu', selectDataSigungu);
+        console.log('정찬이형 파트 request gender', gender);
+        console.log('정찬이형 파트 request age', age);
+        console.log('정찬이형 파트 request selectedBudget', selectedBudget);
         try {
           const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/offline/total`, {
             productSmallId: selectDataS,
@@ -335,7 +342,7 @@ export const MediaRecommendPage = () => {
       <Box>
         <Button
           backgroundColor="#3C486B"
-          width="30%"
+          width="300px"
           height="50px"
           textColor="white"
           fontSize="24px"

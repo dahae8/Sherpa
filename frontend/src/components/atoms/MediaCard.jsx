@@ -14,7 +14,7 @@ const Container = styled.div`
   text-align: left;
 `;
 const TitleBox = styled.div`
-  font-size: 24px;
+  font-size: 22px;
   margin-top: 15px;
   margin-bottom: 30px;
   height: 100px;
