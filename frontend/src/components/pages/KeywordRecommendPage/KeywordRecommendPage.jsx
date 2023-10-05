@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import styled from 'styled-components';
+import { Box, Modal, Typography } from '@mui/material';
+import Chip from '@mui/material/Chip';
 import MediaSelectOption from '../../organisms/MediaSelectOption';
 import WordCloud from '../../atoms/WordCloud';
 
@@ -34,6 +36,19 @@ const Bundle = styled.div`
   align-content: center;
   justify-content: center;
 `;
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  height: 500,
+  bgcolor: 'background.paper',
+  border: '1px solid #fff',
+  borderRadius: 1,
+  p: 4,
+  padding: 7
+};
 
 export const KeywordRecommendPage = () => {
   const dispatch = useDispatch();
@@ -49,19 +64,55 @@ export const KeywordRecommendPage = () => {
   const [dataL, setDataL] = useState([]);
   const [dataM, setDataM] = useState([]);
   const [dataS, setDataS] = useState([]);
+  const [selectDataSName, setSelectDataSName] = useState(null);
+  const userName = useSelector((state) => state.user.name);
+  const [keywordList, setKeywordList] = useState([]);
 
   // 워드 클라우드 변수
   const [adData, setAdData] = useState([]);
   const [trendData, setTrendData] = useState([]);
-  const [showWordCloud, setShowWordCloud] = useState(false); // WordCloud를 보여줄지 결정하는 상태
+  const [showWordCloud, setShowWordCloud] = useState(false);
+  const [keywordRecId, setKeywordRecId] = useState(0);
+  // WordCloud를 보여줄지 결정하는 상태
   const [selectedWord, setSelectedWord] = useState(null);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleWordClick = (word) => {
     setSelectedWord(word);
+    setOpen(true);
+
+    const saveKeyword = async () => {
+      console.log('보관소 아이디!', keywordRecId);
+      const data = {
+        keyword: selectedWord,
+        keywordRecId: keywordRecId,
+        memberName: userName,
+        productSmallId: selectDataS
+      };
+      try {
+        const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/keyword/like`, data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response.data.success) {
+          console.log(response.data.data);
+          setKeywordRecId(response.data.data.keywordRecId);
+        }
+      } catch (error) {
+        console.log('getTrendKeyword!!', error.trendResponse ? error.trendResponse.data : error);
+      }
+    };
+
+    saveKeyword();
   };
 
   const closeModal = () => {
     setSelectedWord(null);
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -71,6 +122,15 @@ export const KeywordRecommendPage = () => {
     // 컴포넌트가 언마운트되면 setTimeout을 클리어합니다.
     return () => clearTimeout(timerId);
   }, []);
+
+  function getProductText() {
+    const targetMediaData = dataS.find((index) => index.id === selectDataS);
+    const productText = targetMediaData ? targetMediaData.product : null;
+    setSelectDataSName(productText);
+    console.log('품목명', productText);
+    console.log(productText);
+    console.log(targetMediaData);
+  }
 
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
@@ -176,9 +236,32 @@ export const KeywordRecommendPage = () => {
         console.log('getTrendKeyword!!', error.trendResponse ? error.trendResponse.data : error);
       }
     };
+
+    const getRecKeyword = async () => {
+      const data = {
+        productSmallId: selectDataS,
+        memberName: userName,
+        listSize: 10
+      };
+      try {
+        const response = await axios.post(`${APPLICATION_FAST_SERVER_URL}/fastapi/keyword`, data, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response.data.success) {
+          console.log('맞춤형 키워드 추천', response.data);
+          setKeywordList(response.data.data.keywordList);
+        }
+      } catch (error) {
+        console.log('getRecKeyword!!', error.trendResponse ? error.trendResponse.data : error);
+      }
+    };
     console.log('광고 키워드 받아오는 중!!');
     getAdKeyword();
     getTrendKeyword();
+    getProductText();
+    getRecKeyword();
   }, [selectDataS]);
 
   return (
@@ -200,13 +283,47 @@ export const KeywordRecommendPage = () => {
         <Bundle>
           <h1>광고 키워드</h1>
           {showWordCloud && <WordCloud data={adData} onWordClick={handleWordClick}></WordCloud>}
-          {/* {selectedWord && <YourModalComponent onClose={closeModal}>{selectedWord}</YourModalComponent>} */}
+          {selectedWord && (
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style} overflow="auto">
+                <Typography fontSize={40} align="center">
+                  {selectedWord}이(가)
+                  <Chip label={`#${selectDataSName}`} /> 의 "좋아요" 키워드에 추가 되었습니다!
+                </Typography>
+              </Box>
+            </Modal>
+          )}
         </Bundle>
         <Bundle>
           <h1>트랜드 키워드</h1>
           {showWordCloud && <WordCloud data={trendData} onWordClick={handleWordClick}></WordCloud>}
-          {/* {selectedWord && <YourModalComponent onClose={closeModal}>{selectedWord}</YourModalComponent>} */}
+          {selectedWord && (
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style} overflow="auto">
+                <Typography fontSize={40} align="center">
+                  {selectedWord}이(가)
+                  <Chip label={`#${selectDataSName}`} /> 의 "좋아요" 키워드에 추가 되었습니다!
+                </Typography>
+              </Box>
+            </Modal>
+          )}
         </Bundle>
+      </Clouds>
+      <h1>현재 다른 사용자가 선호하는 키워드를 보여주드립니다.</h1>
+      <Clouds>
+        {keywordList.map((index) => {
+          return <Chip label={`#${index.keyword}`} />;
+        })}
       </Clouds>
     </Container>
   );
