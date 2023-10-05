@@ -29,6 +29,24 @@ for _, item in data_category_result.iterrows():
 
 conn.commit()
 
+# csv에서 파일 가져오기
+allProductSmall_category = pd.read_csv('./csv/allProductSmall_category.csv', encoding='cp949', low_memory=False)
+print(allProductSmall_category)
+
+allProductSmall_category.columns = ['name', 'category']
+
+allProductSmall_category["name"] = allProductSmall_category["name"].str.replace(pat=r'[^\w]', repl=r'', regex=True)
+print(allProductSmall_category)
+
+print(allProductSmall_category.columns)
+# 커뮤니티-성별 테이블에 데이터 삽입
+for _, item in allProductSmall_category.iterrows():
+    print(item)
+    insert_query = "INSERT INTO productSmallCategory (small, category) VALUES (%s, %s)"
+    cursor.execute(insert_query, (item['name'], item['category']))
+
+conn.commit()
+
 # 커서와 연결 종료
 cursor.close()
 conn.close()

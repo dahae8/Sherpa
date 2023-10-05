@@ -128,6 +128,7 @@ public class KeywordController {
         }
         else{
             KeywordRec keywordRec = keywordService.getKeywordRec(keywordRecId);
+            Long ki = keywordRec.getProductSmall().getId();
 
             if (keywordRec == null) {
                 resultMap.put("success", false);
@@ -139,9 +140,11 @@ public class KeywordController {
                 resultMap.put("msg", String.format("[%s]유저는 [%d]보관함을 이용했던 유저가 아닙니다.",keywordRec.getMember().getName(),keywordRecId));
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
-            else if(keywordRec.getProductSmall().getId() != productSmallId){
+            else if(!ki.equals(productSmallId)){
+                System.out.println(keywordRec.getProductSmall().getId());
+                System.out.println( productSmallId);
                 resultMap.put("success", false);
-                resultMap.put("msg", String.format("[%d]품목코드는 [%ㅇ]보관함에 저장했던 품목 코드와 다릅니다.",productSmallId, keywordRecId));
+                resultMap.put("msg", String.format("[%d]품목코드는 [%d]보관함에 저장했던 품목 코드와 다릅니다.",productSmallId, keywordRecId));
                 httpStatus = HttpStatus.BAD_REQUEST;
             }
             else{

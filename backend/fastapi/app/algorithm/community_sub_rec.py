@@ -27,11 +27,11 @@ def recommend_community_category(product_small_id):
     cursor = connection.cursor()
 
     # 품목 데이터 가져와서 추가
-    query = "SELECT small FROM productSmall"
+    query = "SELECT * FROM productSmallCategory"
     cursor.execute(query)
     productSmall_sql = cursor.fetchall()
 
-    allProductSmall = pd.DataFrame(productSmall_sql, columns=['name'])
+    allProductSmall = pd.DataFrame(productSmall_sql, columns=['id', 'name', 'category'])
 
     # 품목 이름 가져오기
     query = "SELECT small FROM productSmall where id = %s;"
@@ -42,6 +42,7 @@ def recommend_community_category(product_small_id):
     if result_product_name:
         product_name = str(result_product_name[0])
 
+    product_name = re.sub(r"[^\uAC00-\uD7A30-9a-zA-Z]", "", product_name)
 
     # 커뮤니티 세부 주제 데이터 조회
     query = "SELECT id, theme, theme_sub, title_post, text FROM communityTheme"
@@ -53,10 +54,12 @@ def recommend_community_category(product_small_id):
 
     # 컬럼을 합침
     cols=['category', 'category_sub', 'title_post', 'text']
+    cols_2=['name', 'category']
     data=community_theme[cols]
     data['total']=data[cols].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
+    allProductSmall['total']=allProductSmall[cols_2].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
 
-    data_merge = pd.concat([data['total'], allProductSmall['name']])
+    data_merge = pd.concat([data['total'], allProductSmall['total']])
 
     # 데이터 전처리 후 토큰화
     tokenizer = RegexTokenizer()

@@ -92,7 +92,6 @@ export const NewsPaperRecommendation = () => {
   const sido = useSelector((state) => state.result.selectedBigRegion);
   const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
   const selectedPrice = useSelector((state) => state.result.selectedPrice);
-  const onOff = useSelector((state) => state.result.selectedOnOffline);
 
   useLayoutEffect(() => {
     console.log(`NODE_ENV = ${process.env.NODE_ENV}`);
@@ -328,35 +327,23 @@ export const NewsPaperRecommendation = () => {
         )}
       </Box>
       <ButtonBox>
-        <SaveBox>
-          <Button
-            backgroundColor="white"
-            width="350px"
-            height="80px"
-            border="1px solid #3C486B"
-            textColor="#3C486B"
-            fontSize="24px"
-            onClick={() => {
-              save();
-              navigate("/mypage");
-            }}
-          >
-            보관함에 추가
-          </Button>
-          <Button
-            backgroundColor="white"
-            width="350px"
-            height="80px"
-            border="1px solid #3C486B"
-            textColor="#3C486B"
-            fontSize="24px"
-          >
-            PDF로 저장
-          </Button>
-        </SaveBox>
         <Button
           backgroundColor="#3C486B"
-          width="890px"
+          width="350px"
+          height="80px"
+          border="1px solid #3C486B"
+          textColor="white"
+          fontSize="24px"
+          onClick={() => {
+            save();
+            navigate("/mypage");
+          }}
+        >
+          보관함에 추가
+        </Button>
+        <Button
+          backgroundColor="#3C486B"
+          width="350px"
           height="80px"
           textColor="white"
           fontSize="24px"
