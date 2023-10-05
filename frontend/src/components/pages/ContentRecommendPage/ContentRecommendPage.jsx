@@ -474,6 +474,7 @@ export const ContentRecommendPage = () => {
         fontSize="24px"
         onClick={() => {
           saveAdRecommendation();
+          navigate('/mypage');
         }}
       >
         보관함에 추가
