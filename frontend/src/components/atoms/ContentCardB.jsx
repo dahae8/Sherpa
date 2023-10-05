@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import Chip from '@mui/material/Chip';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Button from './Button';
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -27,20 +27,20 @@ const TitleBox = styled.div`
 `;
 
 const DateBox = styled.div`
-  color: #3C486B;
-  `
+  color: #3c486b;
+`;
 const ChipBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`
+`;
 const UrlBox = styled.div`
   text-align: right;
 `;
 const UrlItem = styled.button`
   background-color: white;
   border: 1px solid white;
-  color: #3C486B;
+  color: #3c486b;
   text-decoration: none;
   font-size: 16px;
 `;
@@ -48,34 +48,33 @@ const UrlItem = styled.button`
 const IconContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const FormBox = styled.div`
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   text-align: left;
   padding: 10px;
-`
+`;
 
 const PhraseBox = styled.div`
-  border: 1px solid #DBDBDB;
+  border: 1px solid #dbdbdb;
   border-radius: 4px;
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: center;
   margin-top: 20px;
   margin-bottom: 10px;
-
-`
+`;
 const Phrase = styled.div`
   padding: 30px;
-`
+`;
 
 const CancelBox = styled.div`
   padding-right: 15px;
-`
+`;
 
 const style = {
   position: 'absolute',
@@ -88,11 +87,10 @@ const style = {
   border: '1px solid #fff',
   borderRadius: 1,
   p: 4,
-  padding: 7,
+  padding: 7
 };
 
-
-function ContentCardB({date, label, key2, keywordList, mediaTypeId}) {
+function ContentCardB({ date, label, key2, keywordList, mediaTypeId }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -122,7 +120,7 @@ function ContentCardB({date, label, key2, keywordList, mediaTypeId}) {
   const deleteScn = (id) => async (e) => {
     e.preventDefault();
     // console.log(id)
-    const url = APPLICATION_SERVER_URL +"/api/mypage/content/like/" + name +  "/" + id;
+    const url = APPLICATION_SERVER_URL + '/api/mypage/content/like/' + name + '/' + id;
     try {
       const response = await axios.delete(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -130,18 +128,18 @@ function ContentCardB({date, label, key2, keywordList, mediaTypeId}) {
       // setIdHelper("사용가능한 닉네임 입니다");
       // console.log(idConfirm);
       // return "성공";
-      console.log("삭제 성공", response)
-      alert("삭제 성공하였습니다.")
+      console.log('삭제 성공', response);
+      alert('삭제 성공하였습니다.');
     } catch (error) {
-      console.error("에러메시지 :", error);
-      return "실패";
+      console.error('에러메시지 :', error);
+      return '실패';
     }
-  }
+  };
 
   const deleteSCard = async (e) => {
     e.preventDefault();
     // console.log(key2)
-    const url = APPLICATION_SERVER_URL +"/api/mypage/content/rec/" + name +  "/" + key2;
+    const url = APPLICATION_SERVER_URL + '/api/mypage/content/rec/' + name + '/' + key2;
     try {
       const response = await axios.delete(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -149,36 +147,34 @@ function ContentCardB({date, label, key2, keywordList, mediaTypeId}) {
       // setIdHelper("사용가능한 닉네임 입니다");
       // console.log(idConfirm);
       // return "성공";
-      console.log("삭제 성공", response)
-      alert("삭제 성공하였습니다.")
+      console.log('삭제 성공', response);
+      alert('삭제 성공하였습니다.');
     } catch (error) {
-      console.error("에러메시지 :", error);
-      return "실패";
+      console.error('에러메시지 :', error);
+      return '실패';
     }
-  }
+  };
 
   return (
     <Container>
       <IconContainer>
-      <DateBox>
-        {date.substring(0,4) + "년 " + date.substring(5,7) + "월 " +date.substring(8,10) + "일"}
-      </DateBox>
-      <ClearIcon onClick={deleteSCard}></ClearIcon>
+        <DateBox>{date.substring(0, 4) + '년 ' + date.substring(5, 7) + '월 ' + date.substring(8, 10) + '일'}</DateBox>
+        <ClearIcon onClick={deleteSCard}></ClearIcon>
       </IconContainer>
       <TitleBox>
-        {mediaTypeId === 3 ? "TV 광고" : "라디오 광고"}
+        {mediaTypeId === 3 ? 'TV 광고' : '라디오 광고'}
         <br></br>
         시나리오 추천
       </TitleBox>
       <ChipBox>
-      <Chip label={`#${label}`} />
-      {keywordList.map(function(a,i){
-        return <Chip label={`#${a.keyword}`} color="primary" />
-      })}
-      {/* <Chip label="#햇빛" color="primary" /> */}
+        <Chip label={`#${label}`} />
+        {keywordList.map(function (a, i) {
+          return <Chip key={i} label={`#${a.keyword}`} color="primary" />;
+        })}
+        {/* <Chip label="#햇빛" color="primary" /> */}
       </ChipBox>
       <UrlBox>
-        <UrlItem onClick={handleOpen}>>> 시나리오 보기</UrlItem>
+        <UrlItem onClick={handleOpen}>&gt;&gt; 시나리오 보기</UrlItem>
       </UrlBox>
 
       <Modal
@@ -188,49 +184,29 @@ function ContentCardB({date, label, key2, keywordList, mediaTypeId}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} overflow="auto">
-        <Chip label={`#${label}`} />
-        {keywordList.map(function(a,i){
-          return <Chip label={`#${a.keyword}`} color="primary" />
-        })}
+          <Chip label={`#${label}`} />
+          {keywordList.map(function (a, i) {
+            return <Chip label={`#${a.keyword}`} color="primary" />;
+          })}
           <Typography fontSize={40} align="left">
             시나리오 추천
           </Typography>
           <FormBox>
-            {scnList.map(function(a, i){
+            {scnList.map(function (a, i) {
               return (
-            //     <>
-            //     <PhraseBox>
-            //       <Phrase>
-            //         <Typography fontSize={32}>{a.title}</Typography>
-            //         <br></br>
-            //         <Typography fontSize={24}>{a.content}</Typography>
-            //       </Phrase>
-            //     </PhraseBox>
-                
-            // <Button TextColor="white"
-            //   width="70px"
-            //   height="45px"
-            //   border="1px solid #3C486B"
-            //   backgroundColor="#3C486B"
-            //   fontSize="16px"
-            //   onClick = {deleteScn(a.id)}
-            // >
-            //   삭제
-            // </Button>
-            // </> 
-            <>
-              <PhraseBox>
-              <Phrase>
-                <Typography fontSize={32}>{a.title}</Typography>
-                <br></br>
-                <Typography fontSize={24}>{a.content}</Typography>
-               </Phrase>
-                <CancelBox>
-                <CancelIcon onClick={deleteScn(a.id)}></CancelIcon>
-                </CancelBox>
-              </PhraseBox>
-              </>
-            )
+                <React.Fragment key={i}>
+                  <PhraseBox>
+                    <Phrase>
+                      <Typography fontSize={32}>{a.title}</Typography>
+                      <br></br>
+                      <Typography fontSize={24}>{a.content}</Typography>
+                    </Phrase>
+                    <CancelBox>
+                      <CancelIcon onClick={deleteScn(a.id)}></CancelIcon>
+                    </CancelBox>
+                  </PhraseBox>
+                </React.Fragment>
+              );
             })}
           </FormBox>
         </Box>
