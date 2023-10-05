@@ -94,6 +94,7 @@ const WordCloud = ({ data, onWordClick }) => {
 
       if (elements.length > 0) {
         const element = elements[0];
+        console.log('선택한 단어', chartInstance.current.data.labels[element.index]);
         const word = chartInstance.current.data.labels[element.index];
         onWordClick(word);
       }
