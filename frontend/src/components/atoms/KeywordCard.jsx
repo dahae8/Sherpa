@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import Chip from '@mui/material/Chip';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useSelector } from 'react-redux';
-import axios from "axios";
+import axios from 'axios';
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -26,8 +26,8 @@ const TitleBox = styled.div`
 `;
 
 const DateBox = styled.div`
-  color: #3C486B;
-  `
+  color: #3c486b;
+`;
 
 const UrlBox = styled.div`
   text-align: right;
@@ -35,7 +35,7 @@ const UrlBox = styled.div`
 const UrlItem = styled.button`
   background-color: white;
   border: 1px solid white;
-  color: #3C486B;
+  color: #3c486b;
   text-decoration: none;
   font-size: 16px;
 `;
@@ -43,14 +43,13 @@ const UrlItem = styled.button`
 const IconContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 const KeyBox = styled.div`
   display: flex;
   align-items: center;
   margin-top: 25px;
   margin-left: 25px;
-  
-`
+`;
 
 const style = {
   position: 'absolute',
@@ -63,10 +62,10 @@ const style = {
   border: '1px solid #fff',
   borderRadius: 1,
   p: 4,
-  padding: 7,
+  padding: 7
 };
 
-function KeywordCard({Date, label, keywordList, key2}) {
+function KeywordCard({ Date, label, keywordList, key2 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -74,11 +73,11 @@ function KeywordCard({Date, label, keywordList, key2}) {
   const name = useSelector((state) => state.user.name);
 
   const APPLICATION_SERVER_URL = 'https://j9c107.p.ssafy.io';
-  
+
   const deleteCard = async (e) => {
     e.preventDefault();
     // console.log(key2)
-    const url = APPLICATION_SERVER_URL +"/api/mypage/keyword/rec/" + name +  "/" + key2;
+    const url = APPLICATION_SERVER_URL + '/api/mypage/keyword/rec/' + name + '/' + key2;
     try {
       const response = await axios.delete(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -86,18 +85,18 @@ function KeywordCard({Date, label, keywordList, key2}) {
       // setIdHelper("사용가능한 닉네임 입니다");
       // console.log(idConfirm);
       // return "성공";
-      console.log("삭제 성공", response)
-      alert("삭제 성공하였습니다.")
+      console.log('삭제 성공', response);
+      alert('삭제 성공하였습니다.');
     } catch (error) {
-      console.error("에러메시지 :", error);
-      return "실패";
+      console.error('에러메시지 :', error);
+      return '실패';
     }
-  }
+  };
 
   const deleteKey = (id) => async (e) => {
     e.preventDefault();
     // console.log(id)
-    const url = APPLICATION_SERVER_URL +"/api/mypage/keyword/like/" + name +  "/" + id;
+    const url = APPLICATION_SERVER_URL + '/api/mypage/keyword/like/' + name + '/' + id;
     try {
       const response = await axios.delete(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -105,35 +104,33 @@ function KeywordCard({Date, label, keywordList, key2}) {
       // setIdHelper("사용가능한 닉네임 입니다");
       // console.log(idConfirm);
       // return "성공";
-      console.log("삭제 성공", response)
-      alert("삭제 성공하였습니다.")
+      console.log('삭제 성공', response);
+      alert('삭제 성공하였습니다.');
     } catch (error) {
-      console.error("에러메시지 :", error);
-      return "실패";
+      console.error('에러메시지 :', error);
+      return '실패';
     }
-  }
+  };
 
   return (
     <Container>
       <IconContainer>
-      <DateBox>
-        {Date.substring(0,4) + "년 " + Date.substring(5,7) + "월 " +Date.substring(8,10) + "일"}
-      </DateBox>
-      <ClearIcon onClick={deleteCard}></ClearIcon>
+        <DateBox>{Date.substring(0, 4) + '년 ' + Date.substring(5, 7) + '월 ' + Date.substring(8, 10) + '일'}</DateBox>
+        <ClearIcon onClick={deleteCard}></ClearIcon>
       </IconContainer>
       <TitleBox>
-        {keywordList.map(function(a,i){
+        {keywordList.map(function (a, i) {
           return (
-            <>
-            {a.keyword}
-            <br></br>
-            </>
-          )
+            <React.Fragment key={i}>
+              {a.keyword}
+              <br></br>
+            </React.Fragment>
+          );
         })}
       </TitleBox>
       <Chip label={`#${label}`} />
       <UrlBox>
-        <UrlItem onClick={handleOpen}>>> 키워드 더보기</UrlItem>
+        <UrlItem onClick={handleOpen}>&gt;&gt; 키워드 더보기</UrlItem>
       </UrlBox>
 
       <Modal
@@ -147,16 +144,14 @@ function KeywordCard({Date, label, keywordList, key2}) {
           <Typography fontSize={40} align="center">
             키워드
           </Typography>
-          {keywordList.map(function(a,i){
-          return (
-            <KeyBox>
-            <Typography fontSize={24}>
-              {a.keyword}
-            </Typography>
-            <CancelIcon fontSize="large" color="disabled" onClick={deleteKey(a.id)}></CancelIcon>
-            </KeyBox>
-          )
-        })}
+          {keywordList.map(function (a, i) {
+            return (
+              <KeyBox key={i}>
+                <Typography fontSize={24}>{a.keyword}</Typography>
+                <CancelIcon fontSize="large" color="disabled" onClick={deleteKey(a.id)}></CancelIcon>
+              </KeyBox>
+            );
+          })}
           {/* <KeyBox>
           <Typography fontSize={24}>
             톤업선크림
@@ -165,7 +160,6 @@ function KeywordCard({Date, label, keywordList, key2}) {
           </KeyBox> */}
         </Box>
       </Modal>
-
     </Container>
   );
 }

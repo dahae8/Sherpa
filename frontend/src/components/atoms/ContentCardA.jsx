@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import Chip from '@mui/material/Chip';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -26,20 +26,20 @@ const TitleBox = styled.div`
 `;
 
 const DateBox = styled.div`
-  color: #3C486B;
-  `
+  color: #3c486b;
+`;
 const ChipBox = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`
+`;
 const UrlBox = styled.div`
   text-align: right;
 `;
 const UrlItem = styled.button`
   background-color: white;
   border: 1px solid white;
-  color: #3C486B;
+  color: #3c486b;
   text-decoration: none;
   font-size: 16px;
 `;
@@ -47,34 +47,33 @@ const UrlItem = styled.button`
 const IconContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const FormBox = styled.div`
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   text-align: center;
   padding: 10px;
-`
+`;
 
 const PhraseBox = styled.div`
   /* width: 450px;
   height: 150px; */
-  border: 1px solid #DBDBDB;
+  border: 1px solid #dbdbdb;
   border-radius: 4px;
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: center;
   margin-top: 20px;
-
-`
+`;
 const Phrase = styled.div`
   padding: 30px;
-`
+`;
 const CancelBox = styled.div`
   padding-right: 15px;
-`
+`;
 
 const style = {
   position: 'absolute',
@@ -87,11 +86,10 @@ const style = {
   border: '1px solid #fff',
   borderRadius: 1,
   p: 4,
-  padding: 7,
+  padding: 7
 };
- 
 
-function ContentCard({date, label, key2, keywordList, mediaTypeId}) {
+function ContentCard({ date, label, key2, keywordList, mediaTypeId }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -121,7 +119,7 @@ function ContentCard({date, label, key2, keywordList, mediaTypeId}) {
   const deleteSen = (id) => async (e) => {
     e.preventDefault();
     // console.log(id)
-    const url = APPLICATION_SERVER_URL +"/api/mypage/content/like/" + name +  "/" + id;
+    const url = APPLICATION_SERVER_URL + '/api/mypage/content/like/' + name + '/' + id;
     try {
       const response = await axios.delete(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -129,18 +127,18 @@ function ContentCard({date, label, key2, keywordList, mediaTypeId}) {
       // setIdHelper("사용가능한 닉네임 입니다");
       // console.log(idConfirm);
       // return "성공";
-      console.log("삭제 성공", response)
-      alert("삭제 성공하였습니다.")
+      console.log('삭제 성공', response);
+      alert('삭제 성공하였습니다.');
     } catch (error) {
-      console.error("에러메시지 :", error);
-      return "실패";
+      console.error('에러메시지 :', error);
+      return '실패';
     }
-  }
+  };
 
   const deleteS2Card = async (e) => {
     e.preventDefault();
     // console.log(key2)
-    const url = APPLICATION_SERVER_URL +"/api/mypage/content/rec/" + name +  "/" + key2;
+    const url = APPLICATION_SERVER_URL + '/api/mypage/content/rec/' + name + '/' + key2;
     try {
       const response = await axios.delete(url);
       // console.log("확인 결과 : ", response.data.success);
@@ -148,35 +146,33 @@ function ContentCard({date, label, key2, keywordList, mediaTypeId}) {
       // setIdHelper("사용가능한 닉네임 입니다");
       // console.log(idConfirm);
       // return "성공";
-      console.log("삭제 성공", response)
-      alert("삭제 성공하였습니다.")
+      console.log('삭제 성공', response);
+      alert('삭제 성공하였습니다.');
     } catch (error) {
-      console.error("에러메시지 :", error);
-      return "실패";
+      console.error('에러메시지 :', error);
+      return '실패';
     }
-  }
+  };
 
   return (
     <Container>
       <IconContainer>
-      <DateBox>
-        {date.substring(0,4) + "년 " + date.substring(5,7) + "월 " +date.substring(8,10) + "일"}
-      </DateBox>
-      <ClearIcon onClick={deleteS2Card}></ClearIcon>
+        <DateBox>{date.substring(0, 4) + '년 ' + date.substring(5, 7) + '월 ' + date.substring(8, 10) + '일'}</DateBox>
+        <ClearIcon onClick={deleteS2Card}></ClearIcon>
       </IconContainer>
       <TitleBox>
-        {mediaTypeId === 1 ? "커뮤니티" : (mediaTypeId === 2 ? "SNS" : (mediaTypeId ===5 ? "인쇄" : "옥외"))} 광고
+        {mediaTypeId === 1 ? '커뮤니티' : mediaTypeId === 2 ? 'SNS' : mediaTypeId === 5 ? '인쇄' : '옥외'} 광고
         <br></br>
         문구 추천
       </TitleBox>
       <ChipBox>
-      <Chip label={`#${label}`} />
-      {keywordList.map(function(a,i){
-        return <Chip label={`#${a.keyword}`} color="primary" />
-      })}
+        <Chip label={`#${label}`} />
+        {keywordList.map(function (a, i) {
+          return <Chip key={i} label={`#${a.keyword}`} color="primary" />;
+        })}
       </ChipBox>
       <UrlBox>
-        <UrlItem onClick={handleOpen}>>> 문구 보기</UrlItem>
+        <UrlItem onClick={handleOpen}>&gt;&gt; 문구 보기</UrlItem>
       </UrlBox>
 
       <Modal
@@ -186,28 +182,28 @@ function ContentCard({date, label, key2, keywordList, mediaTypeId}) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} overflow="auto">
-        <Chip label={`#${label}`} />
-        {keywordList.map(function(a,i){
-          return <Chip label={`#${a.keyword}`} color="primary" />
-        })}
+          <Chip label={`#${label}`} />
+          {keywordList.map(function (a, i) {
+            return <Chip label={`#${a.keyword}`} color="primary" />;
+          })}
           <Typography fontSize={40} align="left">
             문구 추천
           </Typography>
           <FormBox>
-          {senList.map(function(a,i){
-            return (
-              <>
-              <PhraseBox>
-              <Phrase>
-                <Typography fontSize={32}>{a.title}</Typography>
-                </Phrase>
-                <CancelBox>
-                <CancelIcon onClick={deleteSen(a.id)}></CancelIcon>
-                </CancelBox>
-              </PhraseBox>
-              </>
-            )
-          })}
+            {senList.map(function (a, i) {
+              return (
+                <>
+                  <PhraseBox>
+                    <Phrase>
+                      <Typography fontSize={32}>{a.title}</Typography>
+                    </Phrase>
+                    <CancelBox>
+                      <CancelIcon onClick={deleteSen(a.id)}></CancelIcon>
+                    </CancelBox>
+                  </PhraseBox>
+                </>
+              );
+            })}
           </FormBox>
         </Box>
       </Modal>
