@@ -135,7 +135,7 @@ async def read_root(target: Target):
     sorted_results = sorted(results, key=lambda x: x["ratio"], reverse=True)
 
     response_data = ResponseItem(
-        success=False,
+        success=True,
         data={
             "newsList" : sorted_results
         },
