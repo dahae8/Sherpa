@@ -36,6 +36,9 @@ const Bundle = styled.div`
   align-content: center;
   justify-content: center;
 `;
+const RecKeword = styled.div`
+  margin: 5px 10px 100px 10px;
+`;
 const style = {
   position: 'absolute',
   top: '50%',
@@ -319,10 +322,14 @@ export const KeywordRecommendPage = () => {
           )}
         </Bundle>
       </Clouds>
-      <h1>현재 다른 사용자가 선호하는 키워드를 보여주드립니다.</h1>
+      <h1>현재 다른 사용자가 선호하는 키워드를 보여드립니다.</h1>
       <Clouds>
         {keywordList.map((index) => {
-          return <Chip label={`#${index.keyword}`} />;
+          return (
+            <RecKeword>
+              <Chip label={`#${index.keyword}`} />
+            </RecKeword>
+          );
         })}
       </Clouds>
     </Container>
