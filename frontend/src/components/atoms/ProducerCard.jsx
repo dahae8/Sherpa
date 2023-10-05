@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import logo from "../../assets/img/logo.png";
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -31,7 +32,7 @@ function makeCard({ img, title, url }) {
   return (
     <Container>
       <ImgBox>
-        <img src={img} alt="" width={310} height={170} />
+        <img src={img} alt="이미지를 준비 중입니다." width={310} height={170} />
       </ImgBox>
       <TitleBox>{title}</TitleBox>
       <UrlBox>
