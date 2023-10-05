@@ -227,6 +227,7 @@ export const ContentRecommendPage = () => {
   const modalButtonClick = () => {
     setKeywords((prev) => [...prev, ...checkedKeywords]);
     setCheckedKeywords([]);
+    handleClose();
     console.log(keywords);
   };
 
@@ -457,7 +458,7 @@ export const ContentRecommendPage = () => {
           <Box sx={{ ...style, overflow: 'auto' }}>
             {myKeywords.map((keyword, index) => (
               <ModalKeyword key={index}>
-                <Typography fontSize={32} align="left">
+                <Typography fontSize={24} align="left">
                   {keyword}
                 </Typography>
                 <Checkbox label={index} onChange={(e) => handleCheckboxChange(keyword, e.target.checked)} />

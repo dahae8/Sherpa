@@ -44,8 +44,8 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 500,
-  height: 500,
+  width: 400,
+  height: 400,
   bgcolor: 'background.paper',
   border: '1px solid #fff',
   borderRadius: 1,
@@ -327,9 +327,12 @@ export const KeywordRecommendPage = () => {
               aria-describedby="modal-modal-description"
             >
               <Box sx={style} overflow="auto">
-                <Typography fontSize={40} align="center">
-                  {selectedWord}이(가)
-                  <Chip label={`#${selectDataSName}`} /> 의 "좋아요" 키워드에 추가 되었습니다!
+                <Typography fontSize={24} align="center">
+                  선택하신 "{selectedWord}"이(가)
+                </Typography>
+                <Chip fontSize={24} label={`#${selectDataSName}`} />
+                <Typography fontSize={24} align="center">
+                  항목의 "좋아요" 키워드에 추가 되었습니다!
                 </Typography>
               </Box>
             </Modal>
