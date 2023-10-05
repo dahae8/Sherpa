@@ -292,6 +292,22 @@ export const OutdoorRecommendation = () => {
         console.log("지하철 역 오류", error);
       }
     };
+    const recommendOutdoor = async () => {
+      try {
+        const response = await axios.post(
+          `${APPLICATION_SPRING_SERVER_URL}/api/offline/outdoor/banner`,
+          {
+            listSize: 5,
+            gender: Number(gender),
+            age: age,
+            sigunguId: sigunguId,
+          }
+        );
+        console.log("버스 가져오기", response);
+      } catch (error) {
+        console.log("현수막 오류", error);
+      }
+    };
     recommendMedia();
     recommendPrice();
     linkproducer();
@@ -300,6 +316,7 @@ export const OutdoorRecommendation = () => {
     recommendRegion();
     recommendBus();
     recommendSubway();
+    recommendOutdoor();
   }, []);
 
   useEffect(() => {
