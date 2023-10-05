@@ -68,15 +68,6 @@ export const OutdoorRecommendation = () => {
   const recommendedMedia = useSelector((state) => state.result.media.recommend);
   const bigRegion = useSelector((state) => state.result.bigRegionName);
   const smallRegion = useSelector((state) => state.result.smallRegionName);
-  const addresses = ["무진대로211번길 28", "월계로 109", "하남산단6번로 107"]; // 현수막 장소 분석 API
-  // const addresses = [];
-  // for (let i = 0; i < data.length; i++) {
-  //   if (data[i]) {
-  //     addresses.push(data[i].address);
-  //   } else {
-  //     addresses.push(0);
-  //   }
-  // }
   let target = "성별";
   if (gender === true) {
     target = "남성";
@@ -98,6 +89,7 @@ export const OutdoorRecommendation = () => {
   const [busDatas, setBusDatas] = useState([]);
   const [subwayLabels, setSubwayLabels] = useState([]);
   const [subwayDatas, setSubwayDatas] = useState([]);
+  const [addresses, setAddresses] = useState([]);
   const item = useSelector((state) => state.user.productSmall);
   const sigunguId = useSelector((state) => state.result.selectedSmallRegion);
   const selectedPrice = useSelector((state) => state.result.selectedPrice);
@@ -303,7 +295,18 @@ export const OutdoorRecommendation = () => {
             sigunguId: sigunguId,
           }
         );
-        console.log("버스 가져오기", response);
+        console.log("현수막 가져오기", response);
+        const addresses = [];
+
+        for (let i = 0; i < response.data.data.length; i++) {
+          if (response.data.data[i]) {
+            addresses.push(response.data.data[i].address);
+          } else {
+            addresses.push(0);
+          }
+        }
+        setAddresses(addresses);
+        console.log("주소 리스트", addresses);
       } catch (error) {
         console.log("현수막 오류", error);
       }
@@ -343,7 +346,7 @@ export const OutdoorRecommendation = () => {
         }
       });
     });
-  }, []);
+  }, [addresses]);
 
   useEffect(() => {
     const delayProducerRender = setTimeout(() => {
