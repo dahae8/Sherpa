@@ -125,7 +125,6 @@ export const ContentRecommendPage = () => {
     }
   };
 
-  const [recommendList, setRecommendList] = useState([]);
   const [phrase, setPhrase] = useState([]);
   const [scenario, setScenario] = useState([
     {
@@ -147,7 +146,7 @@ export const ContentRecommendPage = () => {
     getMediaText();
   }, [media]);
 
-  const saveAdRecommendation = async () => {
+  const saveAdRecommendation = async (scenarioToUse) => {
     if (media <= 5) {
       mediaTypeMedium = media;
       mediaTypeSub = null;
@@ -155,18 +154,10 @@ export const ContentRecommendPage = () => {
       mediaTypeMedium = 6;
       mediaTypeSub = media - 5;
     }
-    // console('중분류', mediaTypeMedium);
-    // console('소분류', mediaTypeSub);
+    console.log('중분류', mediaTypeMedium);
+    console.log('소분류', mediaTypeSub);
 
-    if (phrase) {
-      const newItems = phrase.map((p) => ({
-        title: p,
-        content: ''
-      }));
-      setRecommendList([...recommendList, ...newItems]);
-    } else {
-      setRecommendList(scenario);
-    }
+    console.log(scenarioToUse);
 
     const data = {
       memberName: myName,
@@ -174,7 +165,7 @@ export const ContentRecommendPage = () => {
       mediaTypeId: mediaTypeMedium,
       mediaSubId: mediaTypeSub,
       keywordList: keywords,
-      contentList: recommendList
+      contentList: scenarioToUse
     };
     try {
       const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/content/save`, data, {
@@ -203,6 +194,20 @@ export const ContentRecommendPage = () => {
     }
   };
 
+  const changePhrase = () => {
+    if (phrase) {
+      const newScenario = phrase.map((p) => ({
+        title: p,
+        content: ''
+      }));
+      console.log(newScenario);
+      setScenario(newScenario);
+      console.log('phrase를 scenario에 넣었어요', scenario);
+      return newScenario;
+    }
+    return scenario;
+  };
+
   async function getRecommend(media, keywords, category, setPhrase, setScenario) {
     const API_KEY = process.env.REACT_APP_API_KEY;
     const openai = new OpenAI({
@@ -212,6 +217,8 @@ export const ContentRecommendPage = () => {
     // getMediaText();
     console.log(['TV', '라디오'].includes(mediaText));
     console.log(mediaText);
+    setPhrase([]);
+    setScenario([]);
     try {
       // media가 TV, 라디오인 경우
       if (['TV', '라디오'].includes(mediaText) === true) {
@@ -473,7 +480,8 @@ export const ContentRecommendPage = () => {
         textColor="white"
         fontSize="24px"
         onClick={() => {
-          saveAdRecommendation();
+          const newScenario = changePhrase();
+          saveAdRecommendation(newScenario);
           navigate('/mypage');
         }}
       >
