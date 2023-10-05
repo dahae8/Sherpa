@@ -29,7 +29,9 @@ for row in address:
     if row[3] in address_data:
         if row[2] in address_data[row[3]]:
             if row[1] in address_data[row[3]][row[2]]:
-                continue
+                if address_data[row[3]][row[2]][row[1]] > row[0]:
+                    address_data[row[3]][row[2]][row[1]] = row[0]
+
             address_data[row[3]][row[2]][row[1]] = row[0]
         else:
             address_data[row[3]][row[2]] = {}
@@ -40,7 +42,7 @@ for row in address:
         address_data[row[3]][row[2]][row[1]] = row[0]
 
 
-csv_path = 'data/residence/202308_202308_연령별인구현황_월간 (2) (1).csv'
+csv_path = 'data/residence/202308_202308_연령별인구현황_월간 (2).csv'
 csv_file = pd.read_csv(csv_path, encoding='cp949')
 
 
@@ -80,71 +82,88 @@ for row_num, row in csv_file.iterrows():
             insert_query = "INSERT INTO residence (gender, age, total, dong_id) VALUE(%s, %s, %s, %s)"
             # 0:여성, 1:남성
 
-            cursor.execute(insert_query, (1,0,int(row["2023년08월_남_0~9세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 0, int(
+                row["2023년08월_남_0~9세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (1,10,int(row["2023년08월_남_10~19세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 10, int(
+                row["2023년08월_남_10~19세"].replace(",", "")), dong_id))
             connection.commit()
 
-
-            cursor.execute(insert_query, (1,20,int(row["2023년08월_남_20~29세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 20, int(
+                row["2023년08월_남_20~29세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (1,30,int(row["2023년08월_남_30~39세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 30, int(
+                row["2023년08월_남_30~39세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (1,40,int(row["2023년08월_남_40~49세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 40, int(
+                row["2023년08월_남_40~49세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (1,50,int(row["2023년08월_남_50~59세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 50, int(
+                row["2023년08월_남_50~59세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (1,60,int(row["2023년08월_남_60~69세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 60, int(
+                row["2023년08월_남_60~69세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (1,70,int(row["2023년08월_남_70~79세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 70, int(
+                row["2023년08월_남_70~79세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (1,80,int(row["2023년08월_남_80~89세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 80, int(
+                row["2023년08월_남_80~89세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (1,90,int(row["2023년08월_남_90~99세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (1, 90, int(
+                row["2023년08월_남_90~99세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,0,int(row["2023년08월_여_0~9세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 0, int(
+                row["2023년08월_여_0~9세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,10,int(row["2023년08월_여_10~19세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 10, int(
+                row["2023년08월_여_10~19세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,20,int(row["2023년08월_여_20~29세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 20, int(
+                row["2023년08월_여_20~29세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,30,int(row["2023년08월_여_30~39세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 30, int(
+                row["2023년08월_여_30~39세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,40,int(row["2023년08월_여_40~49세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 40, int(
+                row["2023년08월_여_40~49세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,50,int(row["2023년08월_여_50~59세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 50, int(
+                row["2023년08월_여_50~59세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,60,int(row["2023년08월_여_60~69세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 60, int(
+                row["2023년08월_여_60~69세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,70,int(row["2023년08월_여_70~79세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 70, int(
+                row["2023년08월_여_70~79세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,80,int(row["2023년08월_여_80~89세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 80, int(
+                row["2023년08월_여_80~89세"].replace(",", "")), dong_id))
             connection.commit()
 
-            cursor.execute(insert_query, (0,90,int(row["2023년08월_여_90~99세"].replace(",", "")),dong_id))
+            cursor.execute(insert_query, (0, 90, int(
+                row["2023년08월_여_90~99세"].replace(",", "")), dong_id))
             connection.commit()
-
 
         except Exception as e:
             print(e)
-            print(row["2023년08월_여_40~49세"])
             # query = """SELECT s.id
             #         FROM sigungu s
             #         JOIN sido d ON s.sido_id = d.id
