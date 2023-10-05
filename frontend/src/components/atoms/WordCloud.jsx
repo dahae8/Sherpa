@@ -41,7 +41,7 @@ const WordCloud = ({ data, onWordClick }) => {
     canvas.width = desiredWidth;
     canvas.height = desiredHeight;
 
-    console.log('좀 나와주면 안될까?', data.datasets[0].data);
+    // console.log('좀 나와주면 안될까?', data.datasets[0].data);
     // 데이터 검증: data.datasets[0].data가 배열인지 확인
     if (!Array.isArray(data.datasets[0].data)) {
       console.error('Data is not an array:', data.datasets[0].data);
@@ -58,8 +58,8 @@ const WordCloud = ({ data, onWordClick }) => {
       data.datasets[0].backgroundColor = data.datasets[0].backgroundColor || [];
       data.datasets[0].backgroundColor[index] = colors[Math.floor(Math.random() * colors.length)];
     });
-    console.log('워드컬러', data.datasets[0].backgroundColor);
-    console.log('워드컬러', typeof data.datasets[0].backgroundColor[0]);
+    // console.log('워드컬러', data.datasets[0].backgroundColor);
+    // console.log('워드컬러', typeof data.datasets[0].backgroundColor[0]);
 
     const options = {
       responsive: false,
@@ -104,7 +104,13 @@ const WordCloud = ({ data, onWordClick }) => {
 
     // Cleanup: remove the event listener when the component is unmounted
     return () => {
-      canvasRef.current.removeEventListener('click', handleClick);
+      // 이벤트 리스너 정리
+      if (canvasRef.current) {
+        canvasRef.current.removeEventListener('click', handleClick);
+      }
+
+      // 차트 인스턴스 정리
+      chartInstance.current && chartInstance.current.destroy();
     };
   }, [data, onWordClick]);
 
