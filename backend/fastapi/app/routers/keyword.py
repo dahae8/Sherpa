@@ -124,7 +124,7 @@ def offline(item: Item):
         idx += 1
 
     response_data = ResponseItem(
-        success=False,
+        success=True,
         data={
             "keywordList": keyword_recommendations
         },

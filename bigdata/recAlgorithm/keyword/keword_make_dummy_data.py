@@ -13,15 +13,15 @@ connection = pymysql.connect(
 # 커서 생성
 cursor = connection.cursor()
 
-# member INSERT 쿼리 작성
-member_insert_query = "INSERT INTO member (email, name, pwd, productSmall_id) VALUES (%s,%s, %s, %s);"
-for i in range(2, 258):
-    print(i)
-    for j in range(100):
-        name = "dummy"+str(i)+"id"+str(j)
-        email = name+"@ssafy.com"
-        data_to_insert = (email, name, "1234", i)
-        cursor.execute(member_insert_query, data_to_insert)
+# # member INSERT 쿼리 작성
+# member_insert_query = "INSERT INTO member (email, name, pwd, productSmall_id) VALUES (%s,%s, %s, %s);"
+# for i in range(2, 258):
+#     print(i)
+#     for j in range(100):
+#         name = "dummy"+str(i)+"id"+str(j)
+#         email = name+"@ssafy.com"
+#         data_to_insert = (email, name, "1234", i)
+#         cursor.execute(member_insert_query, data_to_insert)
 
 keyword_data = {}
 member_data = {}
@@ -68,22 +68,23 @@ for row in adKeywords_sql_data:
 
 rec_date = ["2023-10-01", "2023-9-30", "2023-9-29", "2023-9-28", "2023-9-27", "2023-9-26",
             "2023-9-25", "2023-9-24", "2023-9-23", "2023-9-22", "2023-9-21", "2023-9-20"]
-# keywordRec INSERT 쿼리 작성
-keywordRec_insert_query = "INSERT INTO keywordRec (productSmall_id, member_id, recDate) VALUES (%s, %s, %s);"
-for k, v in member_data.items():
-    for m in v:
-        for d in rec_date:
-            data_to_insert = (k, m, d)
-            cursor.execute(keywordRec_insert_query, data_to_insert)
+# # keywordRec INSERT 쿼리 작성
+# keywordRec_insert_query = "INSERT INTO keywordRec (productSmall_id, member_id, recDate) VALUES (%s, %s, %s);"
+# for k, v in member_data.items():
+#     for m in v:
+#         for d in rec_date:
+#             data_to_insert = (k, m, d)
+#             cursor.execute(keywordRec_insert_query, data_to_insert)
 
 keywordRec_data = {}
 # keywordRec SELECT 쿼리 실행
 
-productSmall_id_value = 2
+productSmall_id_value = 187
 # SELECT 쿼리로 productSmall_id를 플레이스홀더로 대체
-keywordRec_selsect_query = "SELECT * FROM keywordRec WHERE productSmall_id = %s;"
-cursor.execute(keywordRec_selsect_query, (productSmall_id_value,))
-
+# keywordRec_selsect_query = "SELECT * FROM keywordRec WHERE productSmall_id = %s;"
+# cursor.execute(keywordRec_selsect_query, (productSmall_id_value,))
+keywordRec_selsect_query = "SELECT * FROM keywordRec WHERE productSmall_id = 187 and member_id = 53;"
+cursor.execute(keywordRec_selsect_query)
 # 결과 가져오기
 keywordRec_sql_data = cursor.fetchall()
 for row in keywordRec_sql_data:
