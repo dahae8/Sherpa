@@ -42,7 +42,7 @@ const Bunch = styled.div`
   justify-content: center;
 `;
 const Bundle = styled.div`
-  margin: 0px 0px 0px 0px;
+  margin: 0px 0px 30px 0px;
   width: 60%;
   display: flex;
   flex-direction: row;
@@ -54,6 +54,9 @@ const Clouds = styled.div`
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+`;
+const RecKeword = styled.div`
+  margin: 5px 10px 100px 10px;
 `;
 const style = {
   position: 'absolute',
@@ -94,12 +97,29 @@ export const ContentRecommendPage = () => {
   const [mediaList, setMediaList] = useState([]);
   const [mediaText, setMediaText] = useState([]);
   const [media, setMedia] = useState(null);
-  const [keywords, setKeywords] = useState(['풍부한 향', '스페셜티', '블루 마운틴']);
+  // const [keywords, setKeywords] = useState(['풍부한 향', '스페셜티', '블루 마운틴']);
+  const [keywords, setKeywords] = useState([]);
+  const [inputValue, setInputValue] = useState('');
   const [category, setCategory] = useState({
     major: selectDataL,
     middle: selectDataM,
     minor: selectDataS
   });
+
+  // Handler for text field change
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value); // Update inputValue state with the text entered in the TextField
+  };
+
+  // Handler for button click
+  const handleButtonClick = () => {
+    if (inputValue.trim()) {
+      // If inputValue is not empty or only whitespaces
+      setKeywords([...keywords, inputValue]); // Add the inputValue to the keywords array
+      setInputValue(''); // Clear the TextField
+    }
+  };
+
   const [phrase, setPhrase] = useState([]);
   const [scenario, setScenario] = useState([
     {
@@ -322,7 +342,7 @@ export const ContentRecommendPage = () => {
       ></MediaSelectOption>
       <Bunch>
         <Title>키워드를 입력해주세요</Title>
-        <Button
+        {/* <Button
           backgroundColor="white"
           width="180px"
           height="50px"
@@ -334,9 +354,9 @@ export const ContentRecommendPage = () => {
           }}
         >
           좋아요한 키워드+
-        </Button>
+        </Button> */}
       </Bunch>
-      {
+      {/* {
         <Modal
           open={open}
           onClose={handleClose}
@@ -351,27 +371,29 @@ export const ContentRecommendPage = () => {
             </Typography>
           </Box>
         </Modal>
-      }
+      } */}
       <Bundle>
-        <TextField width="4"></TextField>
+        <TextField size="middle" value={inputValue} onChange={handleInputChange}></TextField>
         <Button
           backgroundColor="#3C486B"
           width="150px"
           height="50px"
           textColor="white"
           fontSize="24px"
-          onClick={() => {}}
+          onClick={handleButtonClick}
         >
           추가
         </Button>
       </Bundle>
       <Bundle>
         <Clouds>
-          <Chip
-            label="Clickable Deletable"
-            // onClick={handleClick}
-            // onDelete={handleDelete}
-          />
+          {keywords.map((index) => {
+            return (
+              <RecKeword>
+                <Chip label={`#${index}`} />
+              </RecKeword>
+            );
+          })}
         </Clouds>
       </Bundle>
       <Button
