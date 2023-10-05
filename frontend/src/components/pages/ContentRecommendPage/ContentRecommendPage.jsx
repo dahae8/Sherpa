@@ -87,19 +87,23 @@ export const ContentRecommendPage = () => {
   const [dataM, setDataM] = useState([]);
   const [dataS, setDataS] = useState([]);
   const myName = useSelector((state) => state.user.name);
+
   // 좋아요한 키워드
   const [myKeywords, setMyKeywords] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // 키워드
+  const [keywords, setKeywords] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+
   // 매체 리스트
   const [mediaList, setMediaList] = useState([]);
   const [mediaText, setMediaText] = useState([]);
+  let [mediaTypeMedium, setMediaTypeMedium] = useState(null);
+  let [mediaTypeSub, setMediaTypeSub] = useState(null);
   const [media, setMedia] = useState(null);
-  // const [keywords, setKeywords] = useState(['풍부한 향', '스페셜티', '블루 마운틴']);
-  const [keywords, setKeywords] = useState([]);
-  const [inputValue, setInputValue] = useState('');
   const [category, setCategory] = useState({
     major: selectDataL,
     middle: selectDataM,
@@ -117,9 +121,11 @@ export const ContentRecommendPage = () => {
       // If inputValue is not empty or only whitespaces
       setKeywords([...keywords, inputValue]); // Add the inputValue to the keywords array
       setInputValue(''); // Clear the TextField
+      console.log(keywords);
     }
   };
 
+  const [recommendList, setRecommendList] = useState([]);
   const [phrase, setPhrase] = useState([]);
   const [scenario, setScenario] = useState([
     {
@@ -141,10 +147,48 @@ export const ContentRecommendPage = () => {
     getMediaText();
   }, [media]);
 
-  function saveAdRecommendation() {
+  const saveAdRecommendation = async () => {
+    if (media <= 5) {
+      mediaTypeMedium = media;
+      mediaTypeSub = null;
+    } else if (media >= 6) {
+      mediaTypeMedium = 6;
+      mediaTypeSub = media - 5;
+    }
+    // console('중분류', mediaTypeMedium);
+    // console('소분류', mediaTypeSub);
+
+    if (phrase) {
+      const newItems = phrase.map((p) => ({
+        title: p,
+        content: ''
+      }));
+      setRecommendList([...recommendList, ...newItems]);
+    } else {
+      setRecommendList(scenario);
+    }
+
+    const data = {
+      memberName: myName,
+      productSmallId: selectDataS,
+      mediaTypeId: mediaTypeMedium,
+      mediaSubId: mediaTypeSub,
+      keywordList: keywords,
+      contentList: recommendList
+    };
     try {
-    } catch (error) {}
-  }
+      const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/content/save`, data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response.data.success) {
+        console.log(response.data.msg);
+      }
+    } catch (error) {
+      console.log('saveAdRecommendation!!', error.response ? error.response.data : error);
+    }
+  };
 
   const getMyKeywords = async () => {
     try {
