@@ -12,7 +12,7 @@ const StyledCanvas = styled.canvas`
   border: 1px #b5b5b5 solid;
 `;
 
-const WordCloud = ({ data }) => {
+const WordCloud = ({ data, onWordClick }) => {
   const canvasRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -89,10 +89,24 @@ const WordCloud = ({ data }) => {
       options
     });
 
-    return () => {
-      chartInstance.current.destroy(); // clean up
+    const handleClick = (event) => {
+      const elements = chartInstance.current.getElementsAtEventForMode(event, 'nearest', { intersect: true }, false);
+
+      if (elements.length > 0) {
+        const element = elements[0];
+        const word = chartInstance.current.data.labels[element.index];
+        onWordClick(word);
+      }
     };
-  }, [data]);
+
+    // Add the click event listener to the canvas
+    canvasRef.current.addEventListener('click', handleClick);
+
+    // Cleanup: remove the event listener when the component is unmounted
+    return () => {
+      canvasRef.current.removeEventListener('click', handleClick);
+    };
+  }, [data, onWordClick]);
 
   return <StyledCanvas ref={canvasRef} />;
 };

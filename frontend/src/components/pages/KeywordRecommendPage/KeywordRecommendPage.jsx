@@ -54,6 +54,15 @@ export const KeywordRecommendPage = () => {
   const [adData, setAdData] = useState([]);
   const [trendData, setTrendData] = useState([]);
   const [showWordCloud, setShowWordCloud] = useState(false); // WordCloud를 보여줄지 결정하는 상태
+  const [selectedWord, setSelectedWord] = useState(null);
+
+  const handleWordClick = (word) => {
+    setSelectedWord(word);
+  };
+
+  const closeModal = () => {
+    setSelectedWord(null);
+  };
 
   useEffect(() => {
     // 1초 후에 showWordCloud 상태를 true로 설정합니다.
@@ -190,11 +199,13 @@ export const KeywordRecommendPage = () => {
       <Clouds>
         <Bundle>
           <h1>광고 키워드</h1>
-          {showWordCloud && <WordCloud data={adData}></WordCloud>}
+          {showWordCloud && <WordCloud data={adData} onWordClick={handleWordClick}></WordCloud>}
+          {/* {selectedWord && <YourModalComponent onClose={closeModal}>{selectedWord}</YourModalComponent>} */}
         </Bundle>
         <Bundle>
           <h1>트랜드 키워드</h1>
-          {showWordCloud && <WordCloud data={trendData}></WordCloud>}
+          {showWordCloud && <WordCloud data={trendData} onWordClick={handleWordClick}></WordCloud>}
+          {/* {selectedWord && <YourModalComponent onClose={closeModal}>{selectedWord}</YourModalComponent>} */}
         </Bundle>
       </Clouds>
     </Container>
