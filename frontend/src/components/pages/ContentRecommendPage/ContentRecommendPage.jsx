@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import Select from '../../atoms/SelectOption';
 import MediaSelectOption from '../../organisms/MediaSelectOption';
 import Button from '../../atoms/Button';
-import { Box, Modal, Typography, TextField } from '@mui/material';
+import { Box, Modal, Typography, TextField, Checkbox } from '@mui/material';
 import { Chip } from '@mui/material';
 
 const APPLICATION_SPRING_SERVER_URL =
@@ -55,7 +55,28 @@ const Clouds = styled.div`
   justify-content: space-evenly;
   flex-wrap: wrap;
 `;
-const RecKeword = styled.div`
+const ModalKeyword = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width : 70%
+  border: 1px solid #b5b5b5;
+
+  margin: 10px;
+
+  @keyframes border-flash {
+    0% {
+      border-color: #3c486b;
+    }
+    50% {
+      border-color: transparent;
+    }
+    100% {
+      border-color: #3c486b;
+    }
+  }
+`;
+
+const RecKeyword = styled.div`
   margin: 5px 10px 100px 10px;
 `;
 const style = {
@@ -97,6 +118,7 @@ export const ContentRecommendPage = () => {
   // 키워드
   const [keywords, setKeywords] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [checkedKeywords, setCheckedKeywords] = useState([]);
 
   // 매체 리스트
   const [mediaList, setMediaList] = useState([]);
@@ -192,6 +214,24 @@ export const ContentRecommendPage = () => {
     } catch (error) {
       console.log('getMyKeywords!!', error.response ? error.response.data : error);
     }
+  };
+
+  const handleCheckboxChange = (keyword, isChecked) => {
+    if (isChecked) {
+      setCheckedKeywords((prev) => [...prev, keyword]);
+    } else {
+      setCheckedKeywords((prev) => prev.filter((k) => k !== keyword));
+    }
+  };
+
+  const modalButtonClick = () => {
+    setKeywords((prev) => [...prev, ...checkedKeywords]);
+    setCheckedKeywords([]);
+    console.log(keywords);
+  };
+
+  const handleDelete = (keywordToDelete) => () => {
+    setKeywords((keywords) => keywords.filter((keyword) => keyword !== keywordToDelete));
   };
 
   const changePhrase = () => {
@@ -393,7 +433,7 @@ export const ContentRecommendPage = () => {
       ></MediaSelectOption>
       <Bunch>
         <Title>키워드를 입력해주세요</Title>
-        {/* <Button
+        <Button
           backgroundColor="white"
           width="180px"
           height="50px"
@@ -405,24 +445,39 @@ export const ContentRecommendPage = () => {
           }}
         >
           좋아요한 키워드+
-        </Button> */}
+        </Button>
       </Bunch>
-      {/* {
+      {
         <Modal
           open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style} overflow="auto">
-            <Typography fontSize={40} align="center">
-              {myKeywords.map((index) => {
-                return <p>{index}</p>;
-              })}
-            </Typography>
+          <Box sx={{ ...style, overflow: 'auto' }}>
+            {myKeywords.map((keyword, index) => (
+              <ModalKeyword key={index}>
+                <Typography fontSize={32} align="left">
+                  {keyword}
+                </Typography>
+                <Checkbox label={index} onChange={(e) => handleCheckboxChange(keyword, e.target.checked)} />
+              </ModalKeyword>
+            ))}
+            <Box display="flex" justifyContent="center" mt={2}>
+              <Button
+                onClick={modalButtonClick}
+                backgroundColor="#3C486B"
+                width="250px"
+                height="50px"
+                textColor="white"
+                fontSize="24px"
+              >
+                추천 키워드에 추가
+              </Button>
+            </Box>
           </Box>
         </Modal>
-      } */}
+      }
       <Bundle>
         <TextField size="middle" value={inputValue} onChange={handleInputChange}></TextField>
         <Button
@@ -440,9 +495,9 @@ export const ContentRecommendPage = () => {
         <Clouds>
           {keywords.map((index) => {
             return (
-              <RecKeword>
-                <Chip label={`#${index}`} />
-              </RecKeword>
+              <RecKeyword>
+                <Chip label={`#${index}`} onDelete={handleDelete(index)} />
+              </RecKeyword>
             );
           })}
         </Clouds>
@@ -462,13 +517,15 @@ export const ContentRecommendPage = () => {
       <div>
         <h2>광고 문구</h2>
         {phrase.map((p, index) => (
-          <p key={index}>{p}</p>
+          <Typography fontSize={16} key={index}>
+            {p}
+          </Typography>
         ))}
         <h2>시나리오</h2>
         {scenario.map((item, index) => (
           <div key={index}>
-            <h3>{item.title}</h3>
-            <p>{item.content}</p>
+            <Typography fontSize={24}>{item.title}</Typography>
+            <Typography fontSize={16}>{item.content}</Typography>
           </div>
         ))}
         ;

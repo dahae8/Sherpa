@@ -132,8 +132,8 @@ export const KeywordRecommendPage = () => {
   };
 
   useEffect(() => {
-    // 1초 후에 showWordCloud 상태를 true로 설정합니다.
-    const timerId = setTimeout(() => setShowWordCloud(true), 200);
+    // 0.4초 후에 showWordCloud 상태를 true로 설정합니다.
+    const timerId = setTimeout(() => setShowWordCloud(true), 400);
 
     // 컴포넌트가 언마운트되면 setTimeout을 클리어합니다.
     return () => clearTimeout(timerId);
