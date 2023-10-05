@@ -36,6 +36,9 @@ const Bundle = styled.div`
   align-content: center;
   justify-content: center;
 `;
+const RecKeword = styled.div`
+  margin: 5px 10px 100px 10px;
+`;
 const style = {
   position: 'absolute',
   top: '50%',
@@ -85,13 +88,26 @@ export const KeywordRecommendPage = () => {
     setOpen(true);
 
     const saveKeyword = async () => {
-      console.log('보관소 아이디!', keywordRecId);
+      console.log('키워드', selectedWord);
+      console.log('키워드보관함', keywordRecId);
+      console.log('유저', userName);
+      console.log('소분류ID', selectDataS);
       const data = {
         keyword: selectedWord,
         keywordRecId: keywordRecId,
         memberName: userName,
         productSmallId: selectDataS
       };
+      console.log(data);
+      console.log(typeof data);
+      console.log('키워드', data.keyword);
+      console.log(typeof data.keyword);
+      console.log('키워드보관함', data.keywordRecId);
+      console.log(typeof data.keywordRecId);
+      console.log('유저', data.memberName);
+      console.log(typeof data.memberName);
+      console.log('소분류ID', data.productSmallId);
+      console.log(typeof data.productSmallId);
       try {
         const response = await axios.post(`${APPLICATION_SPRING_SERVER_URL}/api/keyword/like`, data, {
           headers: {
@@ -103,7 +119,7 @@ export const KeywordRecommendPage = () => {
           setKeywordRecId(response.data.data.keywordRecId);
         }
       } catch (error) {
-        console.log('getTrendKeyword!!', error.trendResponse ? error.trendResponse.data : error);
+        console.log('saveKeyword!!', error.saveKeyword ? error.saveKeyword.data : error);
       }
     };
 
@@ -123,22 +139,13 @@ export const KeywordRecommendPage = () => {
     return () => clearTimeout(timerId);
   }, []);
 
-  function getProductText() {
-    const targetMediaData = dataS.find((index) => index.id === selectDataS);
-    const productText = targetMediaData ? targetMediaData.product : null;
-    setSelectDataSName(productText);
-    console.log('품목명', productText);
-    console.log(productText);
-    console.log(targetMediaData);
-  }
-
   // 대분류, 중분류, 소분류 관련 effect들
   useLayoutEffect(() => {
     const getDataL = async () => {
       try {
         const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/product/L/0`);
         if (response.data.success) {
-          console.log(response.data.data);
+          console.log('대분류!', response.data.data);
           setDataL(response.data.data);
         }
       } catch (error) {
@@ -154,7 +161,7 @@ export const KeywordRecommendPage = () => {
       try {
         const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/product/M/${selectedL}`);
         if (response.data.success) {
-          console.log(response.data.data);
+          console.log('중분류!', response.data.data);
           setDataM(response.data.data);
         }
       } catch (error) {
@@ -169,7 +176,7 @@ export const KeywordRecommendPage = () => {
       try {
         const response = await axios.get(`${APPLICATION_SPRING_SERVER_URL}/api/product/S/${selectedM}`);
         if (response.data.success) {
-          console.log(response.data.data);
+          console.log('소분류!', response.data.data);
           setDataS(response.data.data);
         }
       } catch (error) {
@@ -258,11 +265,40 @@ export const KeywordRecommendPage = () => {
       }
     };
     console.log('광고 키워드 받아오는 중!!');
-    getAdKeyword();
-    getTrendKeyword();
-    getProductText();
-    getRecKeyword();
+    // getAdKeyword와 getTrendKeyword 함수를 동시에 실행하고,
+    // 두 함수의 결과를 모두 기다린 후에 getProductText와 getRecKeyword를 실행
+    Promise.all([getAdKeyword(), getTrendKeyword()])
+      .then(() => {
+        getRecKeyword();
+      })
+      .catch((error) => {
+        console.error('Error fetching ad or trend keywords:', error);
+      });
   }, [selectDataS]);
+
+  useEffect(() => {
+    function getProductText() {
+      console.log('소분류 리스트!', dataS);
+      const targetMediaData = dataS.find((index) => index.id === selectDataS);
+      console.log(targetMediaData);
+      const productText = targetMediaData ? targetMediaData.product : null;
+      setSelectDataSName(productText);
+      console.log('품목명', productText);
+    }
+    getProductText();
+  }, [dataS]);
+
+  useEffect(() => {
+    function getProductText() {
+      console.log('소분류 리스트!', dataS);
+      const targetMediaData = dataS.find((index) => index.id === selectDataS);
+      console.log(targetMediaData);
+      const productText = targetMediaData ? targetMediaData.product : null;
+      setSelectDataSName(productText);
+      console.log('품목명', productText);
+    }
+    getProductText();
+  }, [selectDataSName]);
 
   return (
     <Container>
@@ -319,10 +355,14 @@ export const KeywordRecommendPage = () => {
           )}
         </Bundle>
       </Clouds>
-      <h1>현재 다른 사용자가 선호하는 키워드를 보여주드립니다.</h1>
+      <h1>현재 다른 사용자가 선호하는 키워드를 보여드립니다.</h1>
       <Clouds>
         {keywordList.map((index) => {
-          return <Chip label={`#${index.keyword}`} />;
+          return (
+            <RecKeword>
+              <Chip label={`#${index.keyword}`} />
+            </RecKeword>
+          );
         })}
       </Clouds>
     </Container>
