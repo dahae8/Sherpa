@@ -21,8 +21,8 @@ const Container = styled.div`
   margin: 0 320px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
+  align-items: center;
+  justify-content: center;
 `;
 const Paragraph = styled.p`
   text-align: start;
@@ -75,11 +75,11 @@ export const ContentRecommendPage = () => {
   const [mediaList, setMediaList] = useState([]);
   const [mediaText, setMediaText] = useState([]);
   const [media, setMedia] = useState(null);
-  const [keywords, setKeywords] = useState(['에듀윌', '공무원시험', '합격']);
+  const [keywords, setKeywords] = useState(['풍부한 향', '스페셜티', '블루 마운틴']);
   const [category, setCategory] = useState({
-    major: 'selectDataL',
-    middle: 'selectDataM',
-    minor: 'selectDataS'
+    major: selectDataL,
+    middle: selectDataM,
+    minor: selectDataS
   });
   const [phrase, setPhrase] = useState([]);
   const [scenario, setScenario] = useState([
@@ -90,11 +90,13 @@ export const ContentRecommendPage = () => {
   ]);
 
   function getMediaText() {
-    const targetMediaData = mediaList.find((data) => data.id === media);
-    const mediaText = targetMediaData ? targetMediaData.area : null;
+    const targetMediaData = mediaList.find((index) => index.id === media);
+    const mediaText = targetMediaData ? targetMediaData.medium : null;
+    setMediaText(mediaText);
     console.log('매체명', mediaText);
     console.log(mediaList);
     console.log(media);
+    console.log(targetMediaData);
   }
   async function getRecommend(media, keywords, category, setPhrase, setScenario) {
     const API_KEY = process.env.REACT_APP_API_KEY;
@@ -105,13 +107,13 @@ export const ContentRecommendPage = () => {
     getMediaText();
     try {
       // media가 TV, 라디오인 경우
-      if (['TV', '라디오'].includes(media)) {
+      if (['TV', '라디오'].includes(mediaText)) {
         console.log('시나리오 추천받는 중');
         const scenarioMessage = `나는 ${mediaText} 매체에서 광고하려고 합니다. 주요 키워드는 ${keywords.join(
           ', '
-        )}입니다. 광고의 업종은 ${category.major} > ${category.middle} > ${
-          category.minor
-        }입니다. 음악의 경우 저작권이 없는 ncm 혹은 클래식을 위주로 해주세요. 
+        )}입니다.
+        광고의 업종은 ${category.major} > ${category.middle} > ${category.minor}입니다.
+        음악의 경우 저작권이 없는 ncm 혹은 클래식을 위주로 해주세요. 
         예산의 경우 고려하지 않고 진행합니다. 
         광고 시나리오에는 반드시 각각 제목을 달고 '제목: 시나리오제목'의 형식으로 해주세요. 
         대사도 추가해서 작성해주세요.
@@ -298,7 +300,9 @@ export const ContentRecommendPage = () => {
           height="50px"
           textColor="white"
           fontSize="24px"
-          onClick={() => { getMediaText() }}
+          onClick={() => {
+            getMediaText();
+          }}
         >
           추가
         </Button>
