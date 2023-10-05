@@ -119,7 +119,7 @@ export const KeywordRecommendPage = () => {
           setKeywordRecId(response.data.data.keywordRecId);
         }
       } catch (error) {
-        console.log('saveKeyword!!', error.saveKeyword ? error.saveKeyword.data : error);
+        console.log('saveKeyword!!', error.response ? error.response.data : error);
       }
     };
 
