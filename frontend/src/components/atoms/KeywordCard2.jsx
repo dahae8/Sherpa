@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 import Chip from '@mui/material/Chip';
 import ClearIcon from '@mui/icons-material/Clear';
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from '@mui/material';
 
 const Container = styled.div`
   border: 1px solid #b5b5b5;
@@ -23,19 +23,19 @@ const TitleBox = styled.div`
 `;
 
 const DateBox = styled.div`
-  color: #3C486B;
-  `
+  color: #3c486b;
+`;
 const ChipBox = styled.div`
   text-align: center;
   margin: 20px;
-`
+`;
 const UrlBox = styled.div`
   text-align: right;
 `;
 const UrlItem = styled.button`
   background-color: white;
   border: 1px solid white;
-  color: #3C486B;
+  color: #3c486b;
   text-decoration: none;
   font-size: 16px;
 `;
@@ -43,7 +43,7 @@ const UrlItem = styled.button`
 const IconContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const style = {
   position: 'absolute',
@@ -56,7 +56,7 @@ const style = {
   border: '1px solid #fff',
   borderRadius: 1,
   p: 4,
-  padding: 7,
+  padding: 7
 };
 
 function KeywordCard2() {
@@ -68,14 +68,11 @@ function KeywordCard2() {
     console.info('You clicked the delete icon.');
   };
 
-
   return (
     <Container>
       <IconContainer>
-      <DateBox>
-        2023년 9월 10일
-      </DateBox>
-      <ClearIcon></ClearIcon>
+        <DateBox>2023년 9월 10일</DateBox>
+        <ClearIcon></ClearIcon>
       </IconContainer>
       <TitleBox>
         점보도시락
@@ -88,7 +85,7 @@ function KeywordCard2() {
       </TitleBox>
       <Chip label="#라면" />
       <UrlBox>
-        <UrlItem onClick={handleOpen}>>> 키워드 더 보기</UrlItem>
+        <UrlItem onClick={handleOpen}>&gt;&gt; 키워드 더 보기</UrlItem>
       </UrlBox>
 
       <Modal
@@ -103,35 +100,34 @@ function KeywordCard2() {
             키워드
           </Typography>
           <ChipBox>
-          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
           <ChipBox>
-          <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
           <ChipBox>
-          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
           <ChipBox>
-          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
           <ChipBox>
-          <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
           <ChipBox>
-          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
           <ChipBox>
-          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
           <ChipBox>
-          <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="길게길게길게" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
           <ChipBox>
-          <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
-          </ChipBox> 
+            <Chip label="Deletable" variant="outlined" onDelete={handleDelete} />
+          </ChipBox>
         </Box>
       </Modal>
-
     </Container>
   );
 }
