@@ -179,7 +179,7 @@ export const ContentRecommendPage = () => {
     console.log('중분류', mediaTypeMedium);
     console.log('소분류', mediaTypeSub);
 
-    console.log(scenarioToUse);
+    console.log('광고 저장 로직', scenarioToUse);
 
     const data = {
       memberName: myName,
@@ -236,17 +236,17 @@ export const ContentRecommendPage = () => {
   };
 
   const changePhrase = () => {
-    if (phrase) {
-      const newScenario = phrase.map((p) => ({
-        title: p,
-        content: ''
-      }));
-      console.log(newScenario);
-      setScenario(newScenario);
-      console.log('phrase를 scenario에 넣었어요', scenario);
-      return newScenario;
+    if (['TV', '라디오'].includes(mediaText) === true) {
+      return scenario;
     }
-    return scenario;
+    const newScenario = phrase.map((p) => ({
+      title: p,
+      content: ''
+    }));
+    console.log(newScenario);
+    setScenario(newScenario);
+    console.log('phrase를 scenario에 넣었어요', scenario);
+    return newScenario;
   };
 
   async function getRecommend(media, keywords, category, setPhrase, setScenario) {
@@ -539,6 +539,7 @@ export const ContentRecommendPage = () => {
         fontSize="24px"
         onClick={() => {
           const newScenario = changePhrase();
+          console.log(newScenario);
           saveAdRecommendation(newScenario);
           navigate('/mypage');
         }}
