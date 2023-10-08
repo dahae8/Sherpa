@@ -1,5 +1,3 @@
-# SHERPA
-
 ![logo_1.png](readme-assets/logo_1.png)
 
 # 빅데이터를 기반으로 하는 고객 맞춤형 광고 매체 유형 및 키워드, 컨텐츠 추천 서비스
@@ -7,12 +5,10 @@
 ### 배포 주소
 
 > 📌 https://j9c107.p.ssafy.io
-> 
 
 ### 시연 영상
 
 > 📌 https://youtu.be/UOcts68R_CU
-> 
 
 # 📌기술 스택
 
@@ -20,20 +16,22 @@
 
 <div>
 <img src="https://img.shields.io/badge/Java [11.0.15]-007396?style=for-the-badge&logo=java&logoColor=white" />
+
 <img src="https://img.shields.io/badge/Spring Boot [2.7.15]-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" />
+
 <img src="https://img.shields.io/badge/Gradle [8.2.1]-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
 
-<img src="https://img.shields.io/badge/Python  [3.11.5]-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
+<img src="https://img.shields.io/badge/Python  [3.11.5]-3776AB?style=for-the-badge&logo=python&logoColor=white" />
 
-<img src="https://img.shields.io/badge/fastapi [0.103.1]-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white" />
+<img src="https://img.shields.io/badge/fastapi [0.103.1]-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
 
-<img src="https://img.shields.io/badge/uvicorn [0.23.2]-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+<img src="https://img.shields.io/badge/uvicorn [0.23.2]-499848?style=for-the-badge&logo=gunicorn&logoColor=white">
 </div>
 
 ### Front-End
 
 <div>
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
 <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white">
 <img src="https://img.shields.io/badge/node.js [18.16.1]-339933?style=for-the-badge&logo=Node.js&logoColor=white">
@@ -43,8 +41,8 @@
 
 <div>
 
-<img src="https://img.shields.io/badge/mysql [8.0.33]-000000?style=for-the-badge&logo=notion&logoColor=white">
-<img src="https://img.shields.io/badge/mysql (docker-image) [8.0.29]-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+<img src="https://img.shields.io/badge/mysql [8.0.33]-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/mysql docker image [8.0.29]-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 
 </div>
 
@@ -64,17 +62,18 @@
 <img src="https://img.shields.io/badge/Visual Studio Code [1.80.1]-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white" />
 <img src="https://img.shields.io/badge/IntelliJ IDEA [2023.1.4]-000000?style=for-the-badge&logo=intellijidea&logoColor=white" />
 
-<img src="https://img.shields.io/badge/pycharm [2023.2.1]-FF6C37?style=for-the-badge&logo=postman&logoColor=white" />
+<img src="https://img.shields.io/badge/pycharm [2023.2.1]-000000?style=for-the-badge&logo=pycharm&logoColor=white" />
 
 </div>
 
 ### CI/CD
 
-jenkins
-
+<div>
 <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
 <img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
 <img src="https://img.shields.io/badge/Docker [24.0.4]-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
+</div>
 
 ### Environment
 
@@ -85,6 +84,7 @@ jenkins
 <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
 <img src="https://img.shields.io/badge/Mattermost [5.3.1]-0058CC?style=for-the-badge&logo=mattermost&logoColor=white" />
 <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" />
+<img src="https://img.shields.io/badge/termius [8.0.2]-000000?style=for-the-badge&logo=termius&logoColor=white" />
 </div>
 
 # 📌서비스 소개
@@ -94,28 +94,26 @@ jenkins
 ### 개요
 
 - 서비스 명 : SHERPA
-    - 히말라야 산맥에서 등반을 할 때 등산객을 안내하고 보호하는 역할을 하는 사람을 "셰르파"라고 부른다. 셰르파들은 히말라야 지역에서 주로 활동하며 고산 지대에서의 경험과 지식을 가지고 있어 등반을 안전하게 이끌어주는 중요한 역할을 한다. 히말라야 등반은 고도와 악천후와 같은 위험 요소가 존재하기 때문에 셰르파들의 전문적인 도움이 필요하다.
-    - 우리가 빅데이터를 활용해 기업 홍보, 제품 광고의 목표를 이끌어주는 역할을 하겠다. 
+  - 히말라야 산맥에서 등반을 할 때 등산객을 안내하고 보호하는 역할을 하는 사람을 "셰르파"라고 부른다. 셰르파들은 히말라야 지역에서 주로 활동하며 고산 지대에서의 경험과 지식을 가지고 있어 등반을 안전하게 이끌어주는 중요한 역할을 한다. 히말라야 등반은 고도와 악천후와 같은 위험 요소가 존재하기 때문에 셰르파들의 전문적인 도움이 필요하다.
+  - 우리가 빅데이터를 활용해 기업 홍보, 제품 광고의 목표를 이끌어주는 역할을 하겠다.
     우리의 전문적인 도움을 주겠다는 뜻
-    - 나침반 + 눈꽃송이(셰르파)
+  - 나침반 + 눈꽃송이(셰르파)
 - 프로젝트 명 : "맞춤형 광고 전략 추천" 서비스
 
 # 📌기획 배경
 
 - 같은 SNS 채널의 가게들과 차별성이 없는 광고로 홍보 효과 없음
-    
     <aside>
     💡 사용자 맟춤형으로 광고 전략을 분석하고 내용을 구성하여 제작사와 매칭해주는 서비스 필요
     
     </aside>
-    
+
 - 광고 진행 상황과 단가 내역을 파악하기 어려움
-    
     <aside>
     💡 광고 타겟층, 지역, 매체, 컨텐츠, 가격대를 직접 확인할 수 있는 서비스 필요
     
     </aside>
-    
+
 
 # 📌 데모
 
@@ -182,17 +180,18 @@ npm start
 ## 세부 기능
 
 1. 추천 기능
-    - 품목별 자주 사용된 광고 매체 추천
-    - 커뮤니티 세부 주제별 추천
-    - TV/라디오/신문에서 자주 이용하는 채널이나 신문사 분야를 추천
-    - AI를 활용한 광고 컨텐츠 생성
+   - 품목별 자주 사용된 광고 매체 추천
+   - 커뮤니티 세부 주제별 추천
+   - TV/라디오/신문에서 자주 이용하는 채널이나 신문사 분야를 추천
+   - AI를 활용한 광고 컨텐츠 생성
 2. 분석 기능
-    - 품목 선택을 통한 타겟팅 광고의 성별/연령대 분석
-    - 성별 / 연령대가 많이 모여있는 장소를 분석
-    - 워드 클라우드 형식으로 광고 키워드 시각화
+   - 품목 선택을 통한 타겟팅 광고의 성별/연령대 분석
+   - 성별 / 연령대가 많이 모여있는 장소를 분석
+   - 워드 클라우드 형식으로 광고 키워드 시각화
 3. 회원 관리
-    - 추천 받은 데이터 관리
-    - 고객 정보 관리
+
+   - 추천 받은 데이터 관리
+   - 고객 정보 관리
 
 4. 부가 기능
 
@@ -294,30 +293,27 @@ npm start
 ![git_flow_gif.gif](readme-assets/git_flow_gif.gif)
 
 - Git branch 컨벤션
-    - `[BE/FE/AL]_[feature/release/hotfix]/기능명`
-    - `BE_feature/기능명`, `FE_release/기능명`, `FE_hotfix/기능명`
-    - `DATA_feature/기능명`, `DATA_release/기능명`, `DATA_hotfix/기능명`
-    - feature, release, hotfix 를 쓰기
-    - AL은 빅데이터 관련 된 겁니다.
-        
-        ![image.png](readme-assets/image.png)
-        
+  - `[BE/FE/AL]_[feature/release/hotfix]/기능명`
+  - `BE_feature/기능명`, `FE_release/기능명`, `FE_hotfix/기능명`
+  - `DATA_feature/기능명`, `DATA_release/기능명`, `DATA_hotfix/기능명`
+  - feature, release, hotfix 를 쓰기
+  - AL은 빅데이터 관련 된 겁니다.
+    ![image.png](readme-assets/image.png)
 - Git commit 메시지 컨벤션
-    - <타입> 리스트
-        - 💡 :bulb: **Feat: 새로운 기능 추가**
-        - 🐛 :bug: **Fix: 오류에 대한 문제 해결**
-        - ⚡ :zap: **Patch: 기능 개선**
-        - 📝 :memo: **Docs: 문서 작업**
-        - 🎨 :art: **Design: CSS 등 사용자 UI 디자인 변경**
-        - ✏️ :pencil2: **Style: 간단한 코드 작업 (코드 형식, 세미콜론 추가: 비즈니스 로직 변경 없음)**
-        - 🔍 :mag: **Merge**: **develop 머지 충돌시 수정후 커밋**
-        - 🏷️ :label: **Rename**: **파일 혹은 폴더명을 수정하거나 옮기는 작업만 한 경우**
-        - 🔥 :fire: **Remove**: **파일을 삭제하는 작업만 수행한 경우**
-    - git commit -m “Feat: 최대한 간단한 설명”
-        - `💡 Feat: 로그인 추가` 이런식으로 쓰세요
-    - 제목 첫 글자를 대문자로
-    - 제목은 명령문으로
-    
+  - <타입> 리스트
+    - 💡 **Feat: 새로운 기능 추가**
+    - 🐛 **Fix: 오류에 대한 문제 해결**
+    - ⚡ **Patch: 기능 개선**
+    - 📝 **Docs: 문서 작업**
+    - 🎨 **Design: CSS 등 사용자 UI 디자인 변경**
+    - ✏️ **Style: 간단한 코드 작업 (코드 형식, 세미콜론 추가: 비즈니스 로직 변경 없음)**
+    - 🔍 **Merge**: **develop 머지 충돌시 수정후 커밋**
+    - 🏷️ **Rename**: **파일 혹은 폴더명을 수정하거나 옮기는 작업만 한 경우**
+    - 🔥 **Remove**: **파일을 삭제하는 작업만 수행한 경우**
+  - git commit -m “Feat: 최대한 간단한 설명”
+    - `💡 Feat: 로그인 추가` 이런식으로 쓰세요
+  - 제목 첫 글자를 대문자로
+  - 제목은 명령문으로
 
 ### 7. Jira
 
@@ -325,9 +321,9 @@ npm start
 
 - 목적: 협업, 일정, 업무 관리
 - 방법
-    1. 월요일 오전에 주 단위 계획
-    2. 백로그 생성
-    3. 스프린트 시작
+  1. 월요일 오전에 주 단위 계획
+  2. 백로그 생성
+  3. 스프린트 시작
 - 스프린트: 일주일 단위
 
 **에픽**
@@ -339,8 +335,8 @@ npm start
 **작업**
 
 - 작업 생성 시 기능에 따라 컴포넌트를 연동시킨다
-    - 스토리 포인트는 최대 4시간으로 제한한다
-        - 스토리 포인트는 중요도 순서로 할당 (4 → 3 → 2 → 1 **시간**)
+  - 스토리 포인트는 최대 4시간으로 제한한다
+    - 스토리 포인트는 중요도 순서로 할당 (4 → 3 → 2 → 1 **시간**)
 - 작업을 완료할 때 쯤 작업 설명에 자신이 한 작업에 대해 자세히 작성해둔다
 
 **컴포넌트**
@@ -351,11 +347,118 @@ npm start
 - `DATA` : 빅데이터 데이터 전처리 - bigdata 폴더
 - `통합` : 기획, 설계, 최종, 발표 준비 등등
 
+### 8. 프로젝트 구조
+
+**Front-End (React)**
+
+```
+📁frontend
+├── 📁public
+└── 📁src
+    ├── 📁assets
+    │   ├── 📁fonts
+    │   └── 📁img
+    ├── 📁components
+    │   ├── 📁atoms
+    │   ├── 📁organisms
+    │   └── 📁pages
+    │       ├── 📁Auth
+    │       ├── 📁ContentRecommendPage
+    │       ├── 📁KeywordRecommendPage
+    │       ├── 📁MainPage
+    │       ├── 📁MediaRecommendPage
+    │       ├── 📁MyPage
+    │       ├── 📁NewspaperRecommendation
+    │       ├── 📁OnlineRecommendation
+    │       ├── 📁OutdoorRecommendation
+    │       ├── 📁RadioRecommendation
+    │       └── 📁TvRecommendation
+    ├── 📁routes
+    ├── 📁slices
+    └── 📁store
+```
+
+**Back-End (Spring Boot, FastAPI)**
+
+```
+📁spring
+├── 📁gradle
+│   └── 📁wrapper
+└── 📁src
+    └── 📁main
+        ├── 📁java
+        │   └── 📁com
+        │       └── 📁ssafy
+        │           └── 📁adrec
+        │               ├── 📁jwt
+        │               │   └── 📁service
+        │               ├── 📁area
+        │               │   ├── 📁controller
+        │               │   ├── 📁repository
+        │               │   ├── 📁response
+        │               │   └── 📁service
+        │               ├── 📁content
+        │               │   ├── 📁controller
+        │               │   ├── 📁repository
+        │               │   ├── 📁request
+        │               │   ├── 📁response
+        │               │   └── 📁service
+        │               ├── 📁keyword
+        │               │   ├── 📁controller
+        │               │   ├── 📁repository
+        │               │   ├── 📁request
+        │               │   ├── 📁response
+        │               │   └── 📁service
+        │               ├── 📁media
+        │               │   ├── 📁controller
+        │               │   ├── 📁repository
+        │               │   ├── 📁response
+        │               │   └── 📁service
+        │               ├── 📁member
+        │               │   ├── 📁controller
+        │               │   ├── 📁repository
+        │               │   ├── 📁request
+        │               │   └── 📁service
+        │               ├── 📁myPage
+        │               │   ├── 📁controller
+        │               │   ├── 📁repository
+        │               │   ├── 📁request
+        │               │   ├── 📁response
+        │               │   └── 📁service
+        │               ├── 📁product
+        │               │   ├── 📁controller
+        │               │   ├── 📁repository
+        │               │   ├── 📁response
+        │               │   └── 📁service
+        │               ├── 📁targetAnalyze
+        │               │   ├── 📁controller
+        │               │   ├── 📁repository
+        │               │   ├── 📁request
+        │               │   ├── 📁response
+        │               │   └── 📁service
+        │               └── 📁offline
+        │                   ├── 📁controller
+        │                   └── 📁outdoor
+        │                       ├── 📁repository
+        │                       ├── 📁request
+        │                       ├── 📁response
+        │                       └── 📁service
+        └── 📁resources
+```
+
+```
+📁fastapi
+└── 📁app
+    ├── 📁algorithm
+    └── 📁routers
+
+```
+
 # 📌개발 멤버
 
 ## 개발팀 소개
 
-| 연주원 | 손효민                               | 최다해                      | 이민규                         | 이정찬                           | 양수완                           |
-| --- |-----------------------------------|--------------------------|-----------------------------|-------------------------------|-------------------------------|
-| https://github.com/joo1yeon | https://github.com/SonHyoMin00    | https://github.com/dahae8 | https://github.com/lmg386411 | https://github.com/jeongchanim | https://github.com/kjjs2670   |
-| 팀장, PM, Back-end, Infra, 기획 발표 | BE-Leader, Back-end, Data 분석 & 추천 | Back-end, Data 분석 & 추천 | FE-Leader, Front-end, 최종 발표 | Front-end, Data 분석 | Front-end, UCC 제작           |
+| 연주원                               | 손효민                                | 최다해                     | 이민규                          | 이정찬                         | 양수완                      |
+| ------------------------------------ | ------------------------------------- | -------------------------- | ------------------------------- | ------------------------------ | --------------------------- |
+| https://github.com/joo1yeon          | https://github.com/SonHyoMin00        | https://github.com/dahae8  | https://github.com/lmg386411    | https://github.com/jeongchanim | https://github.com/kjjs2670 |
+| 팀장, PM, Back-end, Infra, 기획 발표 | BE-Leader, Back-end, Data 분석 & 추천 | Back-end, Data 분석 & 추천 | FE-Leader, Front-end, 최종 발표 | Front-end, Data 분석           | Front-end, UCC 제작         |
