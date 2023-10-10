@@ -15,76 +15,64 @@
 ### Back-End
 
 <div>
-<img src="https://img.shields.io/badge/Java [11.0.15]-007396?style=for-the-badge&logo=java&logoColor=white" />
-
-<img src="https://img.shields.io/badge/Spring Boot [2.7.15]-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" />
-
-<img src="https://img.shields.io/badge/Gradle [8.2.1]-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
-
-<img src="https://img.shields.io/badge/Python  [3.11.5]-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-
-<img src="https://img.shields.io/badge/fastapi [0.103.1]-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
-
-<img src="https://img.shields.io/badge/uvicorn [0.23.2]-499848?style=for-the-badge&logo=gunicorn&logoColor=white">
+  <img src="https://img.shields.io/badge/Java [11.0.15]-007396?style=for-the-badge&logo=java&logoColor=white" />
+  <img src="https://img.shields.io/badge/Spring Boot [2.7.15]-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" />
+  <img src="https://img.shields.io/badge/Gradle [8.2.1]-02303A?style=for-the-badge&logo=gradle&logoColor=white" />
+  <img src="https://img.shields.io/badge/Python  [3.11.5]-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/fastapi [0.103.1]-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+  <img src="https://img.shields.io/badge/uvicorn [0.23.2]-499848?style=for-the-badge&logo=gunicorn&logoColor=white">
 </div>
 
 ### Front-End
 
 <div>
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-<img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
-<img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white">
-<img src="https://img.shields.io/badge/node.js [18.16.1]-339933?style=for-the-badge&logo=Node.js&logoColor=white">
+  <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+  <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+  <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white">
+  <img src="https://img.shields.io/badge/node.js [18.16.1]-339933?style=for-the-badge&logo=Node.js&logoColor=white">
 </div>
 
 ### DataBase
 
 <div>
-
-<img src="https://img.shields.io/badge/mysql [8.0.33]-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
-<img src="https://img.shields.io/badge/mysql docker image [8.0.29]-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
-
+  <img src="https://img.shields.io/badge/mysql [8.0.33]-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+  <img src="https://img.shields.io/badge/mysql docker image [8.0.29]-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 </div>
 
 ### VCS
 
 <div>
-
-<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white" />
-<img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white" />
-
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white" />
+  <img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white" />
 </div>
 
 ### IDE
 
 <div>
-
-<img src="https://img.shields.io/badge/Visual Studio Code [1.80.1]-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white" />
-<img src="https://img.shields.io/badge/IntelliJ IDEA [2023.1.4]-000000?style=for-the-badge&logo=intellijidea&logoColor=white" />
-
-<img src="https://img.shields.io/badge/pycharm [2023.2.1]-000000?style=for-the-badge&logo=pycharm&logoColor=white" />
-
+  <img src="https://img.shields.io/badge/Visual Studio Code [1.80.1]-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white" />
+  <img src="https://img.shields.io/badge/IntelliJ IDEA [2023.1.4]-000000?style=for-the-badge&logo=intellijidea&logoColor=white" />
+  <img src="https://img.shields.io/badge/pycharm [2023.2.1]-000000?style=for-the-badge&logo=pycharm&logoColor=white" />
 </div>
 
 ### CI/CD
 
 <div>
-<img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
-<img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
-<img src="https://img.shields.io/badge/Docker [24.0.4]-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-<img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
+  <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
+  <img src="https://img.shields.io/badge/ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+  <img src="https://img.shields.io/badge/Docker [24.0.4]-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+  <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
 </div>
 
 ### Environment
 
 <div>
-<img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
-<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
-<img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
-<img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
-<img src="https://img.shields.io/badge/Mattermost [5.3.1]-0058CC?style=for-the-badge&logo=mattermost&logoColor=white" />
-<img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" />
-<img src="https://img.shields.io/badge/termius [8.0.2]-000000?style=for-the-badge&logo=termius&logoColor=white" />
+  <img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
+  <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+  <img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
+  <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
+  <img src="https://img.shields.io/badge/Mattermost [5.3.1]-0058CC?style=for-the-badge&logo=mattermost&logoColor=white" />
+  <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" />
+  <img src="https://img.shields.io/badge/termius [8.0.2]-000000?style=for-the-badge&logo=termius&logoColor=white" />
 </div>
 
 # 📌서비스 소개
@@ -122,7 +110,6 @@
 ```bash
 Node.js 18.16.1
 SpringBoot 2.7.15
-
 ```
 
 ### 권고 사항
@@ -134,7 +121,6 @@ SpringBoot 2.7.15
 ```bash
 # git clone
 git clone https://lab.ssafy.com/s09-bigdata-recom-sub2/S09P22C107.git
-
 ```
 
 ### Back-End
@@ -146,7 +132,6 @@ cd backend
 cd build/libs
 ls -arlth
 java -jar adrec-0.0.1-SNAPSHOT.jar
-
 ```
 
 ### Front-End
@@ -156,7 +141,6 @@ java -jar adrec-0.0.1-SNAPSHOT.jar
 cd frontend
 npm i
 npm start
-
 ```
 
 # 📌기능 소개
@@ -189,14 +173,12 @@ npm start
    - 성별 / 연령대가 많이 모여있는 장소를 분석
    - 워드 클라우드 형식으로 광고 키워드 시각화
 3. 회원 관리
-
    - 추천 받은 데이터 관리
    - 고객 정보 관리
-
 4. 부가 기능
+   - 광고 매체에 따른 제작사 매칭
+   - 좋아요한 키워드와 컨텐츠를 보관
 
-- 광고 매체에 따른 제작사 매칭
-- 좋아요한 키워드와 컨텐츠를 보관
 
 # 📌시연 시나리오 & 영상
 
@@ -260,7 +242,7 @@ npm start
 
 ### 프로젝트 개발 기간
 
-2023.08.21 ~ 2023.10.06
+```2023.08.21.``` ~ ```2023.10.06.```(7주)
 
 ### 프로젝트 산출물
 
@@ -297,11 +279,11 @@ npm start
   - `BE_feature/기능명`, `FE_release/기능명`, `FE_hotfix/기능명`
   - `DATA_feature/기능명`, `DATA_release/기능명`, `DATA_hotfix/기능명`
   - feature, release, hotfix 를 쓰기
-  - AL은 빅데이터 관련 된 겁니다.
+  - AL은 빅데이터 관련
     ![image.png](readme-assets/image.png)
 - Git commit 메시지 컨벤션
   - <타입> 리스트
-    - 💡 **Feat: 새로운 기능 추가**
+    - 💡  **Feat: 새로운 기능 추가**
     - 🐛 **Fix: 오류에 대한 문제 해결**
     - ⚡ **Patch: 기능 개선**
     - 📝 **Docs: 문서 작업**
@@ -311,9 +293,9 @@ npm start
     - 🏷️ **Rename**: **파일 혹은 폴더명을 수정하거나 옮기는 작업만 한 경우**
     - 🔥 **Remove**: **파일을 삭제하는 작업만 수행한 경우**
   - git commit -m “Feat: 최대한 간단한 설명”
-    - `💡 Feat: 로그인 추가` 이런식으로 쓰세요
-  - 제목 첫 글자를 대문자로
-  - 제목은 명령문으로
+    - ex) `💡 Feat: 로그인 추가`
+  - 제목 첫 글자를 대문자
+  - 제목은 명령문
 
 ### 7. Jira
 
